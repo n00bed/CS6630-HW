@@ -3,13 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <title>hw1 - Anil Dhungel</title>
-    <link href="hw1.css" rel="stylesheet" type="text/css">
+    
+
+    <style>
+    	
+		.chart {
+		    width: 100%;
+		    overflow: hidden;
+		    fill: #C44441;
+		}
+
+		.chart1 {
+		    width: 500px;
+		    float: left;
+		    margin: 10px 0 0px 100px;
+		}
+
+		.chart2 {
+		    margin: 10px 0 0 620px;
+		}
+
+		.bar {
+		    stroke: #000;
+		    stroke-width: .5px;
+		}
+
+		.line {
+		    stroke: #C44441;
+		    stroke-width: 3;
+		    fill: none;
+		}
+
+		.areachart {
+		    stroke: #000;
+		    stroke-width: 1px;
+		    height: 150px;
+		    width: 300px;
+		}
+
+		.scatterplot {
+		    height: 150px;
+		    width: 300px;
+		    margin: 10px 0 0 100px;
+		}
+
+		#frame {
+		    fill: none;
+		    stroke-width: 3px;
+		    stroke: #000;
+		}
+
+		circle {
+		    fill: #C44441;
+		}
+
+    </style>
 </head>
 <body>
-    <h4>"CS-5630 / CS-6630 Homework 1"<br>
-    Name: Anil Dhungel<br>
-    Email: u1000489@utah.edu<br>
-    uID:U1000489</h4>
+    <h4>CS-5630 / CS-6630 Homework 1</h4>
+    <span>Anil Dhungel
+    <span>u1000489@utah.edu
+    <span>U1000489
+
+    <br/>
+    <hr/>
+    <br/>
     <!-- ###############  Start of bar charts  #################-->
     <!-- ############  Bar chart Anscombe's quartett X-axis  ######## -->
     <div class="chart">
@@ -51,51 +109,63 @@
     <!--####  Line chart Anscombe's quartett X-axis  ######-->
     <div class="chart">
         <div class="chart1">
-            <p>Anscombe's Quartet X-axis (using element path)</p><svg class=
-            "line">
-            <path d=
-            "M0,100 L25,80 L50 130 L75 90 L100 110 L125 140 L150 60 L175 40 L200 120 L225 70 L250 50"
-            transform="translate(0, 150) scale(1,-1)"></path></svg>
+            <p>Anscombe's Quartet X-axis (using element path)</p>
+            <svg class= "line">
+	            <path 
+		            d= "M0,100 L25,80 L50 130 L75 90 L100 110 L125 140 L150 60 L175 40 L200 120 L225 70 L250 50"
+		            transform="translate(0, 150) scale(1,-1)">	
+	            </path>
+            </svg>
         </div><!--####  Line chart Anscombe's quartett Y-axis  ######-->
         <div class="chart2">
-            <p>Anscombe's Quartet Y-axis (using SVG line
-            element)</p><svg class="line">
-            <polyline points=
-            " 00,80.4 25,69.5 50,75.8 75,88.1 100,83.3 125,99.6 150,72.4 175,42.6 200,108.4 225,48.2 250,56.8"
-            style transform="translate(0, 150) scale(1,-1)"></polyline></svg>
+            <p>Anscombe's Quartet Y-axis (using SVG lineelement)</p>
+            <svg class="line">
+	            <polyline 
+		            points= " 00,80.4 25,69.5 50,75.8 75,88.1 100,83.3 125,99.6 150,72.4 175,42.6 200,108.4 225,48.2 250,56.8"
+		            style transform="translate(0, 150) scale(1,-1)">	            	
+	            </polyline>
+            </svg>
         </div>
     </div><!-- Start of Area chart -->
     <!--####  Area chart Anscombe's quartett X-axis  ######-->
     <div class="chart">
         <div class="chart1">
-            <p>Anscombe's Quartet X-axis</p><svg class="areachart">
-            <path d=
-            "M0 0 L0,100 L25,80 L50 130 L75 90 L100 110 L125 140 L150 60 L175 40 L200 120 L225 70 L250 50 L250 0"
-            transform="translate(0, 150) scale(1,-1)"></path></svg>
+            <p>Anscombe's Quartet X-axis</p>
+            <svg class="areachart">
+	            <path 
+		            d="M0 0 L0,100 L25,80 L50 130 L75 90 L100 110 L125 140 L150 60 L175 40 L200 120 L225 70 L250 50 L250 0"
+		            transform="translate(0, 150) scale(1,-1)">  	
+	            </path>
+            </svg>
         </div><!--####  Area chart Anscombe's quartett Y-axis  ######-->
         <div class="chart2">
-            <p>Anscombe's Quartet Y-axis</p><svg class="areachart">
-            <path d=
-            "M0 0 L0,80.04 L25,69.5 L50 75.8 L75 88.1 L100 83.3 L125 99.6 L150 72.4 L175 42.6 L200 108.4 L225 48.2 L250 56.8 L250 0"
-            transform="translate(0, 150) scale(1,-1)"></path></svg>
+            <p>Anscombe's Quartet Y-axis</p>
+            <svg class="areachart">
+	            <path 
+		            d="M0 0 L0,80.04 L25,69.5 L50 75.8 L75 88.1 L100 83.3 L125 99.6 L150 72.4 L175 42.6 L200 108.4 L225 48.2 L250 56.8 L250 0"
+		            transform="translate(0, 150) scale(1,-1)">
+	            </path>
+            </svg>
         </div>
     </div><!-- Start of Scatter plot -->
     <div class="chart1 scatterplot">
-        <p>Anscombe's Quartet Scatterplot</p><svg>
-        <g id="circle" transform="translate(0, 150) scale(1, -1)">
-            <circle cx="100" cy="80.4" r="5"></circle>
-            <circle cx="80" cy="69.5" r="5"></circle>
-            <circle cx="130" cy="75.8" r="5"></circle>
-            <circle cx="90" cy="88.1" r="5"></circle>
-            <circle cx="110" cy="83.3" r="5"></circle>
-            <circle cx="140" cy="99.6" r="5"></circle>
-            <circle cx="60" cy="72.4" r="5"></circle>
-            <circle cx="40" cy="42.6" r="5"></circle>
-            <circle cx="120" cy="108.4" r="5"></circle>
-            <circle cx="70" cy="48.2" r="5"></circle>
-            <circle cx="50" cy="56.8" r="5"></circle>
-            <rect height="150" id="frame" width="300"></rect>
-        </g></svg>
+        <p>Anscombe's Quartet Scatterplot</p>
+        <svg>
+	        <g id="circle" transform="translate(0, 150) scale(1, -1)">
+	            <circle cx="100" cy="80.4" r="5"></circle>
+	            <circle cx="80" cy="69.5" r="5"></circle>
+	            <circle cx="130" cy="75.8" r="5"></circle>
+	            <circle cx="90" cy="88.1" r="5"></circle>
+	            <circle cx="110" cy="83.3" r="5"></circle>
+	            <circle cx="140" cy="99.6" r="5"></circle>
+	            <circle cx="60" cy="72.4" r="5"></circle>
+	            <circle cx="40" cy="42.6" r="5"></circle>
+	            <circle cx="120" cy="108.4" r="5"></circle>
+	            <circle cx="70" cy="48.2" r="5"></circle>
+	            <circle cx="50" cy="56.8" r="5"></circle>
+	            <rect height="150" id="frame" width="300"></rect>
+	        </g>
+        </svg>
     </div>
 </body>
 </html>
