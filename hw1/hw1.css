@@ -1,53 +1,50 @@
 
-         .chart{
-            width: 100%; 
-            overflow: hidden; 
-            fill:#C44441;
-          }
+.chart {
+    width: 100%;
+    overflow: hidden;
+    fill: #C44441;
+}
 
-          .chart1{
-            width: 500px; 
-            float: left;
-            margin: 10px 0px 0px 100px;
-          }
+.chart1 {
+    width: 500px;
+    float: left;
+    margin: 10px 0 0px 100px;
+}
 
-          .chart2{
-            margin: 10px 0px 0px 620px; 
-          }
+.chart2 {
+    margin: 10px 0 0 620px;
+}
 
-          .bar{
-            stroke:#000; 
-            stroke-width:.5px
-          }
+.bar {
+    stroke: #000;
+    stroke-width: .5px;
+}
 
-          .line{
-            stroke:#C44441;
-            stroke-width:3; 
-            fill:none;
+.line {
+    stroke: #C44441;
+    stroke-width: 3;
+    fill: none;
+}
 
-          }
+.areachart {
+    stroke: #000;
+    stroke-width: 1px;
+    height: 150px;
+    width: 300px;
+}
 
-          .areachart{
-            stroke:black;
-            stroke-width:1px;
-            height:150px;
-            width:300px;
+.scatterplot {
+    height: 150px;
+    width: 300px;
+    margin: 10px 0 0 100px;
+}
 
-          }
+#frame {
+    fill: none;
+    stroke-width: 3px;
+    stroke: #000;
+}
 
-          .scatterplot{
-            height:150px;
-            width:300px;
-            margin: 10px 0px 0px  100px;
-          }
-
-          #frame{
-            fill:none;
-            stroke-width:3px;
-            stroke:#000;
-
-          }
-
-          circle{
-            fill:#C44441;
-          }
+circle {
+    fill: #C44441;
+}
