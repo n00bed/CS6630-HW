@@ -3,6 +3,17 @@
 
 function staircase() {
     // ****** TODO: PART II ******
+
+    var count = document.getElementById('bar1').childElementCount;
+    var string = ''; 
+    var string2 = ''; 
+
+    for (var i = 0; i< count; i++) {    
+        string2 = '<rect width="20" height="'+(i+1)*15 + '" y="0" x="'+i*20+'"></rect>\n'; 
+        string = string + string2     
+    }
+    document.getElementById('bar1').innerHTML = string;  
+    //alert(string);           
 }
 
 function update(error, data) {
@@ -88,6 +99,8 @@ function changeData() {
     else{
         d3.csv('data/' + dataFile + '.csv', update);
     }
+
+
 }
 
 function randomSubset() {

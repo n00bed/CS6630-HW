@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Homework 2 Solution</title>
-    <script src="script.js"></script>
+
+    <script src="http://d3js.org/d3.v3.min.js"></script>
     <style>
         .barChart {
             fill: steelblue;
@@ -61,12 +62,13 @@
 <br/>
 
 <span>
-    <button>Staircase</button>
+    <button onclick="staircase()">Staircase</button>
 </span>
+
 
 <span>
     <label>Dataset:</label>
-    <select id="dataset">
+    <select id="dataset" onchange="changeData()">
         <option value="anscombe_I">Anscombe's Quartet I</option>
         <option selected value="anscombe_II">Anscombe's Quartet II</option>
         <option value="anscombe_III">Anscombe's Quartet III</option>
@@ -75,44 +77,44 @@
 </span>
 
 <span>
-    <input type="checkbox" id="random"> Random Subset
+    <input type="checkbox" id="random" onclick="randomSubset()"> Random Subset
 </span>
 
 <br/>
 
 <div>
     <h2>Bar Charts</h2>
-    <svg width="300" height="200">
+    <svg width="300" height="200" >
         <!-- Paste your HW 1 solution here -->
-        <g class="barChart">
-            <rect height="19" width="140"></rect>
-            <rect height="19" width="112" y="20"></rect>
-            <rect height="19" width="182" y="40"></rect>
-            <rect height="19" width="126" y="60"></rect>
-            <rect height="19" width="154" y="80"></rect>
-            <rect height="19" width="196" y="100"></rect>
-            <rect height="19" width="84" y="120"></rect>
-            <rect height="19" width="56" y="140"></rect>
-            <rect height="19" width="168" y="160"></rect>
-            <rect height="19" width="98" y="180"></rect>
-            <rect height="19" width="84" y="200"></rect>
+        <g transform="translate(0, 200) scale(1, -1)" class="barChart" id="bar1">
+            <rect x="10" y="0" width="10" height="100"/>
+            <rect x="20" y="0" width="10" height="80"/>
+            <rect x="30" y="0" width="10" height="130"/>
+            <rect x="40" y="0" width="10" height="90"/>
+            <rect x="50" y="0" width="10" height="110"/>
+            <rect x="60" y="0" width="10" height="140"/>
+            <rect x="70" y="0" width="10" height="60"/>
+            <rect x="80" y="0" width="10" height="40"/>
+            <rect x="90" y="0" width="10" height="120"/>
+            <rect x="100" y="0" width="10" height="70"/>
+            <rect x="110" y="0" width="10" height="50"/>
         </g>
     </svg>
 
     <svg width="300" height="200">
         <!-- Paste your HW 1 solution here -->
-        <g class="barChart">
-            <rect height="19" width="201"></rect>
-            <rect height="19" width="173.75" y="20"></rect>
-            <rect height="19" width="189.50" y="40"></rect>
-            <rect height="19" width="220.25" y="60"></rect>
-            <rect height="19" width="208.25" y="80"></rect>
-            <rect height="19" width="249.00" y="100"></rect>
-            <rect height="19" width="181.00" y="120"></rect>
-            <rect height="19" width="106.50" y="140"></rect>
-            <rect height="19" width="271.00" y="160"></rect>
-            <rect height="19" width="120.50" y="180"></rect>
-            <rect height="19" width="142.00" y="200"></rect>
+        <g transform="translate(0, 200) scale(1, -1)" class="barChart">
+            <rect x="10" y="0" width="10" height="80"/>
+            <rect x="20" y="0" width="10" height="69"/>
+            <rect x="30" y="0" width="10" height="76"/>
+            <rect x="40" y="0" width="10" height="88"/>
+            <rect x="50" y="0" width="10" height="83"/>
+            <rect x="60" y="0" width="10" height="100"/>
+            <rect x="70" y="0" width="10" height="72"/>
+            <rect x="80" y="0" width="10" height="43"/>
+            <rect x="90" y="0" width="10" height="108"/>
+            <rect x="100" y="0" width="10" height="48"/>
+            <rect x="110" y="0" width="10" height="57"/>
         </g>
     </svg>
 </div>
@@ -120,7 +122,7 @@
 <div>
     <h2>Line Charts</h2>
 
-    <svg width="200" height="200">
+    <svg width="300" height="200">
         <!-- Paste your HW 1 solution here -->
         <path class = "lines"
             d= "M0,100 L25,80 L50 130 L75 90 L100 110 L125 140 L150 60 L175 40 L200 120 L225 70 L250 50"
@@ -128,7 +130,7 @@
         </path>
     </svg>
 
-    <svg width="200" height="200">
+    <svg width="300" height="200">
         <!-- Paste your HW 1 solution here -->
         <polyline class ="lines"
             points= " 00,80.4 25,69.5 50,75.8 75,88.1 100,83.3 125,99.6 150,72.4 175,42.6 200,108.4 225,48.2 250,56.8"
@@ -140,7 +142,7 @@
 <div>
     <h2>Area Charts</h2>
 
-    <svg width="200" height="200">
+    <svg width="300" height="200">
         <!-- Paste your HW 1 solution here -->
         <path class ="areas"
             d="M0 0 L0,100 L25,80 L50 130 L75 90 L100 110 L125 140 L150 60 L175 40 L200 120 L225 70 L250 50 L250 0"
@@ -149,9 +151,9 @@
 
     </svg>
 
-    <svg width="200" height="200">
+    <svg width="300" height="200">
         <!-- Paste your HW 1 solution here -->
-        <path 
+        <path class="areas"
             d="M0 0 L0,80.04 L25,69.5 L50 75.8 L75 88.1 L100 83.3 L125 99.6 L150 72.4 L175 42.6 L200 108.4 L225 48.2 L250 56.8 L250 0"
             transform="translate(0, 150) scale(1,-1)">
         </path>
@@ -161,7 +163,7 @@
 <div>
     <h2>Scatterplot</h2>
 
-    <svg width="200" height="200">
+    <svg width="600" height="200">
         <!-- Paste your HW 1 solution here -->
         <g class="circle" transform="translate(0, 150) scale(1, -1)">
             <circle cx="100" cy="80.4" r="5"></circle>
@@ -175,9 +177,10 @@
             <circle cx="120" cy="108.4" r="5"></circle>
             <circle cx="70" cy="48.2" r="5"></circle>
             <circle cx="50" cy="56.8" r="5"></circle>
-            <rect height="150" class="frame" width="200"></rect>
+            <rect height="150" class="frame" width="300"></rect>
         </g>
     </svg>
 </div>
 </body>
+    <script src="script.js"></script>
 </html>
