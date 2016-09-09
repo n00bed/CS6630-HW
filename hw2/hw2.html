@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <title>Homework 2 Solution</title>
 
-    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://d3js.org/d3.v4.js"></script>
     <style>
         .barChart {
             fill: steelblue;
             stroke: darkgray;
             stroke-width: 1px;
         }
-
+/*
         .barChart rect:hover {
             fill: seagreen;
         }
 
-        .lines {
+ */       .lines {
             stroke: steelblue;
             fill: none
         }
@@ -86,7 +86,7 @@
     <h2>Bar Charts</h2>
     <svg width="300" height="200" >
         <!-- Paste your HW 1 solution here -->
-        <g transform="translate(0, 200) scale(1, -1)" class="barChart" id="bar1">
+        <g transform="translate(0, 200) scale(1, -1)" class="barChart" id="bar1" >
             <rect x="10" y="0" width="10" height="100"/>
             <rect x="20" y="0" width="10" height="80"/>
             <rect x="30" y="0" width="10" height="130"/>
@@ -101,9 +101,9 @@
         </g>
     </svg>
 
-    <svg width="300" height="200">
+    <svg width="300" height="200" >
         <!-- Paste your HW 1 solution here -->
-        <g transform="translate(0, 200) scale(1, -1)" class="barChart">
+        <g transform="translate(0, 200) scale(1, -1)" class="barChart" id="bar2" >
             <rect x="10" y="0" width="10" height="80"/>
             <rect x="20" y="0" width="10" height="69"/>
             <rect x="30" y="0" width="10" height="76"/>
@@ -122,62 +122,79 @@
 <div>
     <h2>Line Charts</h2>
 
-    <svg width="300" height="200">
+    <svg width="300" height="200" id="line1">
         <!-- Paste your HW 1 solution here -->
-        <path class = "lines"
-            d= "M0,100 L25,80 L50 130 L75 90 L100 110 L125 140 L150 60 L175 40 L200 120 L225 70 L250 50"
-            transform="translate(0, 150) scale(1,-1)">  
-        </path>
+     <g transform="translate(0, 200) scale(1, -1)">
+        <path class="lines"
+              d="M 10 100 L 20 80 L 30 130 L 40 90 L 50 110 L 60 140 L 70 60 L 80 40 L 90 120 L 100 70 L 110 50"/>
+    </g>
     </svg>
 
-    <svg width="300" height="200">
+    <svg width="300" height="200" id="line2">
         <!-- Paste your HW 1 solution here -->
-        <polyline class ="lines"
-            points= " 00,80.4 25,69.5 50,75.8 75,88.1 100,83.3 125,99.6 150,72.4 175,42.6 200,108.4 225,48.2 250,56.8"
-            style transform="translate(0, 150) scale(1,-1)">                    
-        </polyline>
+    <g class="lines" transform="translate(0, 200) scale(1, -1)">
+  <!--
+        <line  x1="10" y1="80" x2="20" y2="69"/>
+        <line  x1="20" y1="69" x2="30" y2="76"/>
+        <line  x1="30" y1="76" x2="40" y2="88"/>
+        <line  x1="40" y1="88" x2="50" y2="83"/>
+        <line  x1="50" y1="83" x2="60" y2="100"/>
+        <line  x1="60" y1="100" x2="70" y2="72"/>
+        <line  x1="70" y1="72" x2="80" y2="43"/>
+        <line  x1="80" y1="43" x2="90" y2="108"/>
+        <line  x1="90" y1="108" x2="100" y2="48"/>
+        <line  x1="100" y1="48" x2="110" y2="57"/>
+     --> 
+        <path class="lines"
+              d="M 10 80.4 L 20 69.5 L 30 75.8 L 40 88.1 L 50 83.3 L 60 99.6 L 70 72.4 L 80 42.6 L 90 108.4 L 100 48.2 L 110 56.8"/>
+
+
+    </g>
     </svg>
 </div>
 
 <div>
     <h2>Area Charts</h2>
 
-    <svg width="300" height="200">
+    <svg width="300" height="200" id="area1">
         <!-- Paste your HW 1 solution here -->
-        <path class ="areas"
-            d="M0 0 L0,100 L25,80 L50 130 L75 90 L100 110 L125 140 L150 60 L175 40 L200 120 L225 70 L250 50 L250 0"
-            transform="translate(0, 150) scale(1,-1)">      
-        </path>
+    <g transform="translate(0, 200) scale(1, -1)">
+        <path class="areas"
+              d="M 10 10 L 10 100 L 20 80 L 30 130 L 40 90 L 50 110 L 60 140 L 70 60 L 80 40 L 90 120 L 100 70 L 110 50  L 110 10"/>
+    </g>
 
     </svg>
 
-    <svg width="300" height="200">
+    <svg width="300" height="200" id="area2">
         <!-- Paste your HW 1 solution here -->
+    <g transform="translate(0, 200) scale(1, -1)">
         <path class="areas"
-            d="M0 0 L0,80.04 L25,69.5 L50 75.8 L75 88.1 L100 83.3 L125 99.6 L150 72.4 L175 42.6 L200 108.4 L225 48.2 L250 56.8 L250 0"
-            transform="translate(0, 150) scale(1,-1)">
-        </path>
+              d="M 10 10 L 10 80 L 20 69 L 30 76 L 40 88 L 50 83 L 60 100 L 70 72 L 80 43 L 90 108 L 100 48 L 110 57 L 110 10"/>
+
+    </g>
     </svg>
 </div>
 
 <div>
     <h2>Scatterplot</h2>
 
-    <svg width="600" height="200">
+    <svg width="600" height="200" id="scatter">
         <!-- Paste your HW 1 solution here -->
-        <g class="circle" transform="translate(0, 150) scale(1, -1)">
-            <circle cx="100" cy="80.4" r="5"></circle>
-            <circle cx="80" cy="69.5" r="5"></circle>
-            <circle cx="130" cy="75.8" r="5"></circle>
-            <circle cx="90" cy="88.1" r="5"></circle>
-            <circle cx="110" cy="83.3" r="5"></circle>
-            <circle cx="140" cy="99.6" r="5"></circle>
-            <circle cx="60" cy="72.4" r="5"></circle>
-            <circle cx="40" cy="42.6" r="5"></circle>
-            <circle cx="120" cy="108.4" r="5"></circle>
-            <circle cx="70" cy="48.2" r="5"></circle>
-            <circle cx="50" cy="56.8" r="5"></circle>
-            <rect height="150" class="frame" width="300"></rect>
+
+    <!-- <rect x="0" y="0" width="200" height="200" class="frame"/> -->
+
+        <g  transform="translate(0, 200) scale(1, -1)">
+            <circle cx="100" cy="80" r="5" />
+            <circle cx="80" cy="69" r="5" />
+            <circle cx="130" cy="76" r="5" />
+            <circle cx="90" cy="88" r="5" />
+            <circle cx="110" cy="83" r="5" />
+            <circle cx="140" cy="100" r="5" />
+            <circle cx="60" cy="72" r="5" />
+            <circle cx="40" cy="43" r="5" />
+            <circle cx="120" cy="108" r="5" />
+            <circle cx="70" cy="48" r="5" />
+            <circle cx="50" cy="57" r="5" />
         </g>
     </svg>
 </div>

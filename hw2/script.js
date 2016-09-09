@@ -9,12 +9,14 @@ function staircase() {
     var string2 = ''; 
 
     for (var i = 0; i< count; i++) {    
-        string2 = '<rect width="20" height="'+(i+1)*15 + '" y="0" x="'+i*20+'"></rect>\n'; 
+        string2 = '<rect width="10" height="'+(i+1)*10 + '" y="0" x="'+i*10+'"></rect>\n'; 
         string = string + string2     
     }
     document.getElementById('bar1').innerHTML = string;  
     //alert(string);           
 }
+
+
 
 function update(error, data) {
     if (error !== null) {
@@ -60,7 +62,44 @@ function update(error, data) {
 
     // TODO: Select and update the 'a' bar chart bars
 
+    d3.select('#bar1').selectAll("rect").data(data).enter().append("rect")
+    d3.select('#bar1').selectAll("rect").data(data).transition()
+        .duration(2000)
+        .attr("x",function(d,i){
+            return i *10; 
+        })
+        .attr("y",0)
+        .attr("height", function(d,i){
+            return aScale(d.a); 
+        })
+        .attr("width",10)
+        .attr("opacity",1)
+
+    d3.select('#bar1').selectAll("rect").data(data).exit().attr("opacity",1)
+        .transition()
+        .duration(2000)
+        .attr("opacity",0).remove(); 
+
+
     // TODO: Select and update the 'b' bar chart bars
+
+    d3.select('#bar2').selectAll("rect").data(data).enter().append("rect")
+    d3.select('#bar2').selectAll("rect").data(data).transition()
+        .duration(2000)
+        .attr("x",function(d,i){
+            return i *10; 
+        })
+        .attr("y",0)
+        .attr("height", function(d,i){
+            return bScale(d.b); 
+        })
+        .attr("width",10)
+        .attr("opacity",1)
+
+    d3.select('#bar2').selectAll("rect").data(data).exit().attr("opacity",1)
+        .transition()
+        .duration(2000)
+        .attr("opacity",0).remove(); 
 
     // TODO: Select and update the 'a' line chart path using this line generator
     var aLineGenerator = d3.line()
@@ -71,7 +110,31 @@ function update(error, data) {
             return aScale(d.a);
         });
 
+   
+    d3.select('#line1').select("path").data(data).enter().append("path")
+    d3.select('#line1').select("path").data(data)
+                                .transition()
+                                .duration(2000)
+                                .attr("d", aLineGenerator(data));
+
+     
     // TODO: Select and update the 'b' line chart path (create your own generator)
+    var bLineGenerator = d3.line()
+        .x(function (d, i) {
+            return iScale(i);
+        })
+        .y(function (d) {
+            return bScale(d.b);
+        });
+
+    d3.select('#line2').select("path").data(data).enter().append("path")
+    d3.select('#line2').select("path").data(data)
+                                .transition()
+                                .duration(2000)
+                                .attr("d", bLineGenerator(data));
+
+                               
+ 
 
     // TODO: Select and update the 'a' area chart path using this line generator
     var aAreaGenerator = d3.area()
@@ -83,9 +146,53 @@ function update(error, data) {
             return aScale(d.a);
         });
 
+    d3.select('#area1').select("path").data(data).enter().append("path")
+    d3.select('#area1').select("path").data(data)
+                                .transition()
+                                .duration(2000)
+                                .attr("d", aAreaGenerator(data));
+                                
+
     // TODO: Select and update the 'b' area chart path (create your own generator)
 
+    var bAreaGenerator = d3.area()
+        .x(function (d, i) {
+            return iScale(i);
+        })
+        .y0(0)
+        .y1(function (d) {
+            return aScale(d.b);
+        });
+
+    d3.select('#area2').select("path").data(data).enter().append("path")
+    d3.select('#area2').select("path").data(data)
+                                .transition()
+                                .duration(2000)
+                                .attr("d", bAreaGenerator(data));
+
     // TODO: Select and update the scatterplot points
+    var tooltip = d3.select("body").append("div")
+    .attr("class","tooltip")
+    .style("opacity",0);
+
+    d3.select("#scatter").selectAll("circle").data(data).enter().append("circle")
+    d3.select("#scatter").selectAll("circle").data(data)
+                        .transition()
+                        .duration(2000)
+                        .attr("cx", function(d,i){
+                            return((d.a*10)); 
+                        })
+                        .attr("cy",function(d,i){
+                            return (d.b*10);
+                        })
+                        .attr("r",5)
+
+    d3.select("#scatter").selectAll("circle").data(data).exit()
+                        .transition()
+                        .duration(2000)
+                        .remove(); 
+
+
 
     // ****** TODO: PART IV ******
 }
