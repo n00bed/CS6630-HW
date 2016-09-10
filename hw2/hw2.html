@@ -5,6 +5,7 @@
     <title>Homework 2 Solution</title>
 
     <script src="http://d3js.org/d3.v4.js"></script>
+    
     <style>
         .barChart {
             fill: steelblue;
@@ -28,6 +29,8 @@
 
         circle {
             fill: steelblue;
+            stroke: darkgray;
+            stroke-width: 0.2px;
         }
 
         .frame {
@@ -47,9 +50,15 @@
         div, span {
             padding: 1em;
         }
+
+        .tooltip {
+  position: absolute;
+  width: 200px;
+  height: 28px;
+  pointer-events: none;
+}
     </style>
 </head>
-<body>
 <body>
 
 <h3>CS-5630 / CS-6630 Homework 2</h3>

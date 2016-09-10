@@ -1,6 +1,11 @@
 /*globals alert, document, d3, console*/
 // These keep JSHint quiet if you're using it (highly recommended!)
 
+
+window.onload = function(){
+    changeData(); 
+}
+
 function staircase() {
     // ****** TODO: PART II ******
 
@@ -15,8 +20,6 @@ function staircase() {
     document.getElementById('bar1').innerHTML = string;  
     //alert(string);           
 }
-
-
 
 function update(error, data) {
     if (error !== null) {
@@ -62,8 +65,10 @@ function update(error, data) {
 
     // TODO: Select and update the 'a' bar chart bars
 
-    d3.select('#bar1').selectAll("rect").data(data).enter().append("rect")
-    d3.select('#bar1').selectAll("rect").data(data).transition()
+    var bar1svg = d3.select('#bar1').selectAll("rect").data(data); 
+
+    bar1svg .enter().append("rect")
+    bar1svg .data(data).transition()
         .duration(2000)
         .attr("x",function(d,i){
             return i *10; 
@@ -75,16 +80,27 @@ function update(error, data) {
         .attr("width",10)
         .attr("opacity",1)
 
-    d3.select('#bar1').selectAll("rect").data(data).exit().attr("opacity",1)
+    bar1svg .exit().attr("opacity",1)
         .transition()
         .duration(2000)
         .attr("opacity",0).remove(); 
 
+    bar1svg.on("mouseover",function(){
+        d3.select(this)
+            .attr("fill", "red"); 
+    })
+    .on("mouseout",function(d,i){
+        d3.select(this)
+            .attr("fill", "steel blue");
+    })
+
 
     // TODO: Select and update the 'b' bar chart bars
 
-    d3.select('#bar2').selectAll("rect").data(data).enter().append("rect")
-    d3.select('#bar2').selectAll("rect").data(data).transition()
+    var bar2svg = d3.select('#bar2').selectAll("rect").data(data);
+
+    bar2svg.enter().append("rect")
+    bar2svg.data(data).transition()
         .duration(2000)
         .attr("x",function(d,i){
             return i *10; 
@@ -96,10 +112,19 @@ function update(error, data) {
         .attr("width",10)
         .attr("opacity",1)
 
-    d3.select('#bar2').selectAll("rect").data(data).exit().attr("opacity",1)
+    bar2svg.exit().attr("opacity",1)
         .transition()
         .duration(2000)
         .attr("opacity",0).remove(); 
+
+    bar2svg.on("mouseover",function(){
+    d3.select(this)
+        .attr("fill", "red"); 
+    })
+    .on("mouseout",function(d,i){
+        d3.select(this)
+            .attr("fill", "steel blue");
+    })
 
     // TODO: Select and update the 'a' line chart path using this line generator
     var aLineGenerator = d3.line()
@@ -110,12 +135,12 @@ function update(error, data) {
             return aScale(d.a);
         });
 
-   
-    d3.select('#line1').select("path").data(data).enter().append("path")
-    d3.select('#line1').select("path").data(data)
-                                .transition()
-                                .duration(2000)
-                                .attr("d", aLineGenerator(data));
+    var line1svg = d3.select('#line1').select("path").data(data);
+
+    line1svg.enter().append("path")
+    line1svg.transition()
+            .duration(2000)
+            .attr("d", aLineGenerator(data));
 
      
     // TODO: Select and update the 'b' line chart path (create your own generator)
@@ -127,14 +152,13 @@ function update(error, data) {
             return bScale(d.b);
         });
 
-    d3.select('#line2').select("path").data(data).enter().append("path")
-    d3.select('#line2').select("path").data(data)
-                                .transition()
-                                .duration(2000)
-                                .attr("d", bLineGenerator(data));
+    var line2svg = d3.select('#line2').select("path").data(data); 
 
-                               
- 
+    line2svg.enter().append("path")
+    line2svg.transition()
+            .duration(2000)
+            .attr("d", bLineGenerator(data));
+
 
     // TODO: Select and update the 'a' area chart path using this line generator
     var aAreaGenerator = d3.area()
@@ -145,12 +169,12 @@ function update(error, data) {
         .y1(function (d) {
             return aScale(d.a);
         });
-
-    d3.select('#area1').select("path").data(data).enter().append("path")
-    d3.select('#area1').select("path").data(data)
-                                .transition()
-                                .duration(2000)
-                                .attr("d", aAreaGenerator(data));
+    
+    var area1svg = d3.select('#area1').select("path").data(data);
+    area1svg.enter().append("path")
+    area1svg.transition()
+            .duration(2000)
+            .attr("d", aAreaGenerator(data));
                                 
 
     // TODO: Select and update the 'b' area chart path (create your own generator)
@@ -164,19 +188,23 @@ function update(error, data) {
             return aScale(d.b);
         });
 
-    d3.select('#area2').select("path").data(data).enter().append("path")
-    d3.select('#area2').select("path").data(data)
-                                .transition()
-                                .duration(2000)
-                                .attr("d", bAreaGenerator(data));
+    var area2svg = d3.select('#area2').select("path").data(data);
+
+    area2svg.enter().append("path")
+    area2svg.transition()
+            .duration(2000)
+            .attr("d", bAreaGenerator(data));
 
     // TODO: Select and update the scatterplot points
-    var tooltip = d3.select("body").append("div")
-    .attr("class","tooltip")
-    .style("opacity",0);
+ var tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
 
-    d3.select("#scatter").selectAll("circle").data(data).enter().append("circle")
-    d3.select("#scatter").selectAll("circle").data(data)
+
+   var scatterSvg = d3.select("#scatter").selectAll("circle").data(data); 
+
+    scatterSvg.enter().append("circle")
+    scatterSvg
                         .transition()
                         .duration(2000)
                         .attr("cx", function(d,i){
@@ -186,8 +214,27 @@ function update(error, data) {
                             return (d.b*10);
                         })
                         .attr("r",5)
+     scatterSvg                
+      .on("mouseover", function(d) {
+          tooltip.transition()
+               .duration(200)
+               .style("opacity", .9);
+          tooltip.html("[ " + d.a + "," + d.b + " ]")
+               .style("left", (d3.event.pageX + 5) + "px")
+               .style("top", (d3.event.pageY - 30) + "px");
+      })
+      .on("mouseout", function(d) {
+          tooltip.transition()
+               .duration(500)
+               .style("opacity", 0);
+      })
+      .on("click", function(d){
+        console.log("x = " + d.a + " y = " + d.b)
+      })
+      ;
 
-    d3.select("#scatter").selectAll("circle").data(data).exit()
+
+    scatterSvg.exit()
                         .transition()
                         .duration(2000)
                         .remove(); 
@@ -230,3 +277,6 @@ function randomSubset() {
         changeData();
     }
 }
+
+
+//Reference: Liu, W. (2016, May 21). D3 Scatterplot example. Retrieved September 10, 2016, from bl.ocks.org, http://bl.ocks.org/weiglemc/6185069
