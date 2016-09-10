@@ -3,21 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Homework 2 Solution</title>
-
-    <script src="http://d3js.org/d3.v4.js"></script>
-    
+    <script src="http://d3js.org/d3.v4.js">
+    </script>
     <style>
         .barChart {
             fill: steelblue;
             stroke: darkgray;
             stroke-width: 1px;
         }
-/*
+    /*
         .barChart rect:hover {
             fill: seagreen;
         }
-
- */       .lines {
+    */
+           .lines {
             stroke: steelblue;
             fill: none
         }
@@ -52,161 +51,112 @@
         }
 
         .tooltip {
-  position: absolute;
-  width: 200px;
-  height: 28px;
-  pointer-events: none;
-}
+    position: absolute;
+    width: 200px;
+    height: 28px;
+    pointer-events: none;
+    }
     </style>
 </head>
 <body>
-
-<h3>CS-5630 / CS-6630 Homework 2</h3>
-<span>Anil Dhungel</span>
-<span>u1000489@utah.edu</span>
-<span>u1000489</span>
-
-<br/>
-<hr/>
-<br/>
-
-<span>
-    <button onclick="staircase()">Staircase</button>
-</span>
-
-
-<span>
-    <label>Dataset:</label>
-    <select id="dataset" onchange="changeData()">
-        <option value="anscombe_I">Anscombe's Quartet I</option>
-        <option selected value="anscombe_II">Anscombe's Quartet II</option>
-        <option value="anscombe_III">Anscombe's Quartet III</option>
-        <option value="anscombe_IV">Anscombe's Quartet IV</option>
-    </select>
-</span>
-
-<span>
-    <input type="checkbox" id="random" onclick="randomSubset()"> Random Subset
-</span>
-
-<br/>
-
-<div>
-    <h2>Bar Charts</h2>
-    <svg width="300" height="200" >
+    <h3>CS-5630 / CS-6630 Homework 2</h3><span>Anil Dhungel</span>
+    <span>u1000489@utah.edu</span> <span>u1000489</span><br>
+    <hr>
+    <br>
+    <span><button onclick="staircase()"><span>Staircase</span></button></span>
+    <span><label>Dataset:</label> <select id="dataset" onchange="changeData()">
+        <option value="anscombe_I">
+            Anscombe's Quartet I
+        </option>
+        <option selected value="anscombe_II">
+            Anscombe's Quartet II
+        </option>
+        <option value="anscombe_III">
+            Anscombe's Quartet III
+        </option>
+        <option value="anscombe_IV">
+            Anscombe's Quartet IV
+        </option>
+    </select></span> <span><input id="random" onclick="randomSubset()" type=
+    "checkbox"> Random Subset</span><br>
+    <div>
+        <h2>Bar Charts</h2><svg height="200" width="300"> 
         <!-- Paste your HW 1 solution here -->
-        <g transform="translate(0, 200) scale(1, -1)" class="barChart" id="bar1" >
-            <rect x="10" y="0" width="10" height="100"/>
-            <rect x="20" y="0" width="10" height="80"/>
-            <rect x="30" y="0" width="10" height="130"/>
-            <rect x="40" y="0" width="10" height="90"/>
-            <rect x="50" y="0" width="10" height="110"/>
-            <rect x="60" y="0" width="10" height="140"/>
-            <rect x="70" y="0" width="10" height="60"/>
-            <rect x="80" y="0" width="10" height="40"/>
-            <rect x="90" y="0" width="10" height="120"/>
-            <rect x="100" y="0" width="10" height="70"/>
-            <rect x="110" y="0" width="10" height="50"/>
-        </g>
-    </svg>
-
-    <svg width="300" height="200" >
+        <g class="barChart" id="bar1" transform=
+        "translate(0, 200) scale(1, -1)">
+            <rect height="100" width="10" x="10" y="0"></rect>
+            <rect height="80" width="10" x="20" y="0"></rect>
+            <rect height="130" width="10" x="30" y="0"></rect>
+            <rect height="90" width="10" x="40" y="0"></rect>
+            <rect height="110" width="10" x="50" y="0"></rect>
+            <rect height="140" width="10" x="60" y="0"></rect>
+            <rect height="60" width="10" x="70" y="0"></rect>
+            <rect height="40" width="10" x="80" y="0"></rect>
+            <rect height="120" width="10" x="90" y="0"></rect>
+            <rect height="70" width="10" x="100" y="0"></rect>
+            <rect height="50" width="10" x="110" y="0"></rect>
+        </g></svg> <svg height="200" width="300"> 
         <!-- Paste your HW 1 solution here -->
-        <g transform="translate(0, 200) scale(1, -1)" class="barChart" id="bar2" >
-            <rect x="10" y="0" width="10" height="80"/>
-            <rect x="20" y="0" width="10" height="69"/>
-            <rect x="30" y="0" width="10" height="76"/>
-            <rect x="40" y="0" width="10" height="88"/>
-            <rect x="50" y="0" width="10" height="83"/>
-            <rect x="60" y="0" width="10" height="100"/>
-            <rect x="70" y="0" width="10" height="72"/>
-            <rect x="80" y="0" width="10" height="43"/>
-            <rect x="90" y="0" width="10" height="108"/>
-            <rect x="100" y="0" width="10" height="48"/>
-            <rect x="110" y="0" width="10" height="57"/>
-        </g>
-    </svg>
-</div>
-
-<div>
-    <h2>Line Charts</h2>
-
-    <svg width="300" height="200" id="line1">
+        <g class="barChart" id="bar2" transform=
+        "translate(0, 200) scale(1, -1)">
+            <rect height="80" width="10" x="10" y="0"></rect>
+            <rect height="69" width="10" x="20" y="0"></rect>
+            <rect height="76" width="10" x="30" y="0"></rect>
+            <rect height="88" width="10" x="40" y="0"></rect>
+            <rect height="83" width="10" x="50" y="0"></rect>
+            <rect height="100" width="10" x="60" y="0"></rect>
+            <rect height="72" width="10" x="70" y="0"></rect>
+            <rect height="43" width="10" x="80" y="0"></rect>
+            <rect height="108" width="10" x="90" y="0"></rect>
+            <rect height="48" width="10" x="100" y="0"></rect>
+            <rect height="57" width="10" x="110" y="0"></rect>
+        </g></svg>
+    </div>
+    <div>
+        <h2>Line Charts</h2><svg height="200" id="line1" width="300"> 
         <!-- Paste your HW 1 solution here -->
-     <g transform="translate(0, 200) scale(1, -1)">
-        <path class="lines"
-              d="M 10 100 L 20 80 L 30 130 L 40 90 L 50 110 L 60 140 L 70 60 L 80 40 L 90 120 L 100 70 L 110 50"/>
-    </g>
-    </svg>
-
-    <svg width="300" height="200" id="line2">
+        <g transform="translate(0, 200) scale(1, -1)">
+            <path class="lines" d=
+            "M 10 100 L 20 80 L 30 130 L 40 90 L 50 110 L 60 140 L 70 60 L 80 40 L 90 120 L 100 70 L 110 50"></path>
+            </g></svg> <svg height="200" id="line2" width="300"> 
+            <!-- Paste your HW 1 solution here -->
+        <g class="lines" transform="translate(0, 200) scale(1, -1)">
+            <path class="lines" d=
+            "M 10 80.4 L 20 69.5 L 30 75.8 L 40 88.1 L 50 83.3 L 60 99.6 L 70 72.4 L 80 42.6 L 90 108.4 L 100 48.2 L 110 56.8"></path>
+            </g></svg>
+    </div>
+    <div>
+        <h2>Area Charts</h2><svg height="200" id="area1" width="300"> 
         <!-- Paste your HW 1 solution here -->
-    <g class="lines" transform="translate(0, 200) scale(1, -1)">
-  <!--
-        <line  x1="10" y1="80" x2="20" y2="69"/>
-        <line  x1="20" y1="69" x2="30" y2="76"/>
-        <line  x1="30" y1="76" x2="40" y2="88"/>
-        <line  x1="40" y1="88" x2="50" y2="83"/>
-        <line  x1="50" y1="83" x2="60" y2="100"/>
-        <line  x1="60" y1="100" x2="70" y2="72"/>
-        <line  x1="70" y1="72" x2="80" y2="43"/>
-        <line  x1="80" y1="43" x2="90" y2="108"/>
-        <line  x1="90" y1="108" x2="100" y2="48"/>
-        <line  x1="100" y1="48" x2="110" y2="57"/>
-     --> 
-        <path class="lines"
-              d="M 10 80.4 L 20 69.5 L 30 75.8 L 40 88.1 L 50 83.3 L 60 99.6 L 70 72.4 L 80 42.6 L 90 108.4 L 100 48.2 L 110 56.8"/>
-
-
-    </g>
-    </svg>
-</div>
-
-<div>
-    <h2>Area Charts</h2>
-
-    <svg width="300" height="200" id="area1">
+        <g transform="translate(0, 200) scale(1, -1)">
+            <path class="areas" d=
+            "M 10 10 L 10 100 L 20 80 L 30 130 L 40 90 L 50 110 L 60 140 L 70 60 L 80 40 L 90 120 L 100 70 L 110 50 L 110 10"></path>
+            </g></svg> <svg height="200" id="area2" width="300"> 
+            <!-- Paste your HW 1 solution here -->
+        <g transform="translate(0, 200) scale(1, -1)">
+            <path class="areas" d=
+            "M 10 10 L 10 80 L 20 69 L 30 76 L 40 88 L 50 83 L 60 100 L 70 72 L 80 43 L 90 108 L 100 48 L 110 57 L 110 10"></path>
+            </g></svg>
+    </div>
+    <div>
+        <h2>Scatterplot</h2><svg height="200"  width="600"> 
         <!-- Paste your HW 1 solution here -->
-    <g transform="translate(0, 200) scale(1, -1)">
-        <path class="areas"
-              d="M 10 10 L 10 100 L 20 80 L 30 130 L 40 90 L 50 110 L 60 140 L 70 60 L 80 40 L 90 120 L 100 70 L 110 50  L 110 10"/>
-    </g>
-
-    </svg>
-
-    <svg width="300" height="200" id="area2">
-        <!-- Paste your HW 1 solution here -->
-    <g transform="translate(0, 200) scale(1, -1)">
-        <path class="areas"
-              d="M 10 10 L 10 80 L 20 69 L 30 76 L 40 88 L 50 83 L 60 100 L 70 72 L 80 43 L 90 108 L 100 48 L 110 57 L 110 10"/>
-
-    </g>
-    </svg>
-</div>
-
-<div>
-    <h2>Scatterplot</h2>
-
-    <svg width="600" height="200" id="scatter">
-        <!-- Paste your HW 1 solution here -->
-
-    <!-- <rect x="0" y="0" width="200" height="200" class="frame"/> -->
-
-        <g  transform="translate(0, 200) scale(1, -1)">
-            <circle cx="100" cy="80" r="5" />
-            <circle cx="80" cy="69" r="5" />
-            <circle cx="130" cy="76" r="5" />
-            <circle cx="90" cy="88" r="5" />
-            <circle cx="110" cy="83" r="5" />
-            <circle cx="140" cy="100" r="5" />
-            <circle cx="60" cy="72" r="5" />
-            <circle cx="40" cy="43" r="5" />
-            <circle cx="120" cy="108" r="5" />
-            <circle cx="70" cy="48" r="5" />
-            <circle cx="50" cy="57" r="5" />
-        </g>
-    </svg>
-</div>
+         <!-- <rect x="0" y="0" width="200" height="200" class="frame"/> -->
+        <g transform="translate(0, 200) scale(1, -1)" id="scatter">
+            <circle cx="100" cy="80" r="5"></circle>
+            <circle cx="80" cy="69" r="5"></circle>
+            <circle cx="130" cy="76" r="5"></circle>
+            <circle cx="90" cy="88" r="5"></circle>
+            <circle cx="110" cy="83" r="5"></circle>
+            <circle cx="140" cy="100" r="5"></circle>
+            <circle cx="60" cy="72" r="5"></circle>
+            <circle cx="40" cy="43" r="5"></circle>
+            <circle cx="120" cy="108" r="5"></circle>
+            <circle cx="70" cy="48" r="5"></circle>
+            <circle cx="50" cy="57" r="5"></circle>
+        </g></svg>
+    </div>
+    <script src="script.js">
+    </script> 
 </body>
-    <script src="script.js"></script>
 </html>
