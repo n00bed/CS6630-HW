@@ -1,6 +1,7 @@
 // Global var for FIFA world cup data
 var allWorldCupData;
-
+var worldCup;
+var edition;
 /**
  * Render and update the bar chart based on the selection of the data type in the drop-down box
  *
@@ -41,6 +42,10 @@ function updateBarChart(selectedDimension) {
 
     // Create colorScale
 
+    var colorScale = d3.scaleLinear()
+        .domain([min,(min+max)/2 ,max])
+        .range(["lightblue","steelblue","darkblue"]);
+
     // Create the axes (hint: use #xAxis and #yAxis)
     xAxis = d3.axisBottom();
     xAxis.scale(xScale);
@@ -61,29 +66,40 @@ function updateBarChart(selectedDimension) {
             return "rotate(-90)"
         });
 
-    d3.select("svg#barChart").select("g#yAxis")
+    //d3.select("svg#barChart").select("g#yAxis")
+    d3.select("#yAxis")
         .attr('transform', 'translate(' + (yAxisHeight) + ',0)')
         .call(yAxis);
 
     d3.select('svg#barChart').select("g#bars").selectAll("rect").remove();
-    d3.select('svg#barChart').select("g#bars").selectAll("rect")
+
+    //d3.select('svg#barChart').select("g#bars").selectAll("rect")
+    d3.select("#bars").selectAll("rect")
         .data(allWorldCupData)
         .enter().append('rect')
 
 
-    d3.select('svg#barChart').select("g#bars").selectAll("rect")
+  //  d3.select('svg#barChart').select("g#bars").selectAll("rect")
+    d3.select("#bars").selectAll("rect")
         .data(allWorldCupData)
         .attr('transform', 'translate(0, ' + (svgBounds.height-xAxisWidth)  + ') scale(1,-1)')
         .attr('x', function(d) { return xScale(d.year); })
         .attr('y', 0)
+        .attr('fill',function(d) { return colorScale(d[selectedDimension]); })
         .attr('width',15)
         .attr('height', function(d) {
             return (svgBounds.height-xAxisWidth) - yScale(d[selectedDimension])
+        })
+        .on("click",function(d,i){
+            d3.select(this)
+            .attr("fill","darkgreen");
+            console.log(xScale.domain()[i]);
+            worldCup = xScale.domain()[i];
+            updateInfo(worldCup);
+            updateMap(worldCup)
+        })
 
-
-
-        });
-
+    ;
 
 
     // ******* TODO: PART II *******
@@ -112,7 +128,6 @@ function chooseData() {
 
     dataFile =  document.getElementById('dataset').value;
     updateBarChart(dataFile);
-
     console.log(dataFile);
 
 }
@@ -131,8 +146,36 @@ function updateInfo(oneWorldCup) {
 
     // Hint: For the list of teams, you can create an list element for each team.
     // Hint: Select the appropriate ids to update the text content.
+    console.log("I got called updateInfo " + oneWorldCup);
 
 
+//    d3.select("#edition")
+//        .text(edition);
+
+    allWorldCupData.forEach(function(d,i){
+        var team = '';
+        if(d.year == oneWorldCup){
+            console.log(allWorldCupData[i].EDITION)
+            d3.select("#edition")
+                .text(allWorldCupData[i].EDITION);
+            d3.select("#host")
+                .text(allWorldCupData[i].host);
+            d3.select("#winner")
+                .text(allWorldCupData[i].winner);
+            d3.select("#silver")
+                .text( allWorldCupData[i].runner_up);
+
+            console.log(allWorldCupData[i].teams_names.length);
+
+            for(var j=0 ; j < allWorldCupData[i].teams_names.length ; j++){
+                         team = team + allWorldCupData[i].teams_names[j]  + "\r\n";
+
+            }
+
+            d3.select("#teams")
+                .text( team );
+        }
+    })
 }
 
 /**
@@ -145,12 +188,47 @@ function drawMap(world) {
     //(note that projection is global!
     // updateMap() will need it to add the winner/runner_up markers.)
 
-    projection = d3.geoConicConformal().scale(150).translate([400, 350]);
+    projection = d3.geoConicConformal()
+                .scale(150)
+                .translate([400, 350]);
 
+
+
+
+    console.log();
     // ******* TODO: PART IV *******
 
     // Draw the background (country outlines; hint: use #map)
     // Make sure and add gridlines to the map
+
+
+    var path = d3.geoPath()
+        .projection(projection);
+
+
+    var svg = d3.select('#map')
+        .attr("class", "countries");
+
+
+    svg.datum(topojson.feature(world, world.objects.countries))
+        .append("path")
+        .attr("d",path);
+
+
+    var graticule = d3.geoGraticule();
+    svg.append("path")
+        .datum(graticule)
+        .attr("class","grat")
+        .attr("d",path);
+
+
+    svg.selectAll("path")
+        .attr("id",function(d,i){
+            return d.id;
+        })
+
+
+
 
     // Hint: assign an id to each country path to make it easier to select afterwards
     // we suggest you use the variable in the data element's .id field to set the id
@@ -186,9 +264,11 @@ function updateMap(worldcupData) {
     //Clear any previous selections;
     clearMap();
 
+
     // ******* TODO: PART V *******
 
     // Add a marker for the winner and runner up to the map.
+
 
     //Hint: remember we have a conveniently labeled class called .winner
     // as well as a .silver. These have styling attributes for the two
@@ -201,7 +281,7 @@ function updateMap(worldcupData) {
 
     //We strongly suggest using classes to style the selected countries.
 
-
+    console.log("I got called updateMap" + worldcupData + " my friends");
 
 }
 
@@ -216,6 +296,7 @@ d3.json("data/world.json", function (error, world) {
     if (error) throw error;
     drawMap(world);
 });
+
 
 // Load CSV file
 d3.csv("data/fifa-world-cup.csv", function (error, csv) {
@@ -243,4 +324,7 @@ d3.csv("data/fifa-world-cup.csv", function (error, csv) {
     allWorldCupData = csv;
     // Draw the Bar chart for the first time
     updateBarChart('attendance');
+   console.log(allWorldCupData);
+
+
 });
