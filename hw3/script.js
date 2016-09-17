@@ -1,7 +1,6 @@
 // Global var for FIFA world cup data
 var allWorldCupData;
 
-
 /**
  * Render and update the bar chart based on the selection of the data type in the drop-down box
  *
@@ -18,11 +17,72 @@ function updateBarChart(selectedDimension) {
     // Create the x and y scales; make
     // sure to leave room for the axes
 
+    min = d3.min(allWorldCupData,function(d){
+        return d[selectedDimension];
+    });
+
+    max = d3.max(allWorldCupData,function(d){
+        return d[selectedDimension];
+    });
+
+
+    console.log("The min value is: " + min + " max is: " + max );
+
+    var yScale = d3.scaleLinear()
+        .domain([0,max])
+        .range([svgBounds.height-xAxisWidth,0]);
+
+
+    var xScale = d3.scaleBand()
+        .domain(allWorldCupData.map(function(d){
+            return d.year;
+        }))
+        .rangeRound([svgBounds.width-20,yAxisHeight])
+
     // Create colorScale
 
     // Create the axes (hint: use #xAxis and #yAxis)
+    xAxis = d3.axisBottom();
+    xAxis.scale(xScale);
+
+    yAxis = d3.axisLeft();
+    yAxis.scale(yScale);
 
     // Create the bars (hint: use #bars)
+
+    d3.select("svg#barChart").select("g#xAxis")
+        .attr('transform', 'translate(0,' + (svgBounds.height-xAxisWidth) + ')')
+        .call(xAxis)
+        .selectAll("text")
+        .style("text-anchor", "end")
+        .attr("dx", "-0.6em")
+        .attr("dy", "-.30em")
+        .attr("transform", function(d) {
+            return "rotate(-90)"
+        });
+
+    d3.select("svg#barChart").select("g#yAxis")
+        .attr('transform', 'translate(' + (yAxisHeight) + ',0)')
+        .call(yAxis);
+
+    d3.select('svg#barChart').select("g#bars").selectAll("rect").remove();
+    d3.select('svg#barChart').select("g#bars").selectAll("rect")
+        .data(allWorldCupData)
+        .enter().append('rect')
+
+
+    d3.select('svg#barChart').select("g#bars").selectAll("rect")
+        .data(allWorldCupData)
+        .attr('transform', 'translate(0, ' + (svgBounds.height-xAxisWidth)  + ') scale(1,-1)')
+        .attr('x', function(d) { return xScale(d.year); })
+        .attr('y', 0)
+        .attr('width',15)
+        .attr('height', function(d) {
+            return (svgBounds.height-xAxisWidth) - yScale(d[selectedDimension])
+
+
+
+        });
 
 
 
@@ -49,6 +109,11 @@ function chooseData() {
     // ******* TODO: PART I *******
     //Changed the selected data when a user selects a different
     // menu item from the drop down.
+
+    dataFile =  document.getElementById('dataset').value;
+    updateBarChart(dataFile);
+
+    console.log(dataFile);
 
 }
 
@@ -80,7 +145,7 @@ function drawMap(world) {
     //(note that projection is global!
     // updateMap() will need it to add the winner/runner_up markers.)
 
-    projection = d3.geoConicConformal().scale(200).translate([500, 450]);
+    projection = d3.geoConicConformal().scale(150).translate([400, 350]);
 
     // ******* TODO: PART IV *******
 
