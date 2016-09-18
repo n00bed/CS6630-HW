@@ -93,6 +93,9 @@ function updateBarChart(selectedDimension) {
         .on("click",function(d,i){
             d3.select(this)
             .attr("fill","darkgreen")
+                .transition()
+                .duration(5000)
+                .attr('fill',function(d) { return colorScale(d[selectedDimension]); })
 
             console.log(xScale.domain()[i]);
             worldCup = xScale.domain()[i];
@@ -152,9 +155,9 @@ function updateInfo(oneWorldCup) {
 
 //    d3.select("#edition")
 //        .text(edition);
-
+    var team = [];
     allWorldCupData.forEach(function(d,i){
-        var team = '';
+
         if(d.year == oneWorldCup){
             console.log(allWorldCupData[i].EDITION)
             d3.select("#edition")
@@ -167,13 +170,27 @@ function updateInfo(oneWorldCup) {
                 .text( allWorldCupData[i].runner_up);
 
             for(var j=0 ; j < allWorldCupData[i].teams_names.length ; j++){
-                         team = team + allWorldCupData[i].teams_names[j]  + "\r\n";
+                       //  team = team + allWorldCupData[i].teams_names[j]  + "\r\n";
+                      team.push(allWorldCupData[i].teams_names[j])
 
             }
-            d3.select("#teams")
-                .text( team );
+
         }
+
+
     })
+
+    d3.select("#teams").selectAll('ul').remove();
+
+      d3.select("#teams")
+          .append('ul')
+          .selectAll('li')
+          .data(team)
+          .enter()
+          .append('li')
+          .html(String);
+
+
 }
 
 /**
@@ -261,18 +278,30 @@ function updateMap(worldcupData) {
 
     allWorldCupData.forEach(function(d,i){
         if(d.year == worldcupData){
+
             d3.selectAll('#'+d.host_country_code).attr("class", "host");
             console.log("host from update map:" + d.host_country_code);
-
 
             for(var i = 0 ; i < d.teams_iso.length; i++){
 
                 if(d.teams_iso[i]!=d.host_country_code){
                     d3.selectAll('#' + d.teams_iso[i]).attr("class","team");
-                    console.log("Team length:" + d.teams_iso[i]);
                 }
 
             }
+
+
+            d3.select("#points").selectAll("circle")
+                .data(d)
+                .enter()
+                .append("circle")
+                .attr("cx",function(d){
+                    return projection([d.WIN_LAT]);
+                })
+                .attr("cy",function (d){
+                    return projection([d.WIN_LON]);
+                })
+                .attr("class","gold")
         }
 
 
