@@ -2,6 +2,8 @@
 var allWorldCupData;
 var worldCup;
 var edition;
+var projectedCordinate= [];
+var projectedRun=[];
 /**
  * Render and update the bar chart based on the selection of the data type in the drop-down box
  *
@@ -90,20 +92,19 @@ function updateBarChart(selectedDimension) {
         .attr('height', function(d) {
             return (svgBounds.height-xAxisWidth) - yScale(d[selectedDimension])
         })
-        .on("click",function(d,i){
-            d3.select(this)
-            .attr("fill","darkgreen")
-                .transition()
-                .duration(5000)
-                .attr('fill',function(d) { return colorScale(d[selectedDimension]); })
+
+
+        .on("click", function (d,i) {
+            d3.select(".selected").classed("selected", false);
+            d3.select(this).classed("selected", true);
 
             console.log(xScale.domain()[i]);
             worldCup = xScale.domain()[i];
             updateInfo(worldCup);
             updateMap(worldCup)
-        })
 
-    ;
+
+        });
 
 
     // ******* TODO: PART II *******
@@ -150,16 +151,15 @@ function updateInfo(oneWorldCup) {
 
     // Hint: For the list of teams, you can create an list element for each team.
     // Hint: Select the appropriate ids to update the text content.
-    console.log("I got called updateInfo " + oneWorldCup);
 
-
-//    d3.select("#edition")
-//        .text(edition);
     var team = [];
+
+
     allWorldCupData.forEach(function(d,i){
 
         if(d.year == oneWorldCup){
             console.log(allWorldCupData[i].EDITION)
+
             d3.select("#edition")
                 .text(allWorldCupData[i].EDITION);
             d3.select("#host")
@@ -174,6 +174,10 @@ function updateInfo(oneWorldCup) {
                       team.push(allWorldCupData[i].teams_names[j])
 
             }
+            projectedCordinate.push(allWorldCupData[i].WIN_LON);
+            projectedCordinate.push(allWorldCupData[i].WIN_LAT);
+            projectedRun.push (allWorldCupData[i].RUP_LON);
+            projectedRun.push (allWorldCupData[i].RUP_LAT);
 
         }
 
@@ -264,6 +268,7 @@ function clearMap() {
 
     d3.selectAll("path").classed("host", false);
     d3.selectAll("path").classed("team", false);
+
 }
 
 
@@ -280,8 +285,6 @@ function updateMap(worldcupData) {
         if(d.year == worldcupData){
 
             d3.selectAll('#'+d.host_country_code).attr("class", "host");
-            console.log("host from update map:" + d.host_country_code);
-
             for(var i = 0 ; i < d.teams_iso.length; i++){
 
                 if(d.teams_iso[i]!=d.host_country_code){
@@ -291,24 +294,15 @@ function updateMap(worldcupData) {
             }
 
 
-            d3.select("#points").selectAll("circle")
-                .data(d)
-                .enter()
-                .append("circle")
-                .attr("cx",function(d){
-                    return projection([d.WIN_LAT]);
-                })
-                .attr("cy",function (d){
-                    return projection([d.WIN_LON]);
-                })
-                .attr("class","gold")
         }
 
 
 
-
-
     })
+
+
+
+
     // ******* TODO: PART V *******
 
     // Add a marker for the winner and runner up to the map.
@@ -325,6 +319,47 @@ function updateMap(worldcupData) {
 
     //We strongly suggest using classes to style the selected countries.
 
+    d3.select("#points").selectAll("circle").remove();
+
+    d3.select("#points").selectAll("circle")
+        .data(projectedCordinate)
+        .enter()
+        .append("circle")
+        .attr("cx",function(){
+            return projection(projectedCordinate)[0];
+        })
+        .attr("cy",function (){
+            return projection(projectedCordinate)[1];
+        })
+        .attr("r",5)
+        .attr("class","gold")
+
+       console.log("winner:" + projectedCordinate);
+       projectedCordinate = [];
+
+/*
+    d3.select("#points").selectAll("circle")
+        .data(projectedRun)
+        .enter()
+        .append("circle")
+        .attr("cx",function(){
+            return projection(projectedRun)[0];
+        })
+        .attr("cx",function(){
+            return projection(projectedCordinate)[0];
+        })
+        .attr("cy",function (){
+            return projection(projectedRun)[1];
+        })
+        .attr("cy",function (){
+            return projection(projectedCordinate)[1];
+        })
+        .attr("r",5)
+        .attr("class","silver")
+
+    console.log("rup:" + projectedRun);
+    projectedRun = [];
+*/
 
 }
 
