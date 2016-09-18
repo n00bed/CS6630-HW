@@ -92,7 +92,8 @@ function updateBarChart(selectedDimension) {
         })
         .on("click",function(d,i){
             d3.select(this)
-            .attr("fill","darkgreen");
+            .attr("fill","darkgreen")
+
             console.log(xScale.domain()[i]);
             worldCup = xScale.domain()[i];
             updateInfo(worldCup);
@@ -165,13 +166,10 @@ function updateInfo(oneWorldCup) {
             d3.select("#silver")
                 .text( allWorldCupData[i].runner_up);
 
-            console.log(allWorldCupData[i].teams_names.length);
-
             for(var j=0 ; j < allWorldCupData[i].teams_names.length ; j++){
                          team = team + allWorldCupData[i].teams_names[j]  + "\r\n";
 
             }
-
             d3.select("#teams")
                 .text( team );
         }
@@ -193,8 +191,6 @@ function drawMap(world) {
                 .translate([400, 350]);
 
 
-
-
     console.log();
     // ******* TODO: PART IV *******
 
@@ -210,25 +206,22 @@ function drawMap(world) {
         .attr("class", "countries");
 
 
-    svg.datum(topojson.feature(world, world.objects.countries))
-        .append("path")
-        .attr("d",path);
+ //var featuresId = topojson.feature(world, world.objects.countries).features ;
 
+    svg.selectAll("path")
+        .data(topojson.feature(world, world.objects.countries).features)
+        .enter()
+        .append("path")
+        .attr("d",path)
+        .attr("id",function(d){
+            return d.id;
+        })
 
     var graticule = d3.geoGraticule();
     svg.append("path")
         .datum(graticule)
         .attr("class","grat")
         .attr("d",path);
-
-
-    svg.selectAll("path")
-        .attr("id",function(d,i){
-            return d.id;
-        })
-
-
-
 
     // Hint: assign an id to each country path to make it easier to select afterwards
     // we suggest you use the variable in the data element's .id field to set the id
@@ -252,6 +245,8 @@ function clearMap() {
     //the colors and markers for hosts/teams/winners, you can use
     //d3 selection and .classed to set these classes on and off here.
 
+    d3.selectAll("path").classed("host", false);
+    d3.selectAll("path").classed("team", false);
 }
 
 
@@ -264,7 +259,27 @@ function updateMap(worldcupData) {
     //Clear any previous selections;
     clearMap();
 
+    allWorldCupData.forEach(function(d,i){
+        if(d.year == worldcupData){
+            d3.selectAll('#'+d.host_country_code).attr("class", "host");
+            console.log("host from update map:" + d.host_country_code);
 
+
+            for(var i = 0 ; i < d.teams_iso.length; i++){
+
+                if(d.teams_iso[i]!=d.host_country_code){
+                    d3.selectAll('#' + d.teams_iso[i]).attr("class","team");
+                    console.log("Team length:" + d.teams_iso[i]);
+                }
+
+            }
+        }
+
+
+
+
+
+    })
     // ******* TODO: PART V *******
 
     // Add a marker for the winner and runner up to the map.
@@ -281,7 +296,6 @@ function updateMap(worldcupData) {
 
     //We strongly suggest using classes to style the selected countries.
 
-    console.log("I got called updateMap" + worldcupData + " my friends");
 
 }
 
