@@ -81,7 +81,7 @@ function updateBarChart(selectedDimension) {
         .enter().append('rect')
 
 
-  //  d3.select('svg#barChart').select("g#bars").selectAll("rect")
+    //  d3.select('svg#barChart').select("g#bars").selectAll("rect")
     d3.select("#bars").selectAll("rect")
         .data(allWorldCupData)
         .attr('transform', 'translate(0, ' + (svgBounds.height-xAxisWidth)  + ') scale(1,-1)')
@@ -92,8 +92,6 @@ function updateBarChart(selectedDimension) {
         .attr('height', function(d) {
             return (svgBounds.height-xAxisWidth) - yScale(d[selectedDimension])
         })
-
-
         .on("click", function (d,i) {
             d3.select(".selected").classed("selected", false);
             d3.select(this).classed("selected", true);
@@ -170,8 +168,8 @@ function updateInfo(oneWorldCup) {
                 .text( allWorldCupData[i].runner_up);
 
             for(var j=0 ; j < allWorldCupData[i].teams_names.length ; j++){
-                       //  team = team + allWorldCupData[i].teams_names[j]  + "\r\n";
-                      team.push(allWorldCupData[i].teams_names[j])
+                //  team = team + allWorldCupData[i].teams_names[j]  + "\r\n";
+                team.push(allWorldCupData[i].teams_names[j])
 
             }
             projectedCordinate.push(allWorldCupData[i].WIN_LON);
@@ -186,13 +184,13 @@ function updateInfo(oneWorldCup) {
 
     d3.select("#teams").selectAll('ul').remove();
 
-      d3.select("#teams")
-          .append('ul')
-          .selectAll('li')
-          .data(team)
-          .enter()
-          .append('li')
-          .html(String);
+    d3.select("#teams")
+        .append('ul')
+        .selectAll('li')
+        .data(team)
+        .enter()
+        .append('li')
+        .html(String);
 
 
 }
@@ -208,8 +206,8 @@ function drawMap(world) {
     // updateMap() will need it to add the winner/runner_up markers.)
 
     projection = d3.geoConicConformal()
-                .scale(150)
-                .translate([400, 350]);
+        .scale(150)
+        .translate([400, 350]);
 
 
     console.log();
@@ -227,7 +225,7 @@ function drawMap(world) {
         .attr("class", "countries");
 
 
- //var featuresId = topojson.feature(world, world.objects.countries).features ;
+    //var featuresId = topojson.feature(world, world.objects.countries).features ;
 
     svg.selectAll("path")
         .data(topojson.feature(world, world.objects.countries).features)
@@ -268,6 +266,8 @@ function clearMap() {
 
     d3.selectAll("path").classed("host", false);
     d3.selectAll("path").classed("team", false);
+   // d3.select(".selected").classed("selected", false);
+
 
 }
 
@@ -289,6 +289,7 @@ function updateMap(worldcupData) {
 
                 if(d.teams_iso[i]!=d.host_country_code){
                     d3.selectAll('#' + d.teams_iso[i]).attr("class","team");
+
                 }
 
             }
@@ -296,11 +297,7 @@ function updateMap(worldcupData) {
 
         }
 
-
-
     })
-
-
 
 
     // ******* TODO: PART V *******
@@ -320,6 +317,7 @@ function updateMap(worldcupData) {
     //We strongly suggest using classes to style the selected countries.
 
     d3.select("#points").selectAll("circle").remove();
+    d3.select("#run").selectAll("circle").remove();
 
     d3.select("#points").selectAll("circle")
         .data(projectedCordinate)
@@ -331,35 +329,29 @@ function updateMap(worldcupData) {
         .attr("cy",function (){
             return projection(projectedCordinate)[1];
         })
-        .attr("r",5)
+        .attr("r",7.5)
         .attr("class","gold")
 
-       console.log("winner:" + projectedCordinate);
-       projectedCordinate = [];
+    console.log("winner:" + projectedCordinate);
+    projectedCordinate = [];
 
-/*
-    d3.select("#points").selectAll("circle")
-        .data(projectedRun)
-        .enter()
-        .append("circle")
-        .attr("cx",function(){
-            return projection(projectedRun)[0];
-        })
-        .attr("cx",function(){
-            return projection(projectedCordinate)[0];
-        })
-        .attr("cy",function (){
-            return projection(projectedRun)[1];
-        })
-        .attr("cy",function (){
-            return projection(projectedCordinate)[1];
-        })
-        .attr("r",5)
-        .attr("class","silver")
 
-    console.log("rup:" + projectedRun);
-    projectedRun = [];
-*/
+     d3.select("#run").selectAll("circle")
+         .data(projectedRun)
+         .enter()
+         .append("circle")
+         .attr("cx",function(){
+         return projection(projectedRun)[0];
+         })
+         .attr("cy",function (){
+         return projection(projectedRun)[1];
+             console.log('rup cy from inisde:' + projection(projectedRun)[1])
+         })
+         .attr("r",7.5)
+         .attr("class","silver")
+         console.log("rup:" + projectedRun);
+         projectedRun = [];
+
 
 }
 
@@ -402,7 +394,7 @@ d3.csv("data/fifa-world-cup.csv", function (error, csv) {
     allWorldCupData = csv;
     // Draw the Bar chart for the first time
     updateBarChart('attendance');
-   console.log(allWorldCupData);
+    console.log(allWorldCupData);
 
 
 });
