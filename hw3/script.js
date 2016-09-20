@@ -1,9 +1,9 @@
 // Global var for FIFA world cup data
 var allWorldCupData;
 var worldCup;
-var edition;
 var projectedCordinate= [];
 var projectedRun=[];
+//var allcountries=[];
 /**
  * Render and update the bar chart based on the selection of the data type in the drop-down box
  *
@@ -224,6 +224,11 @@ function drawMap(world) {
     var svg = d3.select('#map')
         .attr("class", "countries");
 
+    var graticule = d3.geoGraticule();
+    svg.append("path")
+        .datum(graticule)
+        .attr("class","grat")
+        .attr("d",path);
 
     //var featuresId = topojson.feature(world, world.objects.countries).features ;
 
@@ -233,41 +238,27 @@ function drawMap(world) {
         .append("path")
         .attr("d",path)
         .attr("id",function(d){
+         //   allcountries.push(d.id);
             return d.id;
-        })
 
-    var graticule = d3.geoGraticule();
-    svg.append("path")
-        .datum(graticule)
-        .attr("class","grat")
-        .attr("d",path);
+        }) .on("click", function (d,i) {
 
-    // Hint: assign an id to each country path to make it easier to select afterwards
-    // we suggest you use the variable in the data element's .id field to set the id
-
-    // Make sure and give your paths the appropriate class (see the .css selectors at
-    // the top of the provided html file)
-
+            var val = d.id;
+          console.log("on click " + d.id);
+          console.log("val" + d.id);
+    });
 
 }
 
+//console.log(allcountries);
 /**
  * Clears the map
  */
 function clearMap() {
 
     // ******* TODO: PART V*******
-    //Clear the map of any colors/markers; You can do this with inline styling or by
-    //defining a class style in styles.css
-
-    //Hint: If you followed our suggestion of using classes to style
-    //the colors and markers for hosts/teams/winners, you can use
-    //d3 selection and .classed to set these classes on and off here.
-
     d3.selectAll("path").classed("host", false);
     d3.selectAll("path").classed("team", false);
-   // d3.select(".selected").classed("selected", false);
-
 
 }
 
@@ -289,15 +280,15 @@ function updateMap(worldcupData) {
 
                 if(d.teams_iso[i]!=d.host_country_code){
                     d3.selectAll('#' + d.teams_iso[i]).attr("class","team");
-
                 }
-
             }
 
 
         }
 
     })
+
+
 
 
     // ******* TODO: PART V *******
@@ -336,24 +327,27 @@ function updateMap(worldcupData) {
     projectedCordinate = [];
 
 
-     d3.select("#run").selectAll("circle")
-         .data(projectedRun)
-         .enter()
-         .append("circle")
-         .attr("cx",function(){
-         return projection(projectedRun)[0];
-         })
-         .attr("cy",function (){
-         return projection(projectedRun)[1];
-             console.log('rup cy from inisde:' + projection(projectedRun)[1])
-         })
-         .attr("r",7.5)
-         .attr("class","silver")
-         console.log("rup:" + projectedRun);
-         projectedRun = [];
+    d3.select("#run").selectAll("circle")
+        .data(projectedRun)
+        .enter()
+        .append("circle")
+        .attr("cx",function(){
+            return projection(projectedRun)[0];
+        })
+        .attr("cy",function (){
+            return projection(projectedRun)[1];
+            console.log('rup cy from inisde:' + projection(projectedRun)[1])
+        })
+        .attr("r",7.5)
+        .attr("class","silver")
+    console.log("rup:" + projectedRun);
+    projectedRun = [];
 
 
 }
+
+
+
 
 /* DATA LOADING */
 
