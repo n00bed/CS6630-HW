@@ -2,7 +2,6 @@
 var allWorldCupData;
 var worldCup;
 
-
 var projectedCordinate= [];
 var projectedRun=[];
 var countrySelected ='';
@@ -224,15 +223,15 @@ function drawMap(world) {
         .append("path")
         .attr("d",path)
         .attr("id",function(d){
-         //   allcountries.push(d.id);
+            //   allcountries.push(d.id);
             return d.id;
 
         }) .on("click", function (d,i) {
 
-            countrySelected = d.id;
-            console.log("on click " + d.id);
-            console.log("countrySelect " + d.id);
-            extrainfo(countrySelected);
+        countrySelected = d.id;
+        console.log("on click " + d.id);
+        console.log("countrySelect " + d.id);
+        extrainfo(countrySelected);
     });
 
 }
@@ -255,11 +254,11 @@ function extrainfo(country){
         }
 
 
-            if(country == allWorldCupData[i].WIN_ISO){
+        if(country == allWorldCupData[i].WIN_ISO){
 
-                yearsOwn += d.year +' ';
-                console.log('years own:' + d.year);
-            }
+            yearsOwn += d.year +' ';
+            console.log('years own:' + d.year);
+        }
 
         if(country == allWorldCupData[i].RUN_ISO){
 
@@ -387,7 +386,7 @@ d3.csv("data/fifa-world-cup.csv", function (error, csv) {
         //Break up lists into javascript arrays
         d.teams_iso = d3.csvParse(d.TEAM_LIST).columns;
         d.teams_names = d3.csvParse(d.TEAM_NAMES).columns;
-      //  d.win_iso = +d.WIN_ISO;
+        //  d.win_iso = +d.WIN_ISO;
 
     });
 

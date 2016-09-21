@@ -65,7 +65,7 @@ function update(error, data) {
 
     // TODO: Select and update the 'a' bar chart bars
 
-    var bar1svg = d3.select('#bar1').selectAll("rect").data(data); 
+    var bar1svg = d3.select('#bar1').selectAll("rect").data(data);
 
     bar1svg .enter().append("rect")
     bar1svg .data(data).transition()
@@ -252,6 +252,7 @@ function changeData() {
     }
     else{
         d3.csv('data/' + dataFile + '.csv', update);
+
     }
 
 
