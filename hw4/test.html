@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="https://raw.github.com/shawnbot/aight/master/aight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/sizzle/1.4.4/sizzle.min.js"></script>
+    <![endif]-->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/2.10.0/d3.v2.min.js"></script>
+
+    <style>
+        h1 {
+            font: 16px sans-serif;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        div {
+            height: 17px;
+        }
+        div.container {
+            float: left;
+            width: 50%;
+        }
+        div.negative {
+            float: right;
+            background-color: brown;
+        }
+        div.positive {
+            background-color: steelblue;
+        }
+
+        table {
+            font: 14px sans-serif;
+            vertical-align: middle;
+            text-align: left;
+            border-collapse: collapse;
+        }
+
+        td,th {
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
+
+        tr.even {
+            background-color: whitesmoke;
+        }
+
+        td.chart {
+            background-color: white;
+        }
+
+
+        th {
+            padding-left: 10px;
+        }
+
+        th.total {
+            text-align: right;
+        }
+
+        td.data {
+            padding-left: 10px;
+
+        }
+        td.value {
+            text-align: right;
+        }
+
+    </style>
+</head>
+
+<body>
+<script>
+    var chartWidth = "100px",
+            percent = d3.format(".2%");
+
+    var data = [
+        ["Credit", 0.040],
+        ["Relative Value", 0.008],
+        ["Multi-Strategy", 0.030],
+        ["Event Driven", 0.004],
+        ["Equities", 0.047],
+        ["Macro", - 0.02],
+        ["Commodities", 0.001],
+        ["Portfolio Hedges", - 0.004],
+        ["Other", - 0.002]
+    ];
+
+    var total = d3.sum(data, function(d, i) { return d[1]; });
+
+    console.log('total' + total);
+
+    // Sort the data in descending order
+    data.sort(function(a, b) {return d3.descending(a[1], b[1])});
+
+    // Setup the scale for the values for display, use abs max as max value
+    var x = d3.scale.linear()
+            .domain([0, d3.max(data, function(d) { return Math.abs(d[1]); })])
+            .range(["0%", "100%"]);
+
+
+    var table = d3.select("body").append("table");
+
+
+
+
+    // Create a table with rows and bind a data row to each table row
+    var tr = table.selectAll("tr.data")
+            .data(data)
+            .enter()
+            .append("tr")
+            .attr("class", "datarow");
+
+    console.log(tr);
+    // Set the even columns
+    d3.selectAll(".datarow").filter(":nth-child(even)").attr("class", "datarow even")
+
+
+    // Create the name column
+    tr.append("td")
+            .text(function(d) { return d[0] });
+
+    // Create the percent value column
+    tr.append("td").attr("class", "data value")
+            .text(function(d) { return percent(d[1]) })
+
+    // Create a column at the beginning of the table for the chart
+    var chart = tr.append("td").attr("class", "chart").attr("width", chartWidth);
+
+    // Create the div structure of the chart
+    chart.append("div").attr("class", "container").append("div").attr("class", "negative");
+    chart.append("div").attr("class", "container").append("div").attr("class", "positive");
+
+    // Creates the negative div bar
+    tr.select("div.negative")
+            .style("width", "0%")
+            .transition()
+            .duration(500)
+            .style("width", function(d) { return d[1] > 0 ? "0%" : x(Math.abs(d[1]));});
+
+    // Creates the positive div bar
+    tr.select("div.positive")
+            .style("width", "0%")
+            .transition()
+            .duration(500)
+            .style("width", function(d) { return d[1] > 0 ? x(d[1]) : "0%"; });
+
+
+
+</script>
+</body>
+</html>

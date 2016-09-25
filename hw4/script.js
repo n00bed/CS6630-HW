@@ -118,9 +118,6 @@ function createTable() {
     var xAxis = d3.axisBottom();
         xAxis.scale(goalScale)
 
-    var svgBounds = d3.select("#goalHeader").node().getBoundingClientRect();
-
-    console.log(svgBounds);
 
     var svg = d3.select('#goalHeader');
         svg.append("svg")
@@ -130,10 +127,6 @@ function createTable() {
             .call(xAxis);
 
     tableElements = teamData;
-
-    console.log(tableElements);
-
-
 
 // ******* TODO: PART V *******
 
@@ -147,13 +140,90 @@ function updateTable() {
 
 // ******* TODO: PART III *******
 
-    var td = d3.selectAll(tr).select("td").data(function(d){
 
-         d.key(d);
-        console.log(d.key(d));
-    });
+    var tr = d3.select("tbody").selectAll("tr")
+        .data(tableElements)
+        .enter()
+        .append("tr");
 
-};
+    console.log("printing tr:");
+    console.log(tr);
+
+
+    var td = tr.selectAll("td")
+        .data(function(d){
+            return [
+                { "type": d.value['type'], "vis": "text", "value": d.key },
+                { "type": d.value['type'], "vis": "goals", "value": d.value[goalsMadeHeader] },
+                { "type": d.value['type'], "vis": "text", "value": d.value['Result'].label },
+                { "type": d.value['type'], "vis": "bar", "value": d.value['Wins'] },
+                { "type": d.value['type'], "vis": "bar", "value": d.value['Losses'] },
+                { "type": d.value['type'], "vis": "bar", "value": d.value['TotalGames'] }
+            ];
+        })
+        .enter()
+        .append('td')
+
+
+    var chart = d3.selectAll(td.filter(function (d) {
+        return d.vis == 'bar'
+    }))
+
+
+    chart.append("svg")
+        .attr("width",cellWidth)
+        .attr("height",cellHeight )
+
+   
+
+
+    console.log("printing chart:")
+    console.log(chart);
+
+
+    console.log("printing td:");
+    console.log(td);
+
+/*
+    tr.append("td")
+        .text(function(d) {
+            console.log(d.key)
+            return d.key
+        });
+
+    tr.append("td")
+        .text("place-holder");
+
+    tr.append("td")
+        .text(function(d) {
+            console.log(d.value['Result'].label);
+            return d.value['Result'].label
+        });
+
+    tr.append("td")
+        .text(function(d) {
+            console.log(d.value['Wins']);
+            return d.value['Wins']
+        });
+
+    tr.append("td")
+        .text(function(d) {
+            console.log(d.value['Losses']);
+            return d.value['Losses']
+        });
+
+    tr.append("td")
+        .text(function(d) {
+            console.log(d.value['TotalGames']);
+            return d.value['TotalGames']
+        });
+
+
+*/
+
+
+
+}
 
 
 /**
