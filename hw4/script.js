@@ -165,24 +165,26 @@ function updateTable() {
         .append('td')
 
 
-    var chart = d3.selectAll(td.filter(function (d) {
-        return d.vis == 'bar'
-    }))
+    td.text(function(d){
+        if(d.vis == 'text'){
+            return d.value;
+        }
+    })
 
-
-    chart.append("svg")
-        .attr("width",cellWidth)
-        .attr("height",cellHeight )
-
-   
-
-
-    console.log("printing chart:")
-    console.log(chart);
-
-
-    console.log("printing td:");
+    console.log("printing td before filter:");
     console.log(td);
+
+    td.filter(function (d) {
+        return d.vis == 'bar'
+    }).append("svg")
+        .attr("width", cellWidth)
+        .attr("height", cellHeight)
+        .append("rect")
+        .attr("width",function(d){
+            return gameScale(d.value);
+        })
+        .attr("height",15)
+
 
 /*
     tr.append("td")
