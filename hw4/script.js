@@ -129,6 +129,8 @@ function createTable() {
 
     tableElements = teamData;
 
+
+
 // ******* TODO: PART V *******
 
 }
@@ -206,46 +208,49 @@ barChart.append("text")
     .attr("fill","white");
 
 
-    td.filter(function (d) {
+ var goalChart =  td.filter(function (d) {
         return d.vis == 'goals'
     }).append("svg")
         .attr("width", cellWidth*2)
         .attr("height", cellHeight)
-        .append("rect")
+
+
+        goalChart.append("rect")
         .attr("width",function(d,i){
             console.log(goalScale(Math.abs(d.value.delta)) +':'+ Math.abs(d.value.delta));
-            return goalScale(Math.abs(d.value.delta)) ;
+            return goalScale(Math.abs(d.value.delta))  ;
         })
         .attr("height",cellHeight/2)
-/*
+            .attr("fill","#6794AF")
+            .attr("class","goalBar")
+         //   .attr("transform","translate(10,8)")
+
         .attr('transform', function(d,i){
-                console.log(d.value.delta)
                 if(d.value.delta<0){
-                    return ('transform','translate ('+gameScale(d.value.scored)+','+ -2 + ')');
+                    return ('transform','translate ('+gameScale(d.value.scored)+','+ cellHeight/2 + ')');
                 }else if(d.value.delta>0){
-                    return ('transform','translate ('+gameScale(d.value.conceeded)+','+ -2 + ')');
+                    return ('transform','translate ('+gameScale(d.value.conceeded)+','+ cellHeight/2 + ')');
                 }
         })
 
-  */      .attr("fill","#6794AF")
-        .attr("class","goalBar")
 
+   goalChart
+       .append("circle")
+       .attr("cx", function(d){
+           return goalScale(d.value.scored);
+       })
+       .attr("cy", 15)
+       .attr("class", "goalCircle")
+       .attr("fill","#364e74")
 
-
-    td.filter(function (d) {
-        return d.vis == 'goals'
-    }).append("circle")
-      .attr("cx", gameScale(25))
-      .attr("cy", cellHeight/2)
-      .attr("r", 5)
-      .style("fill", "purple");
-
-
-
-
-
-
-
+    goalChart
+        .append("circle")
+        .attr("cx", function(d){
+            return goalScale(d.value.conceeded);
+        })
+        .attr("cy", 15)
+        .attr("class", "goalCircle")
+        .attr("fill","#be2714")
 
 }
 
