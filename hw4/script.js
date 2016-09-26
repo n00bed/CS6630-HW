@@ -183,47 +183,25 @@ function updateTable() {
         .attr("width",function(d){
             return gameScale(d.value);
         })
-        .attr("height",15)
+        .attr("height",cellHeight)
+        .attr("fill", "teal")
 
 
-/*
-    tr.append("td")
-        .text(function(d) {
-            console.log(d.key)
-            return d.key
-        });
 
-    tr.append("td")
-        .text("place-holder");
+    td.filter(function (d) {
+        return d.vis == 'goals'
+    }).append("svg")
+        .attr("width", cellWidth)
+        .attr("height", cellHeight)
+        .append("rect")
+        .attr("width",function(d){
+            return goalScale(d.value);
+        })
+        .attr("height",cellHeight/2)
+        .attr('transform', 'translate('+ 20 +',' + (10) + ')')
 
-    tr.append("td")
-        .text(function(d) {
-            console.log(d.value['Result'].label);
-            return d.value['Result'].label
-        });
-
-    tr.append("td")
-        .text(function(d) {
-            console.log(d.value['Wins']);
-            return d.value['Wins']
-        });
-
-    tr.append("td")
-        .text(function(d) {
-            console.log(d.value['Losses']);
-            return d.value['Losses']
-        });
-
-    tr.append("td")
-        .text(function(d) {
-            console.log(d.value['TotalGames']);
-            return d.value['TotalGames']
-        });
-
-
-*/
-
-
+    console.log("'transform','translate ("+20+","+ -2 + ")'")
+    
 
 }
 
