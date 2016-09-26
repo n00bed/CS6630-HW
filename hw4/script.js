@@ -217,19 +217,27 @@ barChart.append("text")
 
         goalChart.append("rect")
         .attr("width",function(d,i){
-            console.log(goalScale(Math.abs(d.value.delta)) +':'+ Math.abs(d.value.delta));
+       //     console.log(goalScale(Math.abs(d.value.delta)) +':'+ Math.abs(d.value.delta));
             return goalScale(Math.abs(d.value.delta))  ;
         })
         .attr("height",cellHeight/2)
-            .attr("fill","#6794AF")
+           // .attr("fill","#6794AF")
+            .attr("fill", function(d){
+                if(d.value.delta >0){
+                    return "#6794AF"
+                }else
+                {
+                    return "#E07477"
+                }
+            })
             .attr("class","goalBar")
          //   .attr("transform","translate(10,8)")
 
         .attr('transform', function(d,i){
-                if(d.value.delta<0){
-                    return ('transform','translate ('+gameScale(d.value.scored)+','+ cellHeight/2 + ')');
+                if(d.value.delta<=0){
+                    return ('transform','translate ('+(gameScale(d.value.scored))+','+ cellHeight/2 + ')');
                 }else if(d.value.delta>0){
-                    return ('transform','translate ('+gameScale(d.value.conceeded)+','+ cellHeight/2 + ')');
+                    return ('transform','translate ('+(gameScale(d.value.conceeded))+','+ cellHeight/2 + ')');
                 }
         })
 
@@ -250,7 +258,14 @@ barChart.append("text")
         })
         .attr("cy", 15)
         .attr("class", "goalCircle")
-        .attr("fill","#be2714")
+      //  .attr("fill","#be2714")
+        .attr("fill",function(d){
+            if(d.value.delta == 0){
+                return  '#808080'
+            }else{
+                return "#be2714"
+            }
+        })
 
 }
 
@@ -275,6 +290,8 @@ function updateList(i) {
     // ******* TODO: PART IV *******
 
 
+
+
 }
 
 /**
@@ -285,6 +302,9 @@ function updateList(i) {
 function createTree(treeData) {
 
     // ******* TODO: PART VI *******
+
+
+
 
 
 };
