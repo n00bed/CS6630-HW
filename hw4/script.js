@@ -25,6 +25,7 @@ var gameScale;
 /**Color scales*/
 /**For aggregate columns*/
 var aggregateColorScale = d3.scaleLinear()
+    .domain([0,7])
     .range(['#ece2f0', '#016450']);
 
 /**For goal Column*/
@@ -101,7 +102,8 @@ function createTable() {
 // Setting Scales
       goalScale = d3.scaleLinear()
         .domain([0, d3.max(teamData,function (d){
-            return d.value[goalsMadeHeader];
+            return 18
+            //return d.value[goalsMadeHeader];
         })])
         .range([cellBuffer, 2 * cellWidth - cellBuffer]);
 
@@ -123,15 +125,13 @@ function createTable() {
         svg.append("svg")
             .attr("width",cellWidth*2)
             .attr("height",cellHeight )
-            .append("g")
-            .call(xAxis);
+            .call(xAxis)
 
     tableElements = teamData;
 
 // ******* TODO: PART V *******
 
 }
-
 /**
  * Updates the table contents with a row for each element in the global variable tableElements.
  *
@@ -139,7 +139,6 @@ function createTable() {
 function updateTable() {
 
 // ******* TODO: PART III *******
-
 
     var tr = d3.select("tbody").selectAll("tr")
         .data(tableElements)
@@ -154,11 +153,12 @@ function updateTable() {
         .data(function(d){
             return [
                 { "type": d.value['type'], "vis": "text", "value": d.key },
-                { "type": d.value['type'], "vis": "goals", "value": d.value[goalsMadeHeader] },
+                { "type": d.value['type'], "vis": "goals", "value": {"scored":d.value[goalsMadeHeader],"conceeded":d.value[goalsConcededHeader],"delta":d.value['Delta Goals']}},
+                //  { "type": d.value['type'], "vis": "goals", "value": d.value[goalsMadeHeader] },
                 { "type": d.value['type'], "vis": "text", "value": d.value['Result'].label },
                 { "type": d.value['type'], "vis": "bar", "value": d.value['Wins'] },
                 { "type": d.value['type'], "vis": "bar", "value": d.value['Losses'] },
-                { "type": d.value['type'], "vis": "bar", "value": d.value['TotalGames'] }
+                { "type": d.value['type'], "vis": "bar", "value": d.value['TotalGames'] },
             ];
         })
         .enter()
@@ -174,34 +174,78 @@ function updateTable() {
     console.log("printing td before filter:");
     console.log(td);
 
-    td.filter(function (d) {
+  var barChart =   td.filter(function (d) {
         return d.vis == 'bar'
-    }).append("svg")
+    })
+     .append("svg")
         .attr("width", cellWidth)
         .attr("height", cellHeight)
-        .append("rect")
+
+
+ var rect = barChart.append("rect")
         .attr("width",function(d){
             return gameScale(d.value);
         })
         .attr("height",cellHeight)
-        .attr("fill", "teal")
 
+     .attr("fill",function (d) {
+         return aggregateColorScale(d.value) ;
+     });
+
+
+barChart.append("text")
+    .text(function(d){
+        return d.value;
+    })
+    .attr("x",function(d){
+        return gameScale(d.value) - 10;
+
+
+    })
+    .attr("y",cellHeight/1.5)
+    .attr("fill","white");
 
 
     td.filter(function (d) {
         return d.vis == 'goals'
     }).append("svg")
-        .attr("width", cellWidth)
+        .attr("width", cellWidth*2)
         .attr("height", cellHeight)
         .append("rect")
-        .attr("width",function(d){
-            return goalScale(d.value);
+        .attr("width",function(d,i){
+            console.log(goalScale(Math.abs(d.value.delta)) +':'+ Math.abs(d.value.delta));
+            return goalScale(Math.abs(d.value.delta)) ;
         })
         .attr("height",cellHeight/2)
-        .attr('transform', 'translate('+ 20 +',' + (10) + ')')
+/*
+        .attr('transform', function(d,i){
+                console.log(d.value.delta)
+                if(d.value.delta<0){
+                    return ('transform','translate ('+gameScale(d.value.scored)+','+ -2 + ')');
+                }else if(d.value.delta>0){
+                    return ('transform','translate ('+gameScale(d.value.conceeded)+','+ -2 + ')');
+                }
+        })
 
-    console.log("'transform','translate ("+20+","+ -2 + ")'")
-    
+  */      .attr("fill","#6794AF")
+        .attr("class","goalBar")
+
+
+
+    td.filter(function (d) {
+        return d.vis == 'goals'
+    }).append("circle")
+      .attr("cx", gameScale(25))
+      .attr("cy", cellHeight/2)
+      .attr("r", 5)
+      .style("fill", "purple");
+
+
+
+
+
+
+
 
 }
 
