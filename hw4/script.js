@@ -84,8 +84,14 @@ d3.csv("data/fifa-tree.csv", function (error, csvData) {
         d.id = d.Team + d.Opponent + i;
     });
 
+    console.log("printing csv data: ")
+    console.log(csvData);
+
     createTree(csvData);
+
+
 });
+
 
 /**
  * Creates a table skeleton including headers that when clicked allow you to sort the table by the chosen attribute.
@@ -138,6 +144,8 @@ function createTable() {
  * Updates the table contents with a row for each element in the global variable tableElements.
  *
  */
+
+
 function updateTable() {
 
 // ******* TODO: PART III *******
@@ -166,11 +174,16 @@ function updateTable() {
         .enter()
         .append('td')
 
-
+//Populating text for teams and round
     td.text(function(d){
         if(d.vis == 'text'){
             return d.value;
         }
+    }).on("click",function(d,i){
+
+      console.log(tableElements[i]);
+
+
     })
 
     console.log("printing td before filter:");
@@ -267,6 +280,9 @@ barChart.append("text")
             }
         })
 
+
+
+    console.log(tableElements);
 }
 
 
@@ -303,11 +319,30 @@ function createTree(treeData) {
 
     // ******* TODO: PART VI *******
 
+    var root = d3.stratify()
+        .id(function(d) { return d.id; }) //using d.id to get unique idenritfier for each node
+        .parentId(function(d) {
+            if(d.ParentGame != ''){
+                return treeData[d.ParentGame].id;
+            }else
+            {
+                return '';
+            }
+
+        })
+        (treeData);
+
+
+
+    var tree = d3.tree(root);
+
+
+    console.log(root);
+}
 
 
 
 
-};
 
 /**
  * Updates the highlighting in the tree based on the selected team.
