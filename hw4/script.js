@@ -206,7 +206,8 @@ function updateTable() {
 
         .attr("fill",function (d) {
             return aggregateColorScale(d.value) ;
-        });
+        })
+        .attr("transform","translate(0,6)");
 
 
     barChart.append("text")
@@ -215,11 +216,10 @@ function updateTable() {
         })
         .attr("x",function(d){
             return gameScale(d.value) - 10;
-
-
         })
         .attr("y",cellHeight/1.5)
-        .attr("fill","white");
+        .attr("fill","white")
+        .attr("transform","translate(0,5)");
 
 
     var goalChart =  td.filter(function (d) {
@@ -245,8 +245,6 @@ function updateTable() {
             }
         })
         .attr("class","goalBar")
-        .attr("transform","translate(10,6)")
-
         .attr('transform', function(d,i){
             if(d.value.delta<0){
                 return ('transform','translate ('+(goalScale(d.value.scored))+','+ 7.5 + ')');
@@ -255,7 +253,7 @@ function updateTable() {
             }
         })
 
-    
+
 
     goalChart
         .append("circle")
