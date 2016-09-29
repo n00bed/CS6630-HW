@@ -106,7 +106,7 @@ function createTable() {
 
 
 // Setting Scales
-      goalScale = d3.scaleLinear()
+    goalScale = d3.scaleLinear()
         .domain([0, d3.max(teamData,function (d){
             return 18
             //return d.value[goalsMadeHeader];
@@ -114,24 +114,24 @@ function createTable() {
         .range([cellBuffer, 2 * cellWidth - cellBuffer]);
 
 
-   gameScale =   d3.scaleLinear()
-       .domain([0, d3.max(teamData,function (d){
-           return d.value['TotalGames'];
-       })])
-            .range([0, cellWidth - cellBuffer]);
+    gameScale =   d3.scaleLinear()
+        .domain([0, d3.max(teamData,function (d){
+            return d.value['TotalGames'];
+        })])
+        .range([0, cellWidth - cellBuffer]);
 
 
 //  Creating xAxis for goal scored, conceded and difference
 
     var xAxis = d3.axisBottom();
-        xAxis.scale(goalScale)
+    xAxis.scale(goalScale)
 
 
     var svg = d3.select('#goalHeader');
-        svg.append("svg")
-            .attr("width",cellWidth*2)
-            .attr("height",cellHeight )
-            .call(xAxis)
+    svg.append("svg")
+        .attr("width",cellWidth*2)
+        .attr("height",cellHeight )
+        .call(xAxis)
 
     tableElements = teamData;
 
@@ -159,6 +159,7 @@ function updateTable() {
     console.log(tr);
 
 
+
     var td = tr.selectAll("td")
         .data(function(d){
             return [
@@ -181,7 +182,7 @@ function updateTable() {
         }
     }).on("click",function(d,i){
 
-      console.log(tableElements[i]);
+        console.log(tableElements[i]);
 
 
     })
@@ -189,89 +190,90 @@ function updateTable() {
     console.log("printing td before filter:");
     console.log(td);
 
-  var barChart =   td.filter(function (d) {
+    var barChart =   td.filter(function (d) {
         return d.vis == 'bar'
     })
-     .append("svg")
+        .append("svg")
         .attr("width", cellWidth)
         .attr("height", cellHeight)
 
 
- var rect = barChart.append("rect")
+    var rect = barChart.append("rect")
         .attr("width",function(d){
             return gameScale(d.value);
         })
         .attr("height",cellHeight)
 
-     .attr("fill",function (d) {
-         return aggregateColorScale(d.value) ;
-     });
+        .attr("fill",function (d) {
+            return aggregateColorScale(d.value) ;
+        });
 
 
-barChart.append("text")
-    .text(function(d){
-        return d.value;
-    })
-    .attr("x",function(d){
-        return gameScale(d.value) - 10;
+    barChart.append("text")
+        .text(function(d){
+            return d.value;
+        })
+        .attr("x",function(d){
+            return gameScale(d.value) - 10;
 
 
-    })
-    .attr("y",cellHeight/1.5)
-    .attr("fill","white");
+        })
+        .attr("y",cellHeight/1.5)
+        .attr("fill","white");
 
 
- var goalChart =  td.filter(function (d) {
+    var goalChart =  td.filter(function (d) {
         return d.vis == 'goals'
     }).append("svg")
         .attr("width", cellWidth*2)
         .attr("height", cellHeight)
 
 
-        goalChart.append("rect")
+    goalChart.append("rect")
         .attr("width",function(d,i){
-       //     console.log(goalScale(Math.abs(d.value.delta)) +':'+ Math.abs(d.value.delta));
-            return goalScale(Math.abs(d.value.delta))  ;
+            console.log(goalScale(Math.abs(d.value.delta)) +':'+ Math.abs(d.value.delta));
+            return goalScale(Math.abs(d.value.delta))-12.5 ;
         })
         .attr("height",cellHeight/2)
-           // .attr("fill","#6794AF")
-            .attr("fill", function(d){
-                if(d.value.delta >0){
-                    return "#6794AF"
-                }else
-                {
-                    return "#E07477"
-                }
-            })
-            .attr("class","goalBar")
-         //   .attr("transform","translate(10,8)")
+        // .attr("fill","#6794AF")
+        .attr("fill", function(d){
+            if(d.value.delta >0){
+                return "#6794AF"
+            }else
+            {
+                return "#E07477"
+            }
+        })
+        .attr("class","goalBar")
+        .attr("transform","translate(10,6)")
 
         .attr('transform', function(d,i){
-                if(d.value.delta<=0){
-                    return ('transform','translate ('+(gameScale(d.value.scored))+','+ cellHeight/2 + ')');
-                }else if(d.value.delta>0){
-                    return ('transform','translate ('+(gameScale(d.value.conceeded))+','+ cellHeight/2 + ')');
-                }
+            if(d.value.delta<0){
+                return ('transform','translate ('+(goalScale(d.value.scored))+','+ 7.5 + ')');
+            }else if(d.value.delta>=0){
+                return ('transform','translate ('+(goalScale(d.value.conceeded))+','+ 7.5 + ')');
+            }
         })
 
-
-   goalChart
-       .append("circle")
-       .attr("cx", function(d){
-           return goalScale(d.value.scored);
-       })
-       .attr("cy", 15)
-       .attr("class", "goalCircle")
-       .attr("fill","#364e74")
+    
 
     goalChart
         .append("circle")
         .attr("cx", function(d){
-            return goalScale(d.value.conceeded);
+            return goalScale(d.value.scored);//subtracting by 2.5 since 5 is the radius
         })
-        .attr("cy", 15)
+        .attr("cy", 12.5)
         .attr("class", "goalCircle")
-      //  .attr("fill","#be2714")
+        .attr("fill","#364e74")
+
+    goalChart
+        .append("circle")
+        .attr("cx", function(d){
+            return goalScale(d.value.conceeded); //subtracting by 2.5 since 5 is the radius
+        })
+        .attr("cy", 12.5)
+        .attr("class", "goalCircle")
+        //  .attr("fill","#be2714")
         .attr("fill",function(d){
             if(d.value.delta == 0){
                 return  '#808080'
