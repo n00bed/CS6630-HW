@@ -126,7 +126,7 @@ function createTable() {
     var xAxis = d3.axisBottom();
     xAxis.scale(goalScale)
 
-
+console.log(goalScale(18))
     var svg = d3.select('#goalHeader');
     svg.append("svg")
         .attr("width",cellWidth*2)
@@ -181,9 +181,8 @@ function updateTable() {
             return d.value;
         }
     }).on("click",function(d,i){
-
-        console.log(tableElements[i]);
-
+        console.log(d[i]);
+        updateList(i);
 
     })
 
@@ -215,11 +214,12 @@ function updateTable() {
             return d.value;
         })
         .attr("x",function(d){
-            return gameScale(d.value) - 10;
+            return gameScale(d.value) - cellHeight/2;
         })
         .attr("y",cellHeight/1.5)
         .attr("fill","white")
-        .attr("transform","translate(0,5)");
+        .attr("transform","translate(2,4)")
+        .attr("font-size","9px");
 
 
     var goalChart =  td.filter(function (d) {
@@ -231,7 +231,6 @@ function updateTable() {
 
     goalChart.append("rect")
         .attr("width",function(d,i){
-            console.log(goalScale(Math.abs(d.value.delta)) +':'+ Math.abs(d.value.delta));
             return goalScale(Math.abs(d.value.delta))-12.5 ;
         })
         .attr("height",cellHeight/2)
@@ -247,12 +246,11 @@ function updateTable() {
         .attr("class","goalBar")
         .attr('transform', function(d,i){
             if(d.value.delta<0){
-                return ('transform','translate ('+(goalScale(d.value.scored))+','+ 7.5 + ')');
+                return ('transform','translate ('+(goalScale(d.value.scored))+','+ cellBuffer/2 + ')');
             }else if(d.value.delta>=0){
-                return ('transform','translate ('+(goalScale(d.value.conceeded))+','+ 7.5 + ')');
+                return ('transform','translate ('+(goalScale(d.value.conceeded))+','+ cellBuffer/2 + ')');
             }
         })
-
 
 
     goalChart
@@ -281,7 +279,6 @@ function updateTable() {
         })
 
 
-
     console.log(tableElements);
 }
 
@@ -305,6 +302,8 @@ function updateList(i) {
 
     // ******* TODO: PART IV *******
 
+   console.log("fuck this");
+
 
 
 
@@ -319,8 +318,18 @@ function createTree(treeData) {
 
     // ******* TODO: PART VI *******
 
+
+    var svg = d3.select("#tree"),
+        g = svg.append("g")
+            .attr("transform", "translate(100,0)");
+
+    var tree = d3.tree()
+        .size([500,900])
+
+
+
     var root = d3.stratify()
-        .id(function(d) { return d.id; }) //using d.id to get unique idenritfier for each node
+        .id(function(d) { return d.id; })
         .parentId(function(d) {
             if(d.ParentGame != ''){
                 return treeData[d.ParentGame].id;
@@ -328,16 +337,52 @@ function createTree(treeData) {
             {
                 return '';
             }
-
         })
         (treeData);
 
 
+    tree(root);
 
-    var tree = d3.tree(root);
-
-
+   console.log("==========>");
     console.log(root);
+
+
+    var link = g.selectAll(".link")
+        .data(root.descendants())
+        .enter().append("path")
+        .attr("class","link")
+        .attr("d",function(d){
+
+            if(d.id == "Germany26")
+            {
+                return ''
+            }else
+            {
+                return "M" + d.y + "," + d.x
+                    + "C" + (d.y + d.parent.y) / 2 + "," + d.x
+                    + " " + (d.y + d.parent.y) / 2 + "," + d.parent.x
+                    + " " + d.parent.y + "," + d.parent.x;
+            }
+
+        })
+
+    var node = g.selectAll(".node")
+        .data(root.descendants())
+        .enter().append("g")
+        .attr("class", "node")
+        .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+
+    node.append("circle")
+        .attr("r", 5);
+
+    node.append("text")
+        .attr("dy", 3)
+        .attr("x", function(d) { return d.children ? -8 : 8; })
+        .style("text-anchor", function(d) { return d.children ? "end" : "start"; })
+        .text(function(d) { return d.data['Team']; });
+
+
+
 }
 
 
