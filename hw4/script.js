@@ -321,7 +321,7 @@ function createTree(treeData) {
 
     var svg = d3.select("#tree"),
         g = svg.append("g")
-            .attr("transform", "translate(100,100)");
+            .attr("transform", "translate(100,50)");
 
     var tree = d3.tree()
         .size([500,900])
@@ -360,10 +360,10 @@ function createTree(treeData) {
             {
 
                 console.log('value of y  ' + d.y/2 + 'd.parent.y  '+ d.parent.y);
-                return "M" + d.y/2 + "," + d.x
-                    + "C" + (d.y/2 + d.parent.y/2)/2  + "," + d.x
-                    + " " + (d.y/2 + d.parent.y/2)/2 + "," + d.parent.x
-                    + " " + d.parent.y/2 + "," + d.parent.x;
+                return "M" + d.y/2 + "," + d.x*1.3
+                    + "C" + (d.y + d.parent.y)/4  + "," + d.x*1.3
+                    + " " + (d.y + d.parent.y)/4 + "," + d.parent.x*1.3
+                    + " " + d.parent.y/2 + "," + d.parent.x*1.3;
             }
         })
 
@@ -372,20 +372,21 @@ function createTree(treeData) {
     var node = g.selectAll(".node")
         .data(root.descendants())
         .enter().append("g")
-        .attr("class", "node")
-        .attr("transform", function(d) { return "translate(" + d.y/2 + "," + d.x + ")"; })
+        .attr("class", function(d){
+            return d.data["Wins"]==0 ? "node loser" : "node winner";
+        })
+        .attr("transform", function(d) { return "translate(" + d.y/2 + "," + d.x*1.3 + ")"; })
 
     node.append("circle")
-        .attr("r", 5);
+        .attr("r", 5)
+
 
     node.append("text")
         .attr("dy", 3)
         .attr("x", function(d) { return d.children ? -8 : 8; })
         .style("text-anchor", function(d) { return d.children ? "end" : "start"; })
         .text(function(d) { return d.data['Team']; });
-
-
-
+    
 }
 
 
