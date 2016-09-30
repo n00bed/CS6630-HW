@@ -126,7 +126,7 @@ function createTable() {
     var xAxis = d3.axisBottom();
     xAxis.scale(goalScale)
 
-console.log(goalScale(18))
+    console.log(goalScale(18))
     var svg = d3.select('#goalHeader');
     svg.append("svg")
         .attr("width",cellWidth*2)
@@ -302,7 +302,7 @@ function updateList(i) {
 
     // ******* TODO: PART IV *******
 
-   console.log("fuck this");
+    console.log("fuck this");
 
 
 
@@ -321,7 +321,7 @@ function createTree(treeData) {
 
     var svg = d3.select("#tree"),
         g = svg.append("g")
-            .attr("transform", "translate(100,0)");
+            .attr("transform", "translate(100,100)");
 
     var tree = d3.tree()
         .size([500,900])
@@ -343,7 +343,7 @@ function createTree(treeData) {
 
     tree(root);
 
-   console.log("==========>");
+    console.log("==========>");
     console.log(root);
 
 
@@ -353,24 +353,27 @@ function createTree(treeData) {
         .attr("class","link")
         .attr("d",function(d){
 
-            if(d.id == "Germany26")
+          if(d.id == "Germany26")
             {
                 return ''
             }else
             {
-                return "M" + d.y + "," + d.x
-                    + "C" + (d.y + d.parent.y) / 2 + "," + d.x
-                    + " " + (d.y + d.parent.y) / 2 + "," + d.parent.x
-                    + " " + d.parent.y + "," + d.parent.x;
-            }
 
+                console.log('value of y  ' + d.y/2 + 'd.parent.y  '+ d.parent.y);
+                return "M" + d.y/2 + "," + d.x
+                    + "C" + (d.y/2 + d.parent.y/2)/2  + "," + d.x
+                    + " " + (d.y/2 + d.parent.y/2)/2 + "," + d.parent.x
+                    + " " + d.parent.y/2 + "," + d.parent.x;
+            }
         })
+
+//*Code Reference: https://bl.ocks.org/mbostock/9d0899acb5d3b8d839d9d613a9e1fe04*/
 
     var node = g.selectAll(".node")
         .data(root.descendants())
         .enter().append("g")
         .attr("class", "node")
-        .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+        .attr("transform", function(d) { return "translate(" + d.y/2 + "," + d.x + ")"; })
 
     node.append("circle")
         .attr("r", 5);
