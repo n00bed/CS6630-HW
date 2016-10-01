@@ -177,7 +177,6 @@ function updateTable() {
      var tdEnter = td.enter()
             .append('td')
 
-//Populating text for teams and round
 
 
     tdEnter.text(function(d){
@@ -189,6 +188,8 @@ function updateTable() {
 
     console.log("printing td before filter:");
     console.log(td);
+
+
 
     var barChart =   tdEnter.filter(function (d) {
         return d.vis == 'bar'
@@ -277,13 +278,14 @@ function updateTable() {
             }else{
                 return "#be2714"
             }
-        })
+        });
+
+    var td = tdEnter.merge(td);
 
 
 
-  var td = tdEnter.merge(td);
-
-
+console.log("td");
+console.log(td);
 }
 
 
@@ -311,17 +313,34 @@ function updateList(i) {
     console.log("games ==================>")
     console.log(tableElements[i].value.games.length);
 
-  */
-
-
+    var game = [];
     for(var j=0; j<tableElements[i].value.games.length; j++)
     {
-        console.log('x'+tableElements[i].value.games[j].key);
-
+       // console.log('x'+tableElements[i].value.games[j].key);
+        game.push('x'+tableElements[i].value.games[j].key)
     }
 
+  tableElements.splice(i,0,tableElements[i].value.games);
 
-  // tdEnter.
+  console.log("after splicing");
+  console.log(tableElements);
+
+  console.log(tableElements[i].value.games[0]);
+
+*/
+
+    //console.log(tableElements[i].value.games.length);
+
+    for(var j=0;j< tableElements[i].value.games.length; j++ ){
+
+        tableElements.splice(i+1,0,tableElements[i].value.games[j]);
+    }
+
+ //   console.log(tableElements);
+ //   tableElements.splice(i+1,0,tableElements[i].value.games[0]);
+   updateTable();
+   console.log(tableElements);
+
 }
 
 /**
