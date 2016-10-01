@@ -47,7 +47,6 @@ var rank = {
 
 
 
-
 //For the HACKER version, comment out this call to d3.json and implement the commented out
 // d3.csv call below.
 
@@ -123,7 +122,7 @@ function createTable() {
     var xAxis = d3.axisBottom();
     xAxis.scale(goalScale)
 
-   
+
     var svg = d3.select('#goalHeader');
     svg.append("svg")
         .attr("width",cellWidth*2)
@@ -131,7 +130,6 @@ function createTable() {
         .call(xAxis)
 
     tableElements = teamData;
-
 
 
 // ******* TODO: PART V *******
@@ -178,7 +176,6 @@ function updateTable() {
               return d.key;
       })
 
-
     var td = tr.selectAll("td")
         .data(function(d){
             return [
@@ -190,37 +187,50 @@ function updateTable() {
             ];
         });
 
-     var tdEnter = td.enter().append('td')
 
+    var tdEnter = td.enter().append('td');
+    td = tdEnter.merge(td);
 
+  /* Text for the rounds */
     tdEnter.text(function(d){
         if(d.vis == 'text'){
             return d.value;
         }
     })
 
+    td.filter(function(d){return d.vis == 'text'}).text(function(d){
+            return d.value;
 
+    })
+
+
+    /*Barchart for the total games wins and loss*/
     var barChart =   tdEnter.filter(function (d) {
         return d.vis == 'bar'
     })
-        .append("svg")
+
+        barChart.append("svg")
         .attr("width", cellWidth)
         .attr("height", cellHeight)
+            .append("rect")
 
+        barChart.select("svg").append("text")
 
-    var rect = barChart.append("rect")
-        .attr("width",function(d){
+    var barChartNew =   td.filter(function (d) {
+        return d.vis == 'bar'
+    })
+
+        barChartNew.select("svg").select("rect")
+            .attr("width",function(d){
             return gameScale(d.value);
         })
         .attr("height",cellHeight)
-
         .attr("fill",function (d) {
             return aggregateColorScale(d.value) ;
         })
 
 
-
-    barChart.append("text")
+    barChartNew.select("svg").select("text")
         .text(function(d){
             return d.value;
         })
@@ -233,19 +243,38 @@ function updateTable() {
         .attr("font-size","12px");
 
 
+    /* Goal chart and circles */
+
     var goalChart =  tdEnter.filter(function (d) {
         return d.vis == 'goals'
-    }).append("svg")
+        })
+        goalChart.append("svg")
         .attr("width", cellWidth*2)
         .attr("height", cellHeight)
+            .append("rect")
 
 
-    goalChart.append("rect")
-        .attr("width",function(d,i){
-            return goalScale(Math.abs(d.value.delta))-12.5 ;
-        })
-        .attr("height",cellHeight/2)
-        // .attr("fill","#6794AF")
+    goalChart
+        .select("svg")
+        .append("circle")
+        .attr("class", "goalCircle1")
+
+
+    goalChart
+        .select("svg")
+        .append("circle")
+        .attr("class", "goalCircle2")
+
+    //var td = tdEnter.merge(td);
+
+    var goalChartNew =  td.filter(function (d) {
+        return d.vis == 'goals'
+    })
+
+    goalChartNew.select('svg')
+        .select("rect")
+        .attr("width", function(d){return Math.abs(goalScale(d.value.scored) -goalScale(d.value.conceeded))})
+        .attr("height", cellHeight/2)
         .attr("fill", function(d){
             if(d.value.delta >0){
                 return "#6794AF"
@@ -256,45 +285,53 @@ function updateTable() {
         })
         .attr("class","goalBar")
         .attr('transform', function(d,i){
-            if(d.value.delta<0){
+            if(d.type == "aggregate" && d.value.delta<0){
                 return ('transform','translate ('+(goalScale(d.value.scored))+','+ cellBuffer/2 + ')');
-            }else if(d.value.delta>=0){
+            }else if(d.type == "aggregate" && d.value.delta>=0){
                 return ('transform','translate ('+(goalScale(d.value.conceeded))+','+ cellBuffer/2 + ')');
             }
+            if(d.type != "aggregate" && (goalScale(d.value.scored) -(goalScale(d.value.conceeded) )<0)){
+                return ('transform','translate ('+(goalScale(d.value.scored))+','+ cellBuffer/2 + ')');
+
+            }else if(d.type != "aggregate" && (goalScale(d.value.scored) -(goalScale(d.value.conceeded) )>=0)){
+                return ('transform','translate ('+(goalScale(d.value.conceeded))+','+ cellBuffer/2 + ')');
+            }
+
         })
 
 
-    goalChart
-        .append("circle")
+
+
+
+    goalChartNew
+        .select("svg")
+        .select(".goalCircle1")
         .attr("cx", function(d){
-            return goalScale(d.value.scored);//subtracting by 2.5 since 5 is the radius
+            return goalScale(d.value.scored);
         })
         .attr("cy", 12.5)
-        .attr("class", "goalCircle")
         .attr("fill","#364e74")
+        .attr("r",5)
 
-    goalChart
-        .append("circle")
+    goalChartNew
+        .select("svg")
+        .select(".goalCircle2")
         .attr("cx", function(d){
-            return goalScale(d.value.conceeded); //subtracting by 2.5 since 5 is the radius
+            return goalScale(d.value.conceeded);
         })
         .attr("cy", 12.5)
-        .attr("class", "goalCircle")
-        //  .attr("fill","#be2714")
+
         .attr("fill",function(d){
-            if(d.value.delta == 0){
+
+            if(Math.abs(goalScale(d.value.scored)-goalScale(d.value.conceeded)) == 0){
                 return  '#808080'
             }else{
                 return "#be2714"
             }
-        });
 
-    var td = tdEnter.merge(td);
-
+        }).attr("r",5);
 
 
-console.log("td");
-console.log(td);
 }
 
 
@@ -307,6 +344,7 @@ function collapseList() {
     // ******* TODO: PART IV *******
 
 
+
 }
 
 /**
@@ -317,37 +355,22 @@ function updateList(i) {
 
     // ******* TODO: PART IV *******
 
- /*
-    console.log( tableElements[i]);
-    console.log("games ==================>")
-    console.log(tableElements[i].value.games.length);
 
-    var game = [];
-    for(var j=0; j<tableElements[i].value.games.length; j++)
-    {
-       // console.log('x'+tableElements[i].value.games[j].key);
-        game.push('x'+tableElements[i].value.games[j].key)
-    }
 
-  tableElements.splice(i,0,tableElements[i].value.games);
-
-  console.log("after splicing");
-  console.log(tableElements);
-
-  console.log(tableElements[i].value.games[0]);
-
-*/
-
-    //console.log(tableElements[i].value.games.length);
-
+if(tableElements[i+1].value.type == 'aggregate'){
     for(var j=0;j< tableElements[i].value.games.length; j++ ){
 
         tableElements.splice(i+1,0,tableElements[i].value.games[j]);
     }
+}else{
+    tableElements.splice(i+1,tableElements[i].value.games.length )
+}
+
 
  //   console.log(tableElements);
  //   tableElements.splice(i+1,0,tableElements[i].value.games[0]);
-   updateTable();
+
+    updateTable();
    console.log(tableElements);
 
 }
