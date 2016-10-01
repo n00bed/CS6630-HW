@@ -84,9 +84,6 @@ d3.csv("data/fifa-tree.csv", function (error, csvData) {
         d.id = d.Team + d.Opponent + i;
     });
 
-    console.log("printing csv data: ")
-    console.log(csvData);
-
     createTree(csvData);
 
 
@@ -175,24 +172,25 @@ function updateTable() {
                 { "type": d.value['type'], "vis": "bar", "value": d.value['Losses'] },
                 { "type": d.value['type'], "vis": "bar", "value": d.value['TotalGames'] },
             ];
-        })
-        .enter()
-        .append('td')
+        });
+
+     var tdEnter = td.enter()
+            .append('td')
 
 //Populating text for teams and round
-    td.text(function(d){
+
+
+    tdEnter.text(function(d){
         if(d.vis == 'text'){
             return d.value;
         }
     })
 
 
-
-
     console.log("printing td before filter:");
     console.log(td);
 
-    var barChart =   td.filter(function (d) {
+    var barChart =   tdEnter.filter(function (d) {
         return d.vis == 'bar'
     })
         .append("svg")
@@ -225,7 +223,7 @@ function updateTable() {
         .attr("font-size","12px");
 
 
-    var goalChart =  td.filter(function (d) {
+    var goalChart =  tdEnter.filter(function (d) {
         return d.vis == 'goals'
     }).append("svg")
         .attr("width", cellWidth*2)
@@ -282,7 +280,10 @@ function updateTable() {
         })
 
 
-    console.log(tableElements);
+
+  var td = tdEnter.merge(td);
+
+
 }
 
 
@@ -305,19 +306,22 @@ function updateList(i) {
 
     // ******* TODO: PART IV *******
 
-    console.log(i)
-    console.log(Object.keys(tableElements[i]).length);
+ /*
+    console.log( tableElements[i]);
+    console.log("games ==================>")
+    console.log(tableElements[i].value.games.length);
+
+  */
 
 
-    console.log("Hey Hey look at me people I am from updateList(i) tableElements");
-
-    for(var j=0; j<tableElements[i].length; j++)
+    for(var j=0; j<tableElements[i].value.games.length; j++)
     {
-        console.log(tableElements[i].value.games[j].key);
+        console.log('x'+tableElements[i].value.games[j].key);
+
     }
 
 
-
+  // tdEnter.
 }
 
 /**
@@ -354,7 +358,7 @@ function createTree(treeData) {
 
     tree(root);
 
-    console.log("==========>");
+    console.log("Printing root eight below here==========>");
     console.log(root);
 
 
@@ -369,8 +373,6 @@ function createTree(treeData) {
                 return ''
             }else
             {
-
-                console.log('value of y  ' + d.y/2 + 'd.parent.y  '+ d.parent.y);
                 return "M" + d.y/2 + "," + d.x*1.3
                     + "C" + (d.y + d.parent.y)/4  + "," + d.x*1.3
                     + " " + (d.y + d.parent.y)/4 + "," + d.parent.x*1.3
