@@ -123,7 +123,7 @@ function createTable() {
     var xAxis = d3.axisBottom();
     xAxis.scale(goalScale)
 
-    console.log(goalScale(18))
+   
     var svg = d3.select('#goalHeader');
     svg.append("svg")
         .attr("width",cellWidth*2)
@@ -149,24 +149,40 @@ function updateTable() {
 
     var tr = d3.select("tbody").selectAll("tr")
         .data(tableElements)
-        .enter()
-        .append("tr")
-        .on("click",function(d,i){
-            updateList(i);
 
+        tr.exit().remove();
+
+       var trEnter =  tr.enter().append("tr");
+
+    trEnter.append("th");
+
+    tr.attr("class",function(d,i){
+        d.value.type;
+    })
+
+    tr = trEnter.merge(tr)
+    tr.attr("class",function(d){
+        return d.value.type;
+    });
+
+        tr.on("click",function(d,i){
+            updateList(i);
         });
 
-    console.log("printing tr:");
-    console.log(tr);
+  var th = tr.select("th")
+      .text(function(d){
 
+          if(d.value.type != "aggregate")
+            return 'x' +  d.key
+          else
+              return d.key;
+      })
 
 
     var td = tr.selectAll("td")
         .data(function(d){
             return [
-                { "type": d.value['type'], "vis": "text", "value": d.key },
                 { "type": d.value['type'], "vis": "goals", "value": {"scored":d.value[goalsMadeHeader],"conceeded":d.value[goalsConcededHeader],"delta":d.value['Delta Goals']}},
-                //  { "type": d.value['type'], "vis": "goals", "value": d.value[goalsMadeHeader] },
                 { "type": d.value['type'], "vis": "text", "value": d.value['Result'].label },
                 { "type": d.value['type'], "vis": "bar", "value": d.value['Wins'] },
                 { "type": d.value['type'], "vis": "bar", "value": d.value['Losses'] },
@@ -174,9 +190,7 @@ function updateTable() {
             ];
         });
 
-     var tdEnter = td.enter()
-            .append('td')
-
+     var tdEnter = td.enter().append('td')
 
 
     tdEnter.text(function(d){
@@ -184,11 +198,6 @@ function updateTable() {
             return d.value;
         }
     })
-
-
-    console.log("printing td before filter:");
-    console.log(td);
-
 
 
     var barChart =   tdEnter.filter(function (d) {
@@ -208,7 +217,7 @@ function updateTable() {
         .attr("fill",function (d) {
             return aggregateColorScale(d.value) ;
         })
-      //  .attr("transform","translate(0,6)");
+
 
 
     barChart.append("text")
@@ -376,9 +385,6 @@ function createTree(treeData) {
 
 
     tree(root);
-
-    console.log("Printing root eight below here==========>");
-    console.log(root);
 
 
     var link = g.selectAll(".link")

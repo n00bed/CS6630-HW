@@ -38,8 +38,8 @@
       <file leaf-file-name="styles.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/styles.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1710">
-              <caret line="114" column="18" selection-start-line="114" selection-start-column="18" selection-end-line="114" selection-end-column="18" />
+            <state relative-caret-position="2070">
+              <caret line="138" column="16" selection-start-line="138" selection-start-column="14" selection-end-line="138" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -48,13 +48,12 @@
       <file leaf-file-name="script.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/script.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="150" column="28" selection-start-line="150" selection-start-column="28" selection-end-line="150" selection-end-column="28" />
+            <state relative-caret-position="251">
+              <caret line="125" column="3" selection-start-line="125" selection-start-column="3" selection-end-line="125" selection-end-column="3" />
               <folding>
                 <element signature="e#1245#1307#0" expanded="false" />
                 <element signature="e#1312#1383#0" expanded="false" />
                 <element signature="e#1926#2091#0" expanded="false" />
-                <element signature="n#!!block;n#createTable#0" expanded="false" />
                 <element signature="n#!!block;n#createTree#0" expanded="false" />
                 <element signature="n#!!block;n#updateTree#0" expanded="false" />
               </folding>
@@ -241,12 +240,12 @@
       <workItem from="1475270185680" duration="1599000" />
       <workItem from="1475274773674" duration="83000" />
       <workItem from="1475277505237" duration="6622000" />
-      <workItem from="1475335212921" duration="5955000" />
+      <workItem from="1475335212921" duration="7661000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="98137000" />
+    <option name="totallyTimeSpent" value="99843000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="33" y="23" width="1407" height="877" extended-state="0" />
@@ -330,7 +329,6 @@
             <element signature="e#1245#1307#0" expanded="false" />
             <element signature="e#1312#1383#0" expanded="false" />
             <element signature="e#1926#2091#0" expanded="false" />
-            <element signature="n#!!block;n#createTable#0" expanded="false" />
             <element signature="n#!!block;n#createTree#0" expanded="false" />
             <element signature="n#!!block;n#updateTree#0" expanded="false" />
           </folding>
@@ -371,7 +369,6 @@
             <element signature="e#1245#1307#0" expanded="false" />
             <element signature="e#1312#1383#0" expanded="false" />
             <element signature="e#1926#2091#0" expanded="false" />
-            <element signature="n#!!block;n#createTable#0" expanded="false" />
             <element signature="n#!!block;n#createTree#0" expanded="false" />
             <element signature="n#!!block;n#updateTree#0" expanded="false" />
           </folding>
@@ -412,7 +409,6 @@
             <element signature="e#1245#1307#0" expanded="false" />
             <element signature="e#1312#1383#0" expanded="false" />
             <element signature="e#1926#2091#0" expanded="false" />
-            <element signature="n#!!block;n#createTable#0" expanded="false" />
             <element signature="n#!!block;n#createTree#0" expanded="false" />
             <element signature="n#!!block;n#updateTree#0" expanded="false" />
           </folding>
@@ -453,7 +449,6 @@
             <element signature="e#1245#1307#0" expanded="false" />
             <element signature="e#1312#1383#0" expanded="false" />
             <element signature="e#1926#2091#0" expanded="false" />
-            <element signature="n#!!block;n#createTable#0" expanded="false" />
             <element signature="n#!!block;n#createTree#0" expanded="false" />
             <element signature="n#!!block;n#updateTree#0" expanded="false" />
           </folding>
@@ -494,7 +489,6 @@
             <element signature="e#1245#1307#0" expanded="false" />
             <element signature="e#1312#1383#0" expanded="false" />
             <element signature="e#1926#2091#0" expanded="false" />
-            <element signature="n#!!block;n#createTable#0" expanded="false" />
             <element signature="n#!!block;n#createTree#0" expanded="false" />
             <element signature="n#!!block;n#updateTree#0" expanded="false" />
           </folding>
@@ -535,7 +529,6 @@
             <element signature="e#1245#1307#0" expanded="false" />
             <element signature="e#1312#1383#0" expanded="false" />
             <element signature="e#1926#2091#0" expanded="false" />
-            <element signature="n#!!block;n#createTable#0" expanded="false" />
             <element signature="n#!!block;n#createTree#0" expanded="false" />
             <element signature="n#!!block;n#updateTree#0" expanded="false" />
           </folding>
@@ -576,7 +569,6 @@
             <element signature="e#1245#1307#0" expanded="false" />
             <element signature="e#1312#1383#0" expanded="false" />
             <element signature="e#1926#2091#0" expanded="false" />
-            <element signature="n#!!block;n#createTable#0" expanded="false" />
             <element signature="n#!!block;n#createTree#0" expanded="false" />
             <element signature="n#!!block;n#updateTree#0" expanded="false" />
           </folding>
@@ -617,7 +609,6 @@
             <element signature="e#1245#1307#0" expanded="false" />
             <element signature="e#1312#1383#0" expanded="false" />
             <element signature="e#1926#2091#0" expanded="false" />
-            <element signature="n#!!block;n#createTable#0" expanded="false" />
             <element signature="n#!!block;n#createTree#0" expanded="false" />
             <element signature="n#!!block;n#updateTree#0" expanded="false" />
           </folding>
@@ -658,7 +649,6 @@
             <element signature="e#1245#1307#0" expanded="false" />
             <element signature="e#1312#1383#0" expanded="false" />
             <element signature="e#1926#2091#0" expanded="false" />
-            <element signature="n#!!block;n#createTable#0" expanded="false" />
             <element signature="n#!!block;n#createTree#0" expanded="false" />
             <element signature="n#!!block;n#updateTree#0" expanded="false" />
           </folding>
@@ -709,7 +699,6 @@
             <element signature="e#1245#1307#0" expanded="false" />
             <element signature="e#1312#1383#0" expanded="false" />
             <element signature="e#1926#2091#0" expanded="false" />
-            <element signature="n#!!block;n#createTable#0" expanded="false" />
             <element signature="n#!!block;n#createTree#0" expanded="false" />
             <element signature="n#!!block;n#updateTree#0" expanded="false" />
           </folding>
@@ -760,7 +749,6 @@
             <element signature="e#1245#1307#0" expanded="false" />
             <element signature="e#1312#1383#0" expanded="false" />
             <element signature="e#1926#2091#0" expanded="false" />
-            <element signature="n#!!block;n#createTable#0" expanded="false" />
             <element signature="n#!!block;n#createTree#0" expanded="false" />
             <element signature="n#!!block;n#updateTree#0" expanded="false" />
           </folding>
@@ -785,18 +773,9 @@
             <element signature="e#1245#1307#0" expanded="false" />
             <element signature="e#1312#1383#0" expanded="false" />
             <element signature="e#1926#2091#0" expanded="false" />
-            <element signature="n#!!block;n#createTable#0" expanded="false" />
             <element signature="n#!!block;n#createTree#0" expanded="false" />
             <element signature="n#!!block;n#updateTree#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/styles.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1710">
-          <caret line="114" column="18" selection-start-line="114" selection-start-column="18" selection-end-line="114" selection-end-column="18" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -818,15 +797,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/styles.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2070">
+          <caret line="138" column="16" selection-start-line="138" selection-start-column="14" selection-end-line="138" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/script.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="150" column="28" selection-start-line="150" selection-start-column="28" selection-end-line="150" selection-end-column="28" />
+        <state relative-caret-position="251">
+          <caret line="125" column="3" selection-start-line="125" selection-start-column="3" selection-end-line="125" selection-end-column="3" />
           <folding>
             <element signature="e#1245#1307#0" expanded="false" />
             <element signature="e#1312#1383#0" expanded="false" />
             <element signature="e#1926#2091#0" expanded="false" />
-            <element signature="n#!!block;n#createTable#0" expanded="false" />
             <element signature="n#!!block;n#createTree#0" expanded="false" />
             <element signature="n#!!block;n#updateTree#0" expanded="false" />
           </folding>
