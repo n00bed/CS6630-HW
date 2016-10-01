@@ -275,8 +275,14 @@ function updateTable() {
         .select("rect")
         .attr("width", function(d){return Math.abs(goalScale(d.value.scored) -goalScale(d.value.conceeded))})
         .attr("height", cellHeight/2)
+        .attr("height",function(d){
+            if(d.type == 'aggregate'){
+                return cellHeight/2
+            }else
+                return cellHeight/3
+        })
         .attr("fill", function(d){
-            if(d.value.delta >0){
+            if( (d.value.scored-  d.value.conceeded)> 0){
                 return "#6794AF"
             }else
             {
@@ -285,22 +291,33 @@ function updateTable() {
         })
         .attr("class","goalBar")
         .attr('transform', function(d,i){
-            if(d.type == "aggregate" && d.value.delta<0){
-                return ('transform','translate ('+(goalScale(d.value.scored))+','+ cellBuffer/2 + ')');
-            }else if(d.type == "aggregate" && d.value.delta>=0){
-                return ('transform','translate ('+(goalScale(d.value.conceeded))+','+ cellBuffer/2 + ')');
-            }
-            if(d.type != "aggregate" && (goalScale(d.value.scored) -(goalScale(d.value.conceeded) )<0)){
-                return ('transform','translate ('+(goalScale(d.value.scored))+','+ cellBuffer/2 + ')');
+            if(d.type == 'aggregate'){
+                if(d.type == "aggregate" && d.value.delta<0){
+                    return ('transform','translate ('+(goalScale(d.value.scored))+','+ cellBuffer/2 + ')');
+                }else if(d.type == "aggregate" && d.value.delta>=0){
+                    return ('transform','translate ('+(goalScale(d.value.conceeded))+','+ cellBuffer/2 + ')');
+                }
+                if(d.type != "aggregate" && (goalScale(d.value.scored) -(goalScale(d.value.conceeded) )<0)){
+                    return ('transform','translate ('+(goalScale(d.value.scored))+','+ cellBuffer/2 + ')');
 
-            }else if(d.type != "aggregate" && (goalScale(d.value.scored) -(goalScale(d.value.conceeded) )>=0)){
-                return ('transform','translate ('+(goalScale(d.value.conceeded))+','+ cellBuffer/2 + ')');
+                }else if(d.type != "aggregate" && (goalScale(d.value.scored) -(goalScale(d.value.conceeded) )>=0)){
+                    return ('transform','translate ('+(goalScale(d.value.conceeded))+','+ cellBuffer/2 + ')');
+                }
+            }else{
+                if(d.type == "aggregate" && d.value.delta<0){
+                    return ('transform','translate ('+(goalScale(d.value.scored))+','+ cellBuffer/1.5 + ')');
+                }else if(d.type == "aggregate" && d.value.delta>=0){
+                    return ('transform','translate ('+(goalScale(d.value.conceeded))+','+ cellBuffer/1.5 + ')');
+                }
+                if(d.type != "aggregate" && (goalScale(d.value.scored) -(goalScale(d.value.conceeded) )<0)){
+                    return ('transform','translate ('+(goalScale(d.value.scored))+','+ cellBuffer/1.5 + ')');
+
+                }else if(d.type != "aggregate" && (goalScale(d.value.scored) -(goalScale(d.value.conceeded) )>=0)){
+                    return ('transform','translate ('+(goalScale(d.value.conceeded))+','+ cellBuffer/1.5 + ')');
+                }
             }
 
         })
-
-
-
 
 
     goalChartNew
@@ -310,8 +327,23 @@ function updateTable() {
             return goalScale(d.value.scored);
         })
         .attr("cy", 12.5)
-        .attr("fill","#364e74")
+       // .attr("fill","#364e74")
+        .attr("fill",function(d){
+            if(d.type == 'aggregate'){
+                return "#364e74"
+            }else{
+                return "#FFFFFF"
+            }
+        })
         .attr("r",5)
+        .attr("stroke-width",function(d){
+            if(d.type != 'aggregate'&& (Math.abs(goalScale(d.value.scored)-goalScale(d.value.conceeded))!= 0)){
+                return 2
+            }else
+                return 0
+        })
+        .attr("stroke", "#364e74");
+
 
     goalChartNew
         .select("svg")
@@ -323,13 +355,22 @@ function updateTable() {
 
         .attr("fill",function(d){
 
-            if(Math.abs(goalScale(d.value.scored)-goalScale(d.value.conceeded)) == 0){
+            if(Math.abs(goalScale(d.value.scored)-goalScale(d.value.conceeded))== 0){
                 return  '#808080'
-            }else{
+            }else if((Math.abs(goalScale(d.value.scored)-goalScale(d.value.conceeded))!= 0) & d.type == 'aggregate'){
                 return "#be2714"
+            }else{
+                return "#FFFFFF"
             }
 
-        }).attr("r",5);
+        }).attr("r",5)
+        .attr("stroke-width",function(d){
+            if((d.type != 'aggregate') && (Math.abs(goalScale(d.value.scored)-goalScale(d.value.conceeded))!= 0)){
+                return 2
+            }else
+                return 0
+        })
+        .attr("stroke", "#be2714");
 
 
 }
@@ -343,7 +384,7 @@ function collapseList() {
 
     // ******* TODO: PART IV *******
 
-
+  
 
 }
 
