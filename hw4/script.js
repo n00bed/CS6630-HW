@@ -108,8 +108,8 @@ function createTable() {
 // Setting Scales
     goalScale = d3.scaleLinear()
         .domain([0, d3.max(teamData,function (d){
-            return 18
-            //return d.value[goalsMadeHeader];
+            //return 18
+            return d.value[goalsMadeHeader];
         })])
         .range([cellBuffer, 2 * cellWidth - cellBuffer]);
 
@@ -153,7 +153,11 @@ function updateTable() {
     var tr = d3.select("tbody").selectAll("tr")
         .data(tableElements)
         .enter()
-        .append("tr");
+        .append("tr")
+        .on("click",function(d,i){
+            updateList(i);
+
+        });
 
     console.log("printing tr:");
     console.log(tr);
@@ -180,11 +184,10 @@ function updateTable() {
         if(d.vis == 'text'){
             return d.value;
         }
-    }).on("click",function(d,i){
-        console.log(d[i]);
-        updateList(i);
-
     })
+
+
+
 
     console.log("printing td before filter:");
     console.log(td);
@@ -206,7 +209,7 @@ function updateTable() {
         .attr("fill",function (d) {
             return aggregateColorScale(d.value) ;
         })
-        .attr("transform","translate(0,6)");
+      //  .attr("transform","translate(0,6)");
 
 
     barChart.append("text")
@@ -216,10 +219,10 @@ function updateTable() {
         .attr("x",function(d){
             return gameScale(d.value) - cellHeight/2;
         })
-        .attr("y",cellHeight/1.5)
+        .attr("y",cellHeight/2)
         .attr("fill","white")
-        .attr("transform","translate(2,4)")
-        .attr("font-size","9px");
+        .attr("transform","translate(2,2)")
+        .attr("font-size","12px");
 
 
     var goalChart =  td.filter(function (d) {
@@ -302,8 +305,16 @@ function updateList(i) {
 
     // ******* TODO: PART IV *******
 
-    console.log("fuck this");
+    console.log(i)
+    console.log(Object.keys(tableElements[i]).length);
 
+
+    console.log("Hey Hey look at me people I am from updateList(i) tableElements");
+
+    for(var j=0; j<tableElements[i].length; j++)
+    {
+        console.log(tableElements[i].value.games[j].key);
+    }
 
 
 
