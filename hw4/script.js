@@ -177,7 +177,7 @@ function updateTable() {
 
         tr.on("click",function(d,i){
             updateList(i);
-        });
+        })
 
   var th = tr.select("th")
       .text(function(d){
@@ -388,7 +388,7 @@ function updateTable() {
 
     var headersTeam = d3.select("th");
     headersTeam.on("click", function(d) {
-
+        collapseList();
         console.log(d3.select(this).text());
 
         tableElements.sort(function (a, b) {
@@ -418,14 +418,10 @@ function updateTable() {
     })
 
 
-
-
-
-
     var headers = d3.select("#matchTable").selectAll("thead td")
 
     headers.on("click", function (d) {
-
+        collapseList();
         sortClick = d3.select(this).text();
         console.log(tableElements);
         console.log("HEYHEHEHE:");
@@ -497,6 +493,19 @@ function updateTable() {
 
     })
 
+    d3.select("#matchTable").selectAll("tr")
+        .on("mouseover",function(d,i){
+            console.log(d.key)
+
+            if(d.value.type == 'aggregate')
+            {
+                updateTree(d.key);
+            }
+
+        })
+        .on("mouseout",function(d,i){
+            clearTree();
+        });
 
 
 }
@@ -509,8 +518,12 @@ function updateTable() {
 function collapseList() {
 
     // ******* TODO: PART IV *******
-    
+tableElements = [];
+    for(var i=0; i < teamData.length; i++){
+        tableElements.push(teamData[i]);
+    }
 
+  updateTable();
 }
 
 /**
@@ -521,8 +534,6 @@ function updateList(i) {
 
     // ******* TODO: PART IV *******
 
-    console.log(i);
-    console.log("length of tableElements: " + tableElements.length)
 
      if(tableElements[i+1].value.type != 'game'){
          for(var j=0;j< tableElements[i].value.games.length; j++ ){
@@ -531,9 +542,7 @@ function updateList(i) {
      }else{
          tableElements.splice(i+1,tableElements[i].value.games.length )
      }
-
     updateTable();
-
 
 }
 
@@ -569,7 +578,7 @@ function createTree(treeData) {
 
     tree(root);
 
-    var link = g.selectAll(".link")
+     link = g.selectAll(".link")
         .data(root.descendants())
         .enter().append("path")
         .attr("class","link")
@@ -620,7 +629,11 @@ function updateTree(row) {
 
     // ******* TODO: PART VII *******
 
+   pathHighlight = link.filter(function(d){
+       return(d.data["Team"] == row && d.data['Wins'] == 1)
+   })
 
+    pathHighlight.classed("selected",true);
 }
 
 /**
@@ -629,6 +642,7 @@ function updateTree(row) {
 function clearTree() {
 
     // ******* TODO: PART VII *******
+    pathHighlight.classed("selected",false);
 
 
 }
