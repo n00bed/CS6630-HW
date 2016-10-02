@@ -103,15 +103,15 @@ function createTable() {
 
 // Setting Scales
     goalScale = d3.scaleLinear()
-        .domain([0, d3.max(teamData,function (d){
+        .domain([0, d3.max(teamData, function (d) {
             //return 18
             return d.value[goalsMadeHeader];
         })])
         .range([cellBuffer, 2 * cellWidth - cellBuffer]);
 
 
-    gameScale =   d3.scaleLinear()
-        .domain([0, d3.max(teamData,function (d){
+    gameScale = d3.scaleLinear()
+        .domain([0, d3.max(teamData, function (d) {
             return d.value['TotalGames'];
         })])
         .range([0, cellWidth - cellBuffer]);
@@ -125,8 +125,8 @@ function createTable() {
 
     var svg = d3.select('#goalHeader');
     svg.append("svg")
-        .attr("width",cellWidth*2)
-        .attr("height",cellHeight )
+        .attr("width", cellWidth * 2)
+        .attr("height", cellHeight)
         .call(xAxis)
 
     tableElements = teamData;
@@ -134,12 +134,80 @@ function createTable() {
 
 // ******* TODO: PART V *******
 
-}
-/**
- * Updates the table contents with a row for each element in the global variable tableElements.
- *
- */
+    var headers = d3.select("#matchTable").selectAll("thead td")
 
+    headers.on("click", function (d) {
+
+        sortClick = d3.select(this).text();
+
+        console.log(tableElements);
+        console.log("HEYHEHEHE:")
+        console.log(tableElements[0].value['Result'].ranking)
+        tableElements.sort(function (a, b) {
+
+
+            if(sortClick == 'Goals'){
+
+                return a.value['Delta Goals'] - b.value['Delta Goals'];
+            }
+
+            else if(sortClick == 'Round/Result'){
+                return a.value['Result'].ranking - b.value['Result'].ranking
+            }
+            else if(sortClick == 'Wins'){
+                return a.value['Wins']-b.value['Wins'];
+            }
+
+            else if(sortClick == 'Losses'){
+                return a.value['Losses']-b.value['Losses'];
+            }
+
+            else if(sortClick == 'Total Games'){
+                return a.value['TotalGames'] - b.value['TotalGames'];
+            }
+
+
+            /*
+             var nameA = a.key.toLowerCase(), nameB = b.key.toLowerCase(), isAscending = true;
+
+             if(isAscending == true){
+             if(nameA <nameB)
+             return -1
+             if(nameA > nameB)
+             return 1
+
+             isAscending = false;
+             return 0
+             }
+             else {
+
+             if(nameA <nameB)
+             return -1
+             if(nameA > nameB)
+             return 1
+
+             isAscending = false;
+             return 0
+
+             }
+
+             })
+             */
+
+        })
+
+        updateTable();
+
+    })
+
+
+
+    var headersTeam = d3.select("#matchTable")
+    /**
+     * Updates the table contents with a row for each element in the global variable tableElements.
+     *
+     */
+}
 
 function updateTable() {
 
@@ -384,7 +452,6 @@ function collapseList() {
 
     // ******* TODO: PART IV *******
 
-  
 
 }
 
@@ -396,23 +463,19 @@ function updateList(i) {
 
     // ******* TODO: PART IV *******
 
+    console.log(i);
+    console.log("length of tableElements: " + tableElements.length)
 
-
-if(tableElements[i+1].value.type == 'aggregate'){
-    for(var j=0;j< tableElements[i].value.games.length; j++ ){
-
-        tableElements.splice(i+1,0,tableElements[i].value.games[j]);
-    }
-}else{
-    tableElements.splice(i+1,tableElements[i].value.games.length )
-}
-
-
- //   console.log(tableElements);
- //   tableElements.splice(i+1,0,tableElements[i].value.games[0]);
+     if(tableElements[i+1].value.type != 'game'){
+         for(var j=0;j< tableElements[i].value.games.length; j++ ){
+             tableElements.splice(i+1,0,tableElements[i].value.games[j]);
+         }
+     }else{
+         tableElements.splice(i+1,tableElements[i].value.games.length )
+     }
 
     updateTable();
-   console.log(tableElements);
+
 
 }
 
@@ -490,9 +553,6 @@ function createTree(treeData) {
         .text(function(d) { return d.data['Team']; });
     
 }
-
-
-
 
 
 /**
