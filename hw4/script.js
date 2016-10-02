@@ -104,7 +104,6 @@ function createTable() {
 // Setting Scales
     goalScale = d3.scaleLinear()
         .domain([0, d3.max(teamData, function (d) {
-            //return 18
             return d.value[goalsMadeHeader];
         })])
         .range([cellBuffer, 2 * cellWidth - cellBuffer]);
@@ -132,77 +131,19 @@ function createTable() {
     tableElements = teamData;
 
 
+
 // ******* TODO: PART V *******
 
-    var headers = d3.select("#matchTable").selectAll("thead td")
-
-    headers.on("click", function (d) {
-
-        sortClick = d3.select(this).text();
-
-        console.log(tableElements);
-        console.log("HEYHEHEHE:")
-        console.log(tableElements[0].value['Result'].ranking)
-        tableElements.sort(function (a, b) {
-
-
-            if(sortClick == 'Goals'){
-
-                return a.value['Delta Goals'] - b.value['Delta Goals'];
-            }
-
-            else if(sortClick == 'Round/Result'){
-                return a.value['Result'].ranking - b.value['Result'].ranking
-            }
-            else if(sortClick == 'Wins'){
-                return a.value['Wins']-b.value['Wins'];
-            }
-
-            else if(sortClick == 'Losses'){
-                return a.value['Losses']-b.value['Losses'];
-            }
-
-            else if(sortClick == 'Total Games'){
-                return a.value['TotalGames'] - b.value['TotalGames'];
-            }
-
-
-            /*
-             var nameA = a.key.toLowerCase(), nameB = b.key.toLowerCase(), isAscending = true;
-
-             if(isAscending == true){
-             if(nameA <nameB)
-             return -1
-             if(nameA > nameB)
-             return 1
-
-             isAscending = false;
-             return 0
-             }
-             else {
-
-             if(nameA <nameB)
-             return -1
-             if(nameA > nameB)
-             return 1
-
-             isAscending = false;
-             return 0
-
-             }
-
-             })
-             */
-
-        })
-
-        updateTable();
-
-    })
+   isClickedT = 1;
+   isClickedG = 1;
+   isClickedR = 1;
+    isClickedW = 1;
+   isClickedL = 1;
+   isClickedA = 1;
 
 
 
-    var headersTeam = d3.select("#matchTable")
+
     /**
      * Updates the table contents with a row for each element in the global variable tableElements.
      *
@@ -211,7 +152,10 @@ function createTable() {
 
 function updateTable() {
 
+
 // ******* TODO: PART III *******
+
+
 
     var tr = d3.select("tbody").selectAll("tr")
         .data(tableElements)
@@ -441,6 +385,120 @@ function updateTable() {
         .attr("stroke", "#be2714");
 
 
+
+    var headersTeam = d3.select("th");
+    headersTeam.on("click", function(d) {
+
+        console.log(d3.select(this).text());
+
+        tableElements.sort(function (a, b) {
+            var nameA = a.key.toLowerCase(), nameB = b.key.toLowerCase();
+            if(isClickedT % 2 == 0){
+                if(nameA <nameB)
+                    return -1
+                if(nameA > nameB)
+                    return 1
+                return 0
+
+            }else {
+                if (nameA < nameB)
+                    return 1
+                if (nameA > nameB)
+                    return -1
+
+                return 0
+            }
+        })
+
+        if(d3.select(this).text() == 'Team' ){isClickedT++}
+        console.log(isClickedT);
+        console.log(tableElements);
+        updateTable();
+
+    })
+
+
+
+
+
+
+    var headers = d3.select("#matchTable").selectAll("thead td")
+
+    headers.on("click", function (d) {
+
+        sortClick = d3.select(this).text();
+        console.log(tableElements);
+        console.log("HEYHEHEHE:");
+        console.log(tableElements[0].value['Delta Goals'])
+
+        tableElements.sort(function (a, b) {
+
+            if(sortClick == 'Goals'){
+                if(isClickedG %2 == 0){
+
+                    return a.value['Delta Goals'] - b.value['Delta Goals']
+
+                    //return a.value['Delta Goals'] - b.value['Delta Goals'];
+                }else
+                {
+
+                    return b.value['Delta Goals'] -  a.value['Delta Goals']
+                }
+
+            }
+            else if(sortClick == 'Round/Result'){
+                if(isClickedR % 2 == 0){
+                    console.log(sortClick);
+                    return a.value['Result'].ranking - b.value['Result'].ranking;
+                }
+                else
+                {
+
+                    return b.value['Result'].ranking - a.value['Result'].ranking;
+                }
+            }
+            else if(sortClick == 'Wins'){
+                if(isClickedW % 2 == 0){
+
+                    return a.value['Wins']-b.value['Wins'];
+                }
+                else{
+
+                    return b.value['Wins']-a.value['Wins'];
+                }
+            }
+
+            else if(sortClick == 'Losses'){
+                if(isClickedL % 2 == 0){
+
+                    return a.value['Losses']-b.value['Losses'];
+                }
+                else{
+                    return b.value['Losses']-a.value['Losses'];
+                }
+            }
+
+            else if(sortClick == 'Total Games'){
+                if(isClickedA % 2 == 0){
+
+                    return a.value['TotalGames']-b.value['TotalGames'];
+                }
+                else{
+                    return b.value['TotalGames']-a.value['TotalGames'];
+                }
+            }
+        })
+        if(sortClick  == 'Goals' ){isClickedG++}
+        if(sortClick  == 'Round/Result' ){isClickedR++}
+        if(sortClick  == 'Wins' ){isClickedW++}
+        if(sortClick  == 'Losses' ){isClickedL++}
+        if(sortClick  == 'Total Games' ){isClickedA++}
+        updateTable();
+
+    })
+
+
+
 }
 
 
@@ -451,7 +509,7 @@ function updateTable() {
 function collapseList() {
 
     // ******* TODO: PART IV *******
-
+    
 
 }
 
@@ -488,7 +546,6 @@ function createTree(treeData) {
 
     // ******* TODO: PART VI *******
 
-
     var svg = d3.select("#tree"),
         g = svg.append("g")
             .attr("transform", "translate(100,50)");
@@ -510,9 +567,7 @@ function createTree(treeData) {
         })
         (treeData);
 
-
     tree(root);
-
 
     var link = g.selectAll(".link")
         .data(root.descendants())
