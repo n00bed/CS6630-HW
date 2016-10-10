@@ -134,12 +134,12 @@ function createTable() {
 
 // ******* TODO: PART V *******
 
-   isClickedT = 1;
-   isClickedG = 1;
-   isClickedR = 1;
+    isClickedT = 1;
+    isClickedG = 1;
+    isClickedR = 1;
     isClickedW = 1;
-   isClickedL = 1;
-   isClickedA = 1;
+    isClickedL = 1;
+    isClickedA = 1;
 
 
 
@@ -160,9 +160,9 @@ function updateTable() {
     var tr = d3.select("tbody").selectAll("tr")
         .data(tableElements)
 
-        tr.exit().remove();
+    tr.exit().remove();
 
-       var trEnter =  tr.enter().append("tr");
+    var trEnter =  tr.enter().append("tr");
 
     trEnter.append("th");
 
@@ -175,18 +175,18 @@ function updateTable() {
         return d.value.type;
     });
 
-        tr.on("click",function(d,i){
-            updateList(i);
+    tr.on("click",function(d,i){
+        updateList(i);
+    })
+
+    var th = tr.select("th")
+        .text(function(d){
+
+            if(d.value.type != "aggregate")
+                return 'x' +  d.key
+            else
+                return d.key;
         })
-
-  var th = tr.select("th")
-      .text(function(d){
-
-          if(d.value.type != "aggregate")
-            return 'x' +  d.key
-          else
-              return d.key;
-      })
 
     var td = tr.selectAll("td")
         .data(function(d){
@@ -203,7 +203,7 @@ function updateTable() {
     var tdEnter = td.enter().append('td');
     td = tdEnter.merge(td);
 
-  /* Text for the rounds */
+    /* Text for the rounds */
     tdEnter.text(function(d){
         if(d.vis == 'text'){
             return d.value;
@@ -211,7 +211,7 @@ function updateTable() {
     })
 
     td.filter(function(d){return d.vis == 'text'}).text(function(d){
-            return d.value;
+        return d.value;
 
     })
 
@@ -221,19 +221,19 @@ function updateTable() {
         return d.vis == 'bar'
     })
 
-        barChart.append("svg")
+    barChart.append("svg")
         .attr("width", cellWidth)
         .attr("height", cellHeight)
-            .append("rect")
+        .append("rect")
 
-        barChart.select("svg").append("text")
+    barChart.select("svg").append("text")
 
     var barChartNew =   td.filter(function (d) {
         return d.vis == 'bar'
     })
 
-        barChartNew.select("svg").select("rect")
-            .attr("width",function(d){
+    barChartNew.select("svg").select("rect")
+        .attr("width",function(d){
             return gameScale(d.value);
         })
         .attr("height",cellHeight)
@@ -259,11 +259,11 @@ function updateTable() {
 
     var goalChart =  tdEnter.filter(function (d) {
         return d.vis == 'goals'
-        })
-        goalChart.append("svg")
+    })
+    goalChart.append("svg")
         .attr("width", cellWidth*2)
         .attr("height", cellHeight)
-            .append("rect")
+        .append("rect")
 
 
     goalChart
@@ -339,7 +339,7 @@ function updateTable() {
             return goalScale(d.value.scored);
         })
         .attr("cy", 12.5)
-       // .attr("fill","#364e74")
+        // .attr("fill","#364e74")
         .attr("fill",function(d){
             if(d.type == 'aggregate'){
                 return "#364e74"
@@ -389,7 +389,6 @@ function updateTable() {
     var headersTeam = d3.select("th");
     headersTeam.on("click", function(d) {
         collapseList();
-        console.log(d3.select(this).text());
 
         tableElements.sort(function (a, b) {
             var nameA = a.key.toLowerCase(), nameB = b.key.toLowerCase();
@@ -411,8 +410,7 @@ function updateTable() {
         })
 
         if(d3.select(this).text() == 'Team' ){isClickedT++}
-        console.log(isClickedT);
-        console.log(tableElements);
+
         updateTable();
 
     })
@@ -423,9 +421,7 @@ function updateTable() {
     headers.on("click", function (d) {
         collapseList();
         sortClick = d3.select(this).text();
-        console.log(tableElements);
-        console.log("HEYHEHEHE:");
-        console.log(tableElements[0].value['Delta Goals'])
+
 
         tableElements.sort(function (a, b) {
 
@@ -444,7 +440,6 @@ function updateTable() {
             }
             else if(sortClick == 'Round/Result'){
                 if(isClickedR % 2 == 0){
-                    console.log(sortClick);
                     return a.value['Result'].ranking - b.value['Result'].ranking;
                 }
                 else
@@ -495,7 +490,6 @@ function updateTable() {
 
     d3.select("#matchTable").selectAll("tr")
         .on("mouseover",function(d,i){
-            console.log(d.key)
 
             if(d.value.type == 'aggregate')
             {
@@ -518,12 +512,12 @@ function updateTable() {
 function collapseList() {
 
     // ******* TODO: PART IV *******
-tableElements = [];
+    tableElements = [];
     for(var i=0; i < teamData.length; i++){
         tableElements.push(teamData[i]);
     }
 
-  updateTable();
+    updateTable();
 }
 
 /**
@@ -535,13 +529,13 @@ function updateList(i) {
     // ******* TODO: PART IV *******
 
 
-     if(tableElements[i+1].value.type != 'game'){
-         for(var j=0;j< tableElements[i].value.games.length; j++ ){
-             tableElements.splice(i+1,0,tableElements[i].value.games[j]);
-         }
-     }else{
-         tableElements.splice(i+1,tableElements[i].value.games.length )
-     }
+    if(tableElements[i+1].value.type != 'game'){
+        for(var j=0;j< tableElements[i].value.games.length; j++ ){
+            tableElements.splice(i+1,0,tableElements[i].value.games[j]);
+        }
+    }else{
+        tableElements.splice(i+1,tableElements[i].value.games.length )
+    }
     updateTable();
 
 }
@@ -578,13 +572,13 @@ function createTree(treeData) {
 
     tree(root);
 
-     link = g.selectAll(".link")
+    link = g.selectAll(".link")
         .data(root.descendants())
         .enter().append("path")
         .attr("class","link")
         .attr("d",function(d){
 
-          if(d.id == "Germany26")
+            if(d.id == "Germany26")
             {
                 return ''
             }else
@@ -615,7 +609,7 @@ function createTree(treeData) {
         .attr("x", function(d) { return d.children ? -8 : 8; })
         .style("text-anchor", function(d) { return d.children ? "end" : "start"; })
         .text(function(d) { return d.data['Team']; });
-    
+
 }
 
 
@@ -629,9 +623,9 @@ function updateTree(row) {
 
     // ******* TODO: PART VII *******
 
-   pathHighlight = link.filter(function(d){
-       return(d.data["Team"] == row && d.data['Wins'] == 1)
-   })
+    pathHighlight = link.filter(function(d){
+        return(d.data["Team"] == row && d.data['Wins'] == 1)
+    })
 
     pathHighlight.classed("selected",true);
 }

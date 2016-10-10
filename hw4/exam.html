@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DOM Manipulation</title>
+    <script src="https://d3js.org/d3.v4.js"></script>
+</head>
+
+
+<body>
+<svg height= "350" width= "800" >
+    <rect x= "150" y= "40" width= "100" height= "10" ></rect >
+    <rect x= "100" y= "120" width= "500" height= "120" ></rect >
+</svg >
+</body>
+
+
+
+<script>
+    var execute = function (data) {
+    var svg = d3
+    .select ( "svg" );
+    var selection = svg .selectAll( "rect" )
+    .data (data);
+
+
+
+        var enter_election = selection .enter(). append ( "rect" )
+                .attr( "x" , 10 ) // let's just put it somewhere
+                .attr( "y" , 10 )
+                .attr( "width" , 30 )
+                .attr( "height" , 30 )
+                .style ( "fill" , "white" );
+
+
+    selection
+        .attr("x" , 0 )
+        .attr("y" , function (d, i) {
+        return i * 40 + 50
+        })
+        .attr("width" , function (d) {
+        return d;
+        })
+        .attr("height", 20 )
+        .style("fill" , "red" )
+        };
+    // this is executed immediately (T1)
+
+    execute([ 300 , 200 , 100 , 10 ]);
+    // this is executed five seconds after the previous line (T2)
+
+    selection.exit().remove();
+
+    setTimeout ( function (){
+        execute([ 20 , 110 , 210 , 310 , 410 ]);
+    }, 2000 )
+
+
+</script >
+</html>
