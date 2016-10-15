@@ -85,36 +85,31 @@ console.log(self.electionWinners[0].YEAR);
 
     var svg = d3.selectAll("#year-chart svg")
 
-/*
-
 
     var data = self.electionWinners;
+
 
     var group = svg.selectAll("g")
         .data(data)
         .enter()
         .append("g")
 
+    var circles = group.append("circle")
+        .attr("cy", 25)
+        .attr("cx",function(d,i){
+            return i * 70 + 30;
+        })
+        .attr("r", 10)
 
- */
-    var circles = svg.selectAll("circle")
-               // .data([32,57,293] , function(d){ return d;});
-                .data(self.electionWinners)
+    var text = group.append("text")
+        .text(function(d,i){
+            return d.YEAR;
+        })
+        .attr("x",function(d,i){
+            return i* 70 + 10;
+        })
+        .attr("y",55)
 
-
-     circles.enter().append("circle")
-         .attr("cy", 25)
-         .attr("cx",function(d,i){
-             return i * 50 + 30;
-         })
-         .attr("r", 10)
-
-    circles.append("text")
-        .text("hello fuckers")
-
-
-
-  //console.log(self.electionWinners[1].YEAR);
 
     //Append text information of each year right below the corresponding circle
     //HINT: Use .yeartext class to style your text elements
