@@ -39,6 +39,8 @@ YearChart.prototype.init = function(){
 
 };
 
+
+
 /**
  * Returns the class that needs to be assigned to an element.
  *
@@ -85,9 +87,7 @@ console.log(self.electionWinners[0].YEAR);
 
     var svg = d3.selectAll("#year-chart svg")
 
-
     var data = self.electionWinners;
-
 
     var group = svg.selectAll("g")
         .data(data)
@@ -100,22 +100,37 @@ console.log(self.electionWinners[0].YEAR);
             return i * 70 + 30;
         })
         .attr("r", 10)
+        .attr("class","yearChart")
+
+
+
+    //Append text information of each year right below the corresponding circle
+    //HINT: Use .yeartext class to style your text elements
 
     var text = group.append("text")
         .text(function(d,i){
             return d.YEAR;
         })
         .attr("x",function(d,i){
-            return i* 70 + 10;
+            return i* 70 + 30;
         })
         .attr("y",55)
+        .attr("class","yeartext")
 
+    console.log('svgBounds: ' + self.svgBounds.width);
 
-    //Append text information of each year right below the corresponding circle
-    //HINT: Use .yeartext class to style your text elements
 
     //Style the chart by adding a dashed line that connects all these years.
     //HINT: Use .lineChart to style this dashed line
+
+    var line = svg.append("line")
+        .attr("x1",0)
+        .attr("y1",25)
+        .attr("x2",self.svgBounds.width)
+        .attr("y2",25)
+        .attr("stroke-width",2)
+        .attr("stroke","black")
+        .style("stroke-dasharray", ("3, 3"))
 
     //Clicking on any specific year should highlight that circle and  update the rest of the visualizations
     //HINT: Use .highlighted class to style the highlighted circle
