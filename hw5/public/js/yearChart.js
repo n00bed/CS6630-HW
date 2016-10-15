@@ -59,6 +59,8 @@ YearChart.prototype.chooseClass = function (party) {
     }
 }
 
+console.log(YearChart.prototype.chooseClass("R"))
+
 
 /**
  * Creates a chart with circles representing each election year, populates text content and other required elements for the Year Chart
@@ -83,29 +85,26 @@ YearChart.prototype.update = function(){
     //HINT: Use the .yearChart class to style your circle elements
     //HINT: Use the chooseClass method to choose the color corresponding to the winning party.
 
-console.log(self.electionWinners[0].YEAR);
+console.log(self.electionWinners);
 
     var svg = d3.selectAll("#year-chart svg")
 
     var data = self.electionWinners;
+
+    var line = svg.append("line")
+        .attr("x1",0)
+        .attr("y1",40)
+        .attr("x2",self.svgBounds.width)
+        .attr("y2",40)
+        .attr("stroke-width",1)
+        .attr("stroke","black")
+        .style("stroke-dasharray", ("1, 1"))
 
     var group = svg.selectAll("g")
         .data(data)
         .enter()
         .append("g")
 
-    var circles = group.append("circle")
-        .attr("cy", 25)
-        .attr("cx",function(d,i){
-            return i * 70 + 30;
-        })
-        .attr("r", 10)
-        .attr("class","yearChart")
-
-
-
-    //Append text information of each year right below the corresponding circle
-    //HINT: Use .yeartext class to style your text elements
 
     var text = group.append("text")
         .text(function(d,i){
@@ -114,8 +113,36 @@ console.log(self.electionWinners[0].YEAR);
         .attr("x",function(d,i){
             return i* 70 + 30;
         })
-        .attr("y",55)
+        .attr("y",90)
         .attr("class","yeartext")
+
+    var circles = group.append("circle")
+        .attr("cy", 40)
+        .attr("cx",function(d,i){
+            return i * 70 + 30;
+        })
+        .attr("r", 10)
+        .attr("class",function(d){
+           return YearChart.prototype.chooseClass(d.PARTY);
+        })
+        .on("mouseover",function(){
+            d3.select(this)
+                .classed("highlighted",true)
+        })
+        .on("mouseout",function(){
+            d3.select(this)
+                .classed("highlighted",false)
+        })
+        .on("click",function(){
+            d3.select('.selected').classed('selected', false);
+            d3.select(this).classed('selected', true);
+
+        })
+
+
+    //Append text information of each year right below the corresponding circle
+    //HINT: Use .yeartext class to style your text elements
+
 
     console.log('svgBounds: ' + self.svgBounds.width);
 
@@ -123,14 +150,6 @@ console.log(self.electionWinners[0].YEAR);
     //Style the chart by adding a dashed line that connects all these years.
     //HINT: Use .lineChart to style this dashed line
 
-    var line = svg.append("line")
-        .attr("x1",0)
-        .attr("y1",25)
-        .attr("x2",self.svgBounds.width)
-        .attr("y2",25)
-        .attr("stroke-width",2)
-        .attr("stroke","black")
-        .style("stroke-dasharray", ("3, 3"))
 
     //Clicking on any specific year should highlight that circle and  update the rest of the visualizations
     //HINT: Use .highlighted class to style the highlighted circle
