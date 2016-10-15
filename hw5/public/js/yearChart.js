@@ -17,6 +17,7 @@ function YearChart(electoralVoteChart, tileChart, votePercentageChart, electionW
     self.init();
 };
 
+
 /**
  * Initializes the svg elements required for this chart
  */
@@ -79,6 +80,41 @@ YearChart.prototype.update = function(){
     //The circles should be colored based on the winning party for that year
     //HINT: Use the .yearChart class to style your circle elements
     //HINT: Use the chooseClass method to choose the color corresponding to the winning party.
+
+console.log(self.electionWinners[0].YEAR);
+
+    var svg = d3.selectAll("#year-chart svg")
+
+/*
+
+
+    var data = self.electionWinners;
+
+    var group = svg.selectAll("g")
+        .data(data)
+        .enter()
+        .append("g")
+
+
+ */
+    var circles = svg.selectAll("circle")
+               // .data([32,57,293] , function(d){ return d;});
+                .data(self.electionWinners)
+
+
+     circles.enter().append("circle")
+         .attr("cy", 25)
+         .attr("cx",function(d,i){
+             return i * 50 + 30;
+         })
+         .attr("r", 10)
+
+    circles.append("text")
+        .text("hello fuckers")
+
+
+
+  //console.log(self.electionWinners[1].YEAR);
 
     //Append text information of each year right below the corresponding circle
     //HINT: Use .yeartext class to style your text elements
