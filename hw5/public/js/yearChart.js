@@ -59,7 +59,7 @@ YearChart.prototype.chooseClass = function (party) {
     }
 }
 
-console.log(YearChart.prototype.chooseClass("R"))
+//console.log(YearChart.prototype.chooseClass("R"))
 
 
 /**
@@ -85,7 +85,7 @@ YearChart.prototype.update = function(){
     //HINT: Use the .yearChart class to style your circle elements
     //HINT: Use the chooseClass method to choose the color corresponding to the winning party.
 
-console.log(self.electionWinners);
+//console.log(self.electionWinners);
 
     var svg = d3.selectAll("#year-chart svg")
 
@@ -144,6 +144,7 @@ console.log(self.electionWinners);
               //  yearChart.update();
                 ElectoralVoteChart.prototype.update(electionResult, self.colorScale);
             });
+
         })
 
 

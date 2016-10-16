@@ -30,21 +30,18 @@
     function cumulChart(id, dataset, party) {
         //Width and height
 
-        console.log("before stacking");
-        console.log(dataset);
         var m = {top: 10, right: 10, bottom: 10, left: 10}, // margins
                 h = 150 - m.left - m.right, // height
                 w = 960 - m.top - m.bottom; // width
 
         //Set up stack method
-        var stack = d3.layout.stack();
-
-
+        //var stack = d3.layout.stack();
 
         //Data, stacked
-        stack(dataset);
+//        stack(dataset);
 
-
+        console.log("Look at that stack fucking working, why does my not work?")
+        console.log(stack(dataset));
 
         //Set up scales
         var xScale = d3.scale.ordinal()
@@ -74,8 +71,8 @@
                 .data(function(d) { return d; })
                 .enter()
                 .append("rect")
-                .attr("class", "stacked")
-                .attr("stacked_state", function(d) { return "st"+d.state; })
+              //  .attr("class", "stacked")
+              //  .attr("stacked_state", function(d) { return "st"+d.state; })
                 .attr("x", function(d) {
                     return yScale(d.y0);
                 })
@@ -117,8 +114,6 @@
     } // cumulChart()
 
     d3.json("rep_stacked.json", function(data){
-        console.log("very first time:")
-        console.log(data);
         cumulChart("#stacked-rep", data, "republicans");
     });
 
