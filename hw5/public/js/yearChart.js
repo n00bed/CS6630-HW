@@ -115,6 +115,7 @@ console.log(self.electionWinners);
         })
         .attr("y",90)
         .attr("class","yeartext")
+        .attr("id","year")
 
     var circles = group.append("circle")
         .attr("cy", 40)
@@ -133,10 +134,16 @@ console.log(self.electionWinners);
             d3.select(this)
                 .classed("highlighted",false)
         })
-        .on("click",function(){
+        .on("click",function(d){
             d3.select('.selected').classed('selected', false);
             d3.select(this).classed('selected', true);
+           // ElectoralVoteChart.prototype.update(d.YEAR, self.colorScale) ;
 
+            d3.csv("data/Year_Timeline_"+d.YEAR+".csv", function (error, electionResult) {
+                //pass the instances of all the charts that update on selection change in YearChart
+              //  yearChart.update();
+                ElectoralVoteChart.prototype.update(electionResult, self.colorScale);
+            });
         })
 
 
@@ -144,7 +151,6 @@ console.log(self.electionWinners);
     //HINT: Use .yeartext class to style your text elements
 
 
-    console.log('svgBounds: ' + self.svgBounds.width);
 
 
     //Style the chart by adding a dashed line that connects all these years.

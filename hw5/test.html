@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>US2016</title>
+    <!-- d3 and plugins -->
+    <script src="d3.min.js"></script>
+    <!-- custom css -->
+    <style type="text/css">
+        body {
+            font: 10px sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+<h4>The Republican delegates count (April 2016)</h4>
+<div id="stacked-rep"></div>
+
+<script>
+
+    var repColors = ['#403153','#9e7742','#0084ab','#e30513'];
+    var repColorsLight = ['#e5dae7','#deba96','#c5d7e9','#f6b89f'];
+    var repCandidates = ["Trump", "Cruz", "Rubio", "Kasich"];
+
+    function cumulChart(id, dataset, party) {
+        //Width and height
+
+        console.log("before stacking");
+        console.log(dataset);
+        var m = {top: 10, right: 10, bottom: 10, left: 10}, // margins
+                h = 150 - m.left - m.right, // height
+                w = 960 - m.top - m.bottom; // width
+
+        //Set up stack method
+        var stack = d3.layout.stack();
+
+
+
+        //Data, stacked
+        stack(dataset);
+
+
+
+        //Set up scales
+        var xScale = d3.scale.ordinal()
+                .domain(d3.range(dataset[0].length))
+                .rangeRoundBands([0, h], 0.2); // This is actually the Y scale (candidates)
+        var yScale = d3.scale.linear()
+                .domain([0, 1237])
+                .range([0, w]); // This is actually the X Scale (States)
+
+        //Create SVG element
+        var svg = d3.select(id)
+                .append("svg")
+                .attr("width", w)
+                .attr("height", h);
+
+        // Add a group for each row of data
+        var groups = svg.selectAll("g")
+                .data(dataset)
+                .enter()
+                .append("g")
+                .attr("class", "g_stacked "+party)
+                .attr("transform", "translate(" + m.left + ",0)");
+
+        // Add a rect for each data value
+        var rects = groups
+                .selectAll("rect")
+                .data(function(d) { return d; })
+                .enter()
+                .append("rect")
+                .attr("class", "stacked")
+                .attr("stacked_state", function(d) { return "st"+d.state; })
+                .attr("x", function(d) {
+                    return yScale(d.y0);
+                })
+                .attr("y", function(d, i) {
+                    return xScale(i);
+                })
+                .attr("width", function(d) {
+                    return yScale(d.y);
+                })
+                .attr("height", xScale.rangeBand())
+                .style("fill", function(d, i) {
+                    return repColorsLight[i];
+                })
+                .style("stroke", function(d, i) {
+                    return repColors[i];
+                })
+                .on("mouseover", function(d) {
+                    console.log(d.state);
+                });
+
+        rects.append("title")
+                .text(function(d){ return d.y+" delegates for "+d.x+" in State number: "+d.state; });
+
+        svg.append("line")
+                .attr("x1", w)
+                .attr("y1", 0)
+                .attr("x2", w)
+                .attr("y2", h)
+                .style("stroke", "#333")
+                .style("stroke-width", 1)
+                .style("stroke-dasharray", 3);
+        svg.append("text")
+                .attr("x", w-10)
+                .attr("y", 10)
+                .style("text-anchor", "end")
+                .style("fill", "#333")
+                .text("1237 delegates to win");
+
+    } // cumulChart()
+
+    d3.json("rep_stacked.json", function(data){
+        console.log("very first time:")
+        console.log(data);
+        cumulChart("#stacked-rep", data, "republicans");
+    });
+
+</script>
+</body>
+</html>

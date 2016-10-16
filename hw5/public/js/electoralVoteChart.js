@@ -57,14 +57,52 @@ ElectoralVoteChart.prototype.chooseClass = function (party) {
 ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
     var self = this;
 
+
+    var stack = d3.stack();
     // ******* TODO: PART II *******
 
     //Group the states based on the winning party for the state;
     //then sort them based on the margin of victory
 
+    var stackData = [];
+
+    for(k=0; k<electionResult.length; k++){
+        stackData.push([{state:electionResult[k].State, x:electionResult[k].Year, y:electionResult[k].Total_EV}]);
+    }
+
+     stack(stackData);
+
+    console.log("This is the new array stackData");
+    console.log(stackData);
+    //console.log("length of electionresult:" + electionResult.length);
+
+
     //Create the stacked bar chart.
     //Use the global color scale to color code the rectangles.
     //HINT: Use .electoralVotes class to style your bars.
+
+    //Set up scales
+    var xScale = d3.scaleOrdinal()
+        .domain(d3.range(stackData[0].length))
+     //   .rangeRoundBands([0, 150], 0.2); // This is actually the Y scale (candidates)
+    var yScale = d3.scaleLinear()
+        .domain([0, self.svgWidth])
+        .range([0, self.svgWidth-20]); // This is actually the X Scale (States)
+
+
+    //console.log(electionResult);
+
+    var svg = d3.select("#electoral-vote svg");
+
+
+    svg.append("circle")
+        .attr("cy", 40)
+        .attr("cx",100)
+        .attr("r", 10)
+    var data = electionResult;
+
+
+
 
     //Display total count of electoral votes won by the Democrat and Republican party
     //on top of the corresponding groups of bars.
