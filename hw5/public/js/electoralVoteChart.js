@@ -58,8 +58,6 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
 
     var self = this;
 
-
-
     // ******* TODO: PART II *******
 
     //Group the states based on the winning party for the state;
@@ -67,23 +65,15 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
     var stackData = [];
 
     for(k=0; k<electionResult.length; k++){
-        stackData.push([{id:electionResult[k].State, x:electionResult[k].Year, y:electionResult[k].Total_EV}]);
+        stackData.push([{diff:electionResult[k].RD_Difference,id:electionResult[k].State, x:electionResult[k].Year, y:electionResult[k].Total_EV}]);
     }
-    var stack = d3.stack();
-
-    console.log(stack);
-
-    console.log("stack data printing:");
-
-    console.log(stack(stackData));
-
-    stack(stackData);
-
 
 
     //Create the stacked bar chart.
     //Use the global color scale to color code the rectangles.
     //HINT: Use .electoralVotes class to style your bars.
+
+
 
     //Set up scales
     var xScale = d3.scaleOrdinal()
@@ -96,65 +86,63 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
 
     //console.log(electionResult);
 
-    var svg = d3.select("#electoral-vote svg");
+
+
+
+    d3.selectAll("#electoral-vote svg g").remove();
+
+    var svg = d3.selectAll("#electoral-vote svg");
 
     // Add a group for each row of data
-    var groups = svg.selectAll("g")
+    var groups = svg.selectAll("#electoral-vote")
         .data(stackData)
-        .enter()
+
+
+    var groupsEnter = groups.enter()
         .append("g")
-
-    var x0 = 0;
-    // Add a rect for each data value
-   // groups.exit().remove();
+        .classed("electoralVotes",true);
 
 
-    var rects = groups
-        .selectAll("rect")
-        .data(function(d) { return d; })
-        .enter()
-        .append("rect")
+    groups.exit().remove();
 
-
-       rects.attr("x",function(d,i){
-           x0 = +x0 + +d.y + 2;
-            return x0;
-        })
+    groupsEnter.append("rect")
+        .attr("x",function(d,i){
+            return (i*10) + 10;
+    })
         .attr("y", 70)
         .attr("width",function(d,i){
-            return d.y;
-           // return d[i].y;
+            
+            return d[0].y;
+            // return d[i].y;
         })
         .attr("height", 50)
-       // .attr("class","electoralVotes")
+        // .attr("class","electoralVotes")
         .attr("class",function(d,i){
-            if(d.y >0){
+            if(d[0].diff >0){
                 return "republican"
             }
-            else if(d[0].y<0){
+            else if(d[0].diff<0){
                 return "democrat"
             }
             else {
                 return "independent";
             }
-        }).attr("id", "deleteLater");
+        })
 
 
 
-    d3.selectAll("#deleteLater").attr("opacity",1)
-        .transition()
-        .duration(2000)
-        .attr("opacity",0).remove();
+    groups = groups.merge(groupsEnter);
 
 
 
+    groups.select("rect")
+        .transition().duration(2000)
+        .attr("width", function (d) {
+            return d[0].y;
+        })
+        .attr("opacity", 1)
 
 
-
-    //svg.append("circle")
-    //    .attr("cy", 40)
-    //    .attr("cx",100)
-    //    .attr("r", 10)
 
 
 

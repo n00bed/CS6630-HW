@@ -35,10 +35,10 @@
                 w = 960 - m.top - m.bottom; // width
 
         //Set up stack method
-        //var stack = d3.layout.stack();
+        var stack = d3.layout.stack();
 
-        //Data, stacked
-//        stack(dataset);
+
+        stack(dataset);
 
         console.log("Look at that stack fucking working, why does my not work?")
         console.log(stack(dataset));
