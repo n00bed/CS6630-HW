@@ -63,10 +63,15 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
     //Group the states based on the winning party for the state;
     //then sort them based on the margin of victory
     var stackData = [];
-
+    var x0 = 0;
     for(k=0; k<electionResult.length; k++){
-        stackData.push([{diff:electionResult[k].RD_Difference,id:electionResult[k].State, x:electionResult[k].Year, y:electionResult[k].Total_EV}]);
+        stackData.push([{diff:electionResult[k].RD_Difference,id:electionResult[k].State, x:electionResult[k].Year, y:electionResult[k].Total_EV, y0:x0}]);
+        x0 = x0 + +electionResult[k].Total_EV;
     }
+
+
+    console.log("printing stackData:");
+   console.log(stackData);
 
 
     //Create the stacked bar chart.
@@ -75,23 +80,17 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
 
 
 
-    //Set up scales
-    var xScale = d3.scaleOrdinal()
-        .domain(d3.range(stackData[0].length))
-     //   .rangeRoundBands([0, 150], 0.2); // This is actually the Y scale (candidates)
-    var yScale = d3.scaleLinear()
-        .domain([0, self.svgWidth])
-        .range([0, self.svgWidth-20]); // This is actually the X Scale (States)
-
-
     //console.log(electionResult);
-
-
 
 
     d3.selectAll("#electoral-vote svg g").remove();
 
     var svg = d3.selectAll("#electoral-vote svg");
+
+
+    var yScale = d3.scaleLinear()
+        .domain([0, 576])
+        .range([0, svg.node().getBoundingClientRect().width-20]);
 
     // Add a group for each row of data
     var groups = svg.selectAll("#electoral-vote")
@@ -107,13 +106,15 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
 
     groupsEnter.append("rect")
         .attr("x",function(d,i){
-            return (i*10) + 10;
+            console.log("yo scaled  "  + yScale(d[0].y0));
+            return yScale(d[0].y0)
+            //return d[0].y0 ;
     })
         .attr("y", 70)
         .attr("width",function(d,i){
-            
-            return d[0].y;
-            // return d[i].y;
+
+            return yScale(d[0].y);
+            //return d[0].y;
         })
         .attr("height", 50)
         // .attr("class","electoralVotes")
@@ -127,20 +128,37 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
             else {
                 return "independent";
             }
-        })
+        });
 
-
+    groupsEnter.append("text");
 
     groups = groups.merge(groupsEnter);
 
 
-
-    groups.select("rect")
+    groups.selectAll("rect")
         .transition().duration(2000)
         .attr("width", function (d) {
-            return d[0].y;
+            return yScale(d[0].y)
+            //return d[0].y;
         })
         .attr("opacity", 1)
+
+
+    groups.append("line")
+        .attr("x1", svg.node().getBoundingClientRect().width/2)
+        .attr("y1", 60)
+        .attr("x2", svg.node().getBoundingClientRect().width/2)
+        .attr("y2", 140)
+        .classed("middlePoint",true)
+       // .style("stroke", "#333")
+        //.style("stroke-width", 1)
+
+    groups.append("text")
+        .text("Electoral vote(270 needed to win)")
+        .attr("x",svg.node().getBoundingClientRect().width/2 - 50)
+        .attr("y",50)
+        .classed("electoralVotesNote", true);
+
 
 
 

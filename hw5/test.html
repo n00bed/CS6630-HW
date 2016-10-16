@@ -47,9 +47,7 @@
         var xScale = d3.scale.ordinal()
                 .domain(d3.range(dataset[0].length))
                 .rangeRoundBands([0, h], 0.2); // This is actually the Y scale (candidates)
-        var yScale = d3.scale.linear()
-                .domain([0, 1237])
-                .range([0, w]); // This is actually the X Scale (States)
+         // This is actually the X Scale (States)
 
         //Create SVG element
         var svg = d3.select(id)
@@ -74,12 +72,14 @@
               //  .attr("class", "stacked")
               //  .attr("stacked_state", function(d) { return "st"+d.state; })
                 .attr("x", function(d) {
+                   // return d.y0;
                     return yScale(d.y0);
                 })
                 .attr("y", function(d, i) {
                     return xScale(i);
                 })
                 .attr("width", function(d) {
+                   // return d.y;
                     return yScale(d.y);
                 })
                 .attr("height", xScale.rangeBand())
