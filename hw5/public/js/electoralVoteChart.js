@@ -69,7 +69,7 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
         x0 = x0 + +electionResult[k].Total_EV;
     }
 
-
+    console.log(electionResult);
     console.log("printing stackData:");
    console.log(stackData);
 
@@ -80,7 +80,7 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
 
 
 
-    //console.log(electionResult);
+
 
 
     d3.selectAll("#electoral-vote svg g").remove();
@@ -106,7 +106,6 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
 
     groupsEnter.append("rect")
         .attr("x",function(d,i){
-            console.log("yo scaled  "  + yScale(d[0].y0));
             return yScale(d[0].y0)
             //return d[0].y0 ;
     })
