@@ -69,18 +69,46 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
         x0 = x0 + +electionResult[k].Total_EV;
     }
 
-    console.log(electionResult);
-    console.log("printing stackData:");
-   console.log(stackData);
+    var ind = [];
+    var dem = [];
+    var rep = [];
+
+    for(k=0; k<stackData.length; k++){
+        if(stackData[k][0].diff == 0){
+            ind.push(stackData[k]);
+        }
+        else if (stackData[k][0].diff < 0){
+            dem.push(stackData[k]);
+        }else
+        {
+            rep.push(stackData[k]);
+        }
+    }
+
+    ind.sort(function(a, b) {
+        return parseFloat(b[0].y) - parseFloat(a[0].y);
+    });
+
+    dem.sort(function(a, b) {
+        return parseFloat(b[0].y) - parseFloat(a[0].y);
+    });
+
+    rep.sort(function(a, b) {
+        return parseFloat(a[0].y) - parseFloat(b[0].y);
+    });
+
+
+    var stackDataNew = []
+    stackDataNew = ind.concat(dem,rep);
+
+
+    console.log(stackDataNew);
+
 
 
     //Create the stacked bar chart.
     //Use the global color scale to color code the rectangles.
     //HINT: Use .electoralVotes class to style your bars.
-
-
-
-
 
 
     d3.selectAll("#electoral-vote svg g").remove();
@@ -94,7 +122,7 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
 
     // Add a group for each row of data
     var groups = svg.selectAll("#electoral-vote")
-        .data(stackData)
+        .data(stackDataNew);
 
 
     var groupsEnter = groups.enter()
@@ -106,14 +134,15 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
 
     groupsEnter.append("rect")
         .attr("x",function(d,i){
+           // return d[0].y0 ;
             return yScale(d[0].y0)
-            //return d[0].y0 ;
+
     })
         .attr("y", 70)
         .attr("width",function(d,i){
 
-            return yScale(d[0].y);
             //return d[0].y;
+            return yScale(d[0].y);
         })
         .attr("height", 50)
         // .attr("class","electoralVotes")
@@ -127,7 +156,9 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
             else {
                 return "independent";
             }
-        });
+        }).on("mouseover", function(d) {
+            console.log(d[0].y );
+    })
 
     groupsEnter.append("text");
 
@@ -137,8 +168,9 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
     groups.selectAll("rect")
         .transition().duration(2000)
         .attr("width", function (d) {
+           // return d[0].y;
             return yScale(d[0].y)
-            //return d[0].y;
+
         })
         .attr("opacity", 1)
 
