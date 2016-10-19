@@ -64,9 +64,10 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
     //then sort them based on the margin of victory
     var stackData = [];
     var x0 = 0;
+
     for(k=0; k<electionResult.length; k++){
         stackData.push([{diff:electionResult[k].RD_Difference,id:electionResult[k].State, x:electionResult[k].Year, y:electionResult[k].Total_EV, y0:x0}]);
-        x0 = x0 + +electionResult[k].Total_EV;
+      //  x0 = x0 + +electionResult[k].Total_EV;
     }
 
     var ind = [];
@@ -86,38 +87,62 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
     }
 
     ind.sort(function(a, b) {
-        return parseFloat(b[0].y) - parseFloat(a[0].y);
+        return parseFloat(b[0].diff) - parseFloat(a[0].diff);
     });
 
     dem.sort(function(a, b) {
-        return parseFloat(b[0].y) - parseFloat(a[0].y);
+        //return parseFloat(b[0].diff) - parseFloat(a[0].diff);
+       return parseFloat(a[0].diff)  - parseFloat(b[0].diff)
     });
 
     rep.sort(function(a, b) {
-        return parseFloat(a[0].y) - parseFloat(b[0].y);
+        return parseFloat(a[0].diff) - parseFloat(b[0].diff);
     });
 
 
     var stackDataNew = []
     stackDataNew = ind.concat(dem,rep);
 
+    totalEvI = 0;
+    totalEvD = 0;
+    totalEvR = 0;
+
+    for(l=0; l<stackDataNew.length; l++){
+        stackDataNew[l][0].y0 = x0 ;
+        x0 = x0 + +stackDataNew[l][0].y;
+
+        if(stackDataNew[l][0].diff < 0){
+            totalEvD += +stackDataNew[l][0].y;
+
+        }
+        else if(stackDataNew[l][0].diff > 0){
+            totalEvR += +stackDataNew[l][0].y;
+
+        }
+        else{
+
+            totalEvI += +stackDataNew[l][0].y;
+        }
+    }
+
+   console.log("All the total EVs  " + totalEvI +" "+ totalEvD + " " + totalEvR  )
+
 
     console.log(stackDataNew);
-
-
 
     //Create the stacked bar chart.
     //Use the global color scale to color code the rectangles.
     //HINT: Use .electoralVotes class to style your bars.
 
-
     d3.selectAll("#electoral-vote svg g").remove();
+    d3.selectAll("#electoral-vote svg text").remove();
+
 
     var svg = d3.selectAll("#electoral-vote svg");
 
 
     var yScale = d3.scaleLinear()
-        .domain([0, 576])
+        .domain([0, (totalEvD+totalEvI+totalEvR)]) //changes this to be some of total electoral votes
         .range([0, svg.node().getBoundingClientRect().width-20]);
 
     // Add a group for each row of data
@@ -130,7 +155,7 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
         .classed("electoralVotes",true);
 
 
-    groups.exit().remove();
+    //groups.exit().remove();
 
     groupsEnter.append("rect")
         .attr("x",function(d,i){
@@ -156,11 +181,17 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
             else {
                 return "independent";
             }
-        }).on("mouseover", function(d) {
-            console.log(d[0].y );
+        })
+        .style("fill", function(d){
+            if(d[0].diff != 0 )
+            return colorScale(d[0].diff)}
+
+            )
+        .on("mouseover", function(d) {
+            console.log(d[0].y +", diff value" + d[0].diff  );
     })
 
-    groupsEnter.append("text");
+
 
     groups = groups.merge(groupsEnter);
 
@@ -180,9 +211,9 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
         .attr("y1", 60)
         .attr("x2", svg.node().getBoundingClientRect().width/2)
         .attr("y2", 140)
-        .classed("middlePoint",true)
-       // .style("stroke", "#333")
-        //.style("stroke-width", 1)
+        //.classed("middlePoint",true)
+        .style("stroke", "#333")
+        .style("stroke-width", 1)
 
     groups.append("text")
         .text("Electoral vote(270 needed to win)")
@@ -190,11 +221,42 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
         .attr("y",50)
         .classed("electoralVotesNote", true);
 
+    svg.append("text")
+        .text(function(){
+            if(totalEvI == 0){
+                return "";
+            } else
+            {
+                return totalEvI;
+            }
+        })
+        .attr("x",10)
+        .attr("y","50")
+        .classed("independent", true);
+
+    svg.append("text")
+        .text(totalEvD)
+        .attr("x", function(){
+
+            if(totalEvI == 0){
+                return 10;
+            } else
+            {
+                return totalEvI + 50;
+            }
+
+        })
+        .attr("y","50")
+        .classed("democrat", true);;
+
+    svg.append("text")
+        .text(totalEvR)
+        .attr("x",yScale(totalEvI + totalEvD + totalEvR))
+        .attr("y","50")
+        .classed("republican", true);
 
 
-
-
-
+  // groups.exit().remove;
 
     //Display total count of electoral votes won by the Democrat and Republican party
     //on top of the corresponding groups of bars.
@@ -207,6 +269,8 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
     //Just above this, display the text mentioning the total number of electoral votes required
     // to win the elections throughout the country
     //HINT: Use .electoralVotesNote class to style this text element
+
+
 
     //HINT: Use the chooseClass method to style your elements based on party wherever necessary.
 

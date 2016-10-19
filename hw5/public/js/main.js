@@ -26,6 +26,7 @@
             var yearChart = new YearChart(electoralVoteChart, tileChart, votePercentageChart, electionWinners);
             yearChart.update();
         });
+
     }
 
 

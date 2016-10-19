@@ -117,6 +117,8 @@ YearChart.prototype.update = function(){
         .attr("class","yeartext")
         .attr("id","year")
 
+    //var electoralVoteChart = new ElectoralVoteChart();
+
     var circles = group.append("circle")
         .attr("cy", 40)
         .attr("cx",function(d,i){
@@ -140,10 +142,16 @@ YearChart.prototype.update = function(){
            // ElectoralVoteChart.prototype.update(d.YEAR, self.colorScale) ;
 
             d3.csv("data/Year_Timeline_"+d.YEAR+".csv", function (error, electionResult) {
-                //pass the instances of all the charts that update on selection change in YearChart
-              //  yearChart.update();
-                ElectoralVoteChart.prototype.update(electionResult, self.colorScale);
-            });
+
+              //  ElectoralVoteChart.prototype.update(electionResult, self.colorScale);
+
+                self.electoralVoteChart.update(electionResult, self.colorScale);
+
+
+                self.votePercentageChart.update(electionResult);
+
+           });
+
 
         })
 
