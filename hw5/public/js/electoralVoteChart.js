@@ -125,15 +125,13 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
         }
     }
 
-   console.log("All the total EVs  " + totalEvI +" "+ totalEvD + " " + totalEvR  )
 
 
-    console.log(stackDataNew);
+    //console.log(stackDataNew);
 
     //Create the stacked bar chart.
     //Use the global color scale to color code the rectangles.
     //HINT: Use .electoralVotes class to style your bars.
-
     d3.selectAll("#electoral-vote svg g").remove();
     d3.selectAll("#electoral-vote svg text").remove();
 
@@ -215,9 +213,9 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
         .style("stroke", "#333")
         .style("stroke-width", 1)
 
-    groups.append("text")
+    svg.append("text")
         .text("Electoral vote(270 needed to win)")
-        .attr("x",svg.node().getBoundingClientRect().width/2 - 50)
+        .attr("x",svg.node().getBoundingClientRect().width/2 )
         .attr("y",50)
         .classed("electoralVotesNote", true);
 
@@ -230,7 +228,7 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
                 return totalEvI;
             }
         })
-        .attr("x",10)
+        .attr("x",0)
         .attr("y","50")
         .classed("independent", true);
 
@@ -242,12 +240,12 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
                 return 10;
             } else
             {
-                return totalEvI + 50;
+                return yScale(totalEvI) + 20;
             }
 
         })
         .attr("y","50")
-        .classed("democrat", true);;
+        .classed("democrat", true);
 
     svg.append("text")
         .text(totalEvR)

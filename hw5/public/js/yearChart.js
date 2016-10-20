@@ -147,8 +147,8 @@ YearChart.prototype.update = function(){
 
                 self.electoralVoteChart.update(electionResult, self.colorScale);
 
-
                 self.votePercentageChart.update(electionResult);
+
 
            });
 

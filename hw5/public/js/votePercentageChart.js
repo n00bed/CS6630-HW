@@ -2,7 +2,6 @@
  * Constructor for the Vote Percentage Chart
  */
 function VotePercentageChart(){
-
     var self = this;
     self.init();
 };
@@ -68,26 +67,6 @@ VotePercentageChart.prototype.tooltip_render = function (tooltip_data) {
 VotePercentageChart.prototype.update = function(electionResult){
     var self = this;
 
-    //Use this tool tip element to handle any hover over the chart
-    tip = d3.tip().attr('class', 'd3-tip')
-        .direction('s')
-        .offset(function() {
-            return [0,0];
-        })
-        .html(function(d) {
-            /* populate data in the following format
-             * tooltip_data = {
-             * "result":[
-             * {"nominee": D_Nominee_prop,"votecount": D_Votes,"percentage": D_Percentage,"party":"D"} ,
-             * {"nominee": R_Nominee_prop,"votecount": R_Votes,"percentage": R_Percentage,"party":"R"} ,
-             * {"nominee": I_Nominee_prop,"votecount": I_Votes,"percentage": I_Percentage,"party":"I"}
-             * ]
-             * }
-             * pass this as an argument to the tooltip_render function then,
-             * return the HTML content returned from that method.
-             * */
-            return ;
-        });
 
 
     // ******* TODO: PART III *******
@@ -95,6 +74,249 @@ VotePercentageChart.prototype.update = function(electionResult){
     //Create the stacked bar chart.
     //Use the global color scale to color code the rectangles.
     //HINT: Use .votesPercentage class to style your bars.
+
+
+
+   //console.log((electionResult[0].I_PopularPercentage));
+
+
+    var voteData = [[{vPOP: electionResult[0].I_PopularPercentage,diff:0,y0:0,vNominee:electionResult[0].I_Nominee},
+                    {vPOP:electionResult[0].D_PopularPercentage,diff:-1,y0:0,vNominee:electionResult[0].D_Nominee},
+                    {vPOP:electionResult[0].R_PopularPercentage,diff:1,y0:"",vNominee:electionResult[0].R_Nominee}]];
+
+
+
+     tracker = 0;
+
+    for(l=0; l<voteData[0].length; l++){
+       if(voteData[0][l].vPOP == "" ){
+
+           voteData[0][l].y0 = 0 ;
+           tracker = tracker + 0;
+
+       }else{
+           voteData[0][l].y0 = tracker ;
+           tracker = tracker + +parseFloat(voteData[0][l].vPOP);
+       }
+    }
+
+    iVote = voteData[0][0].vPOP;
+    dVote = voteData[0][1].vPOP;
+    rVote = voteData[0][2].vPOP;
+
+    iNominee = voteData[0][0].vNominee;
+    dNominee = voteData[0][1].vNominee;
+    rNominee = voteData[0][2].vNominee;
+
+
+
+    //Use this tool tip element to handle any hover over the chart
+    tip = d3.tip().attr('class', 'd3-tip')
+        .direction('s')
+        .offset(function() {
+            return [0,0];
+        })
+        .html(function(d) {
+            tooltip_data = {
+                "result":[
+                    {"nominee": dNominee,"votecount": dVote,"percentage": dVote,"party":"D"} ,
+                    {"nominee": rNominee,"votecount": rVote,"percentage": rVote,"party":"R"} ,
+                    {"nominee": iNominee,"votecount": iVote,"percentage": iVote,"party":"I"}
+                ]
+            }
+            /* pass this as an argument to the tooltip_render function then,
+             * return the HTML content returned from that method.
+             * */
+            return ;
+        });
+
+
+   // console.log("hello oh hello oh one more hello");
+
+    d3.selectAll("#votes-percentage g").remove();
+    d3.selectAll("#votes-percentage svg text").remove();
+
+    var svg = d3.select("#votes-percentage svg");
+
+    var yScale = d3.scaleLinear()
+        .domain([0, 100]) //changes this to be some of total electoral votes
+        .range([0, svg.node().getBoundingClientRect().width-20]);
+
+
+    // Add a group for each row of data
+    var groups = svg.selectAll("#votes-percentage")
+        //.data([electionResult[0].I_PopularPercentage,electionResult[0].D_PopularPercentage,electionResult[0].R_PopularPercentage]);
+        .data(voteData[0]);
+
+    var groupsEnter = groups.enter()
+        .append("g")
+        .classed("electoralVotes",true);
+
+
+    groups = groups.merge(groupsEnter);
+
+
+
+    groupsEnter.append("rect")
+        .attr("x",function(d,i){
+          //  return yScale(d[0].y0)
+            console.log("from inside:")
+            console.log(d.y0);
+             return yScale(d.y0);
+        })
+        .attr("y", 110)
+        .attr("width",function(d,i){
+
+
+            if((d.vPOP) == ""){
+                 console.log("I made inside when I am blank:")
+                console.log(0);
+                return 0;
+            }
+            else{
+                return(yScale(parseFloat(d.vPOP)))
+            }
+        })
+        .attr("height", 50)
+        .attr("class",function(d,i){
+            if(d.diff >0){
+                return "republican"
+            }
+            else if(d.diff<0){
+                return "democrat"
+            }
+            else {
+                return "independent";
+            }
+        })
+
+
+
+  //  parseFloat(percent) / 100.0
+
+//Drawing middle line
+    groups.append("line")
+        .attr("x1", svg.node().getBoundingClientRect().width/2)
+        .attr("y1", 100)
+        .attr("x2", svg.node().getBoundingClientRect().width/2)
+        .attr("y2", 180)
+        //.classed("middlePoint",true)
+        .style("stroke", "#333")
+        .style("stroke-width", 1)
+
+
+//Text for popular vote percentage
+    svg.append("text")
+        .text("Popular Vote(50%)")
+        .attr("x",svg.node().getBoundingClientRect().width/2)
+        .attr("y",90)
+        .classed("votesPercentageNote", true);
+
+
+//Independent vote percentage text
+    svg.append("text")
+        .text(function(){
+            if((iVote) == ""){
+                return "";
+            } else
+            {
+                return iVote;
+            }
+        })
+        .attr("x",0)
+        .attr("y","90")
+        .classed("independent", true);
+
+
+//Democrat vote percentage text
+    svg.append("text")
+        .text(dVote)
+        .attr("x", function(){
+
+            if(iVote == ""){
+                return 10;
+            } else
+            {
+                return yScale(parseFloat(iVote)) + 20;
+            }
+
+        })
+        .attr("y","90")
+        .classed("democrat", true);
+
+
+//Republic vote percentage text
+    svg.append("text")
+        .text(rVote)
+        .attr("x",function(){
+
+            if(iVote == ""){
+                return yScale((parseFloat(rVote) + parseFloat(dVote)));
+            }else{
+                return  yScale(parseFloat(iVote) + parseFloat(rVote) + parseFloat(dVote));
+            }
+
+        })
+        .attr("y","90")
+        .classed("republican", true);
+
+
+//Independent nominee text
+    svg.append("text")
+        .text(function(d,i){
+            if((iNominee) == ""){
+                return "";
+            } else
+            {
+                return iNominee;
+            }
+        })
+        .attr("x",0)
+        .attr("y","50")
+        .classed("independent", true);
+
+
+//Republican nominee text
+    svg.append("text")
+        .text(dNominee)
+        .attr("x", function(){
+
+            if(iNominee == ""){
+                return 10;
+            } else
+            {
+                //return yScale(parseFloat(iVote)) + 200;
+                return svg.node().getBoundingClientRect().width/2 - 75;
+            }
+
+        })
+        .attr("y","50")
+        .classed("democrat", true);
+
+ //Democrat nominee text
+
+    svg.append("text")
+        .text(rNominee)
+        .attr("x",function(){
+            if(iVote == ""){
+                return yScale((parseFloat(rVote) + parseFloat(dVote)));
+            }else{
+                return  yScale(parseFloat(iVote) + parseFloat(rVote) + parseFloat(dVote));
+            }
+
+        })
+        .attr("y","50")
+        .classed("republican", true);
+
+
+
+
+
+
+
+
+
+
 
     //Display the total percentage of votes won by each party
     //on top of the corresponding groups of bars.
