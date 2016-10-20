@@ -76,13 +76,12 @@ VotePercentageChart.prototype.update = function(electionResult){
     //HINT: Use .votesPercentage class to style your bars.
 
 
-
    //console.log((electionResult[0].I_PopularPercentage));
 
 
     var voteData = [[{vPOP: electionResult[0].I_PopularPercentage,diff:0,y0:0,vNominee:electionResult[0].I_Nominee},
                     {vPOP:electionResult[0].D_PopularPercentage,diff:-1,y0:0,vNominee:electionResult[0].D_Nominee},
-                    {vPOP:electionResult[0].R_PopularPercentage,diff:1,y0:"",vNominee:electionResult[0].R_Nominee}]];
+                    {vPOP:electionResult[0].R_PopularPercentage,diff:1,y0:0,vNominee:electionResult[0].R_Nominee}]];
 
 
 
@@ -117,8 +116,10 @@ VotePercentageChart.prototype.update = function(electionResult){
             return [0,0];
         })
         .html(function(d) {
+            //return "Test tool tip ";
             tooltip_data = {
                 "result":[
+
                     {"nominee": dNominee,"votecount": dVote,"percentage": dVote,"party":"D"} ,
                     {"nominee": rNominee,"votecount": rVote,"percentage": rVote,"party":"R"} ,
                     {"nominee": iNominee,"votecount": iVote,"percentage": iVote,"party":"I"}
@@ -127,7 +128,9 @@ VotePercentageChart.prototype.update = function(electionResult){
             /* pass this as an argument to the tooltip_render function then,
              * return the HTML content returned from that method.
              * */
-            return ;
+            return VotePercentageChart.prototype.tooltip_render(tooltip_data);
+
+
         });
 
 
@@ -150,7 +153,8 @@ VotePercentageChart.prototype.update = function(electionResult){
 
     var groupsEnter = groups.enter()
         .append("g")
-        .classed("electoralVotes",true);
+        .classed("electoralVotes",true)
+        .call(tip);
 
 
     groups = groups.merge(groupsEnter);
@@ -166,7 +170,6 @@ VotePercentageChart.prototype.update = function(electionResult){
         })
         .attr("y", 110)
         .attr("width",function(d,i){
-
 
             if((d.vPOP) == ""){
                  console.log("I made inside when I am blank:")
@@ -188,7 +191,8 @@ VotePercentageChart.prototype.update = function(electionResult){
             else {
                 return "independent";
             }
-        })
+        }).on("mouseover", tip.show)
+        .on("mouseout", tip.hide);
 
 
 
@@ -276,7 +280,7 @@ VotePercentageChart.prototype.update = function(electionResult){
         .classed("independent", true);
 
 
-//Republican nominee text
+//Democrat nominee text
     svg.append("text")
         .text(dNominee)
         .attr("x", function(){
@@ -286,14 +290,14 @@ VotePercentageChart.prototype.update = function(electionResult){
             } else
             {
                 //return yScale(parseFloat(iVote)) + 200;
-                return svg.node().getBoundingClientRect().width/2 - 75;
+                return svg.node().getBoundingClientRect().width/2 - 200;
             }
 
         })
         .attr("y","50")
         .classed("democrat", true);
 
- //Democrat nominee text
+ //republican nominee text
 
     svg.append("text")
         .text(rNominee)
@@ -307,11 +311,6 @@ VotePercentageChart.prototype.update = function(electionResult){
         })
         .attr("y","50")
         .classed("republican", true);
-
-
-
-
-
 
 
 

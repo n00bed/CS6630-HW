@@ -83,6 +83,10 @@ TileChart.prototype.tooltip_render = function (tooltip_data) {
 TileChart.prototype.update = function(electionResult, colorScale){
     var self = this;
 
+
+
+    console.log("i come from the land of tilechart!")
+
     //Calculates the maximum number of columns to be laid out on the svg
     self.maxColumns = d3.max(electionResult,function(d){
                                 return d["Space"];
@@ -117,18 +121,38 @@ TileChart.prototype.update = function(electionResult, colorScale){
             return ;
         });
 
+    d3.selectAll("#legend svg g").remove();
+
     //Creates a legend element and assigns a scale that needs to be visualized
     self.legendSvg.append("g")
-        .attr("class", "legendQuantile");
+        .attr("class", "legendQuantile")
+       // .attr("transform","translate(150,30)")
+        .style("font-size","6px");
+
+
+
+
+
 
     var legendQuantile = d3.legendColor()
-        .shapeWidth(120)
+        .shapeWidth(40)
+        .shapeHeight(10)
         .cells(10)
         .orient('horizontal')
-        .scale(colorScale);
+        .scale(colorScale)
+
+
+
+
 
     // ******* TODO: PART IV *******
     //Tansform the legend element to appear in the center and make a call to this element for it to display.
+
+     d3.select(".legendQuantile").
+          attr("transform", "translate(" + 160 + ",0)")
+         .call(legendQuantile)
+
+
 
     //Lay rectangles corresponding to each state according to the 'row' and 'column' information in the data.
 
