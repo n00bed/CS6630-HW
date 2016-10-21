@@ -104,21 +104,20 @@ TileChart.prototype.update = function(electionResult, colorScale){
             return [0,0];
         })
         .html(function(d) {
-            /* populate data in the following format
-             * tooltip_data = {
-             * "state": State,
-             * "winner":d.State_Winner
-             * "electoralVotes" : Total_EV
-             * "result":[
-             * {"nominee": D_Nominee_prop,"votecount": D_Votes,"percentage": D_Percentage,"party":"D"} ,
-             * {"nominee": R_Nominee_prop,"votecount": R_Votes,"percentage": R_Percentage,"party":"R"} ,
-             * {"nominee": I_Nominee_prop,"votecount": I_Votes,"percentage": I_Percentage,"party":"I"}
-             * ]
-             * }
-             * pass this as an argument to the tooltip_render function then,
-             * return the HTML content returned from that method.
-             * */
-            return ;
+             //populate data in the following format
+              tooltip_data = {
+              "state": d["State"],
+              "winner":d.State_Winner,
+              "electoralVotes" : d.Total_EV,
+              "result":[
+              {"nominee": d.D_Nominee_prop,"votecount": d.D_Votes,"percentage": d.D_Percentage,"party":"D"} ,
+              {"nominee": d.R_Nominee_prop,"votecount": d.R_Votes,"percentage": d.R_Percentage,"party":"R"} ,
+              {"nominee": d.I_Nominee_prop,"votecount": d.I_Votes,"percentage": d.I_Percentage,"party":"I"}
+              ]
+              }
+             // pass this as an argument to the tooltip_render function then,
+             //return the HTML content returned from that method.
+            return TileChart.prototype.tooltip_render(tooltip_data);
         });
 
     d3.selectAll("#legend svg g").remove();
@@ -161,7 +160,7 @@ TileChart.prototype.update = function(electionResult, colorScale){
     var groupsEnter = groups.enter()
         .append("g")
         .classed("tile",true)
-        //.call(tip);
+        .call(tip);
 
     groups = groups.merge(groupsEnter);
 
@@ -186,18 +185,9 @@ TileChart.prototype.update = function(electionResult, colorScale){
         .style("fill", function(d){
                 return colorScale(d["RD_Difference"])}
 
-        )
-        // .attr("class",function(d,i){
-        //     if(d["R_Difference"] >0){
-        //         return "republican"
-        //     }
-        //     else if(d["R_Difference"]<0){
-        //         return "democrat"
-        //     }
-        //     else {
-        //         return "independent";
-        //     }
-        // })
+        ).on("mouseover", tip.show)
+        .on("mouseout", tip.hide);
+
 
 
     groupsEnter.append("text")
