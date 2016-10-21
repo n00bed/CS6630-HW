@@ -148,7 +148,6 @@ VotePercentageChart.prototype.update = function(electionResult){
 
     // Add a group for each row of data
     var groups = svg.selectAll("#votes-percentage")
-        //.data([electionResult[0].I_PopularPercentage,electionResult[0].D_PopularPercentage,electionResult[0].R_PopularPercentage]);
         .data(voteData[0]);
 
     var groupsEnter = groups.enter()
@@ -163,17 +162,12 @@ VotePercentageChart.prototype.update = function(electionResult){
 
     groupsEnter.append("rect")
         .attr("x",function(d,i){
-          //  return yScale(d[0].y0)
-            console.log("from inside:")
-            console.log(d.y0);
              return yScale(d.y0);
         })
         .attr("y", 110)
         .attr("width",function(d,i){
 
             if((d.vPOP) == ""){
-                 console.log("I made inside when I am blank:")
-                console.log(0);
                 return 0;
             }
             else{

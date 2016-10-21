@@ -85,8 +85,6 @@ TileChart.prototype.update = function(electionResult, colorScale){
 
 
 
-    console.log("i come from the land of tilechart!")
-
     //Calculates the maximum number of columns to be laid out on the svg
     self.maxColumns = d3.max(electionResult,function(d){
                                 return d["Space"];
@@ -96,6 +94,8 @@ TileChart.prototype.update = function(electionResult, colorScale){
     self.maxRows = d3.max(electionResult,function(d){
                                 return d["Row"];
                         });
+
+
 
     //Use this tool tip element to handle any hover over the chart
     tip = d3.tip().attr('class', 'd3-tip')
@@ -122,20 +122,18 @@ TileChart.prototype.update = function(electionResult, colorScale){
         });
 
     d3.selectAll("#legend svg g").remove();
+    d3.selectAll("#tiles svg g").remove();
 
     //Creates a legend element and assigns a scale that needs to be visualized
     self.legendSvg.append("g")
         .attr("class", "legendQuantile")
        // .attr("transform","translate(150,30)")
-        .style("font-size","6px");
-
-
-
+        .style("font-size","10px");
 
 
 
     var legendQuantile = d3.legendColor()
-        .shapeWidth(40)
+        .shapeWidth(70)
         .shapeHeight(10)
         .cells(10)
         .orient('horizontal')
@@ -143,18 +141,111 @@ TileChart.prototype.update = function(electionResult, colorScale){
 
 
 
-
-
     // ******* TODO: PART IV *******
     //Tansform the legend element to appear in the center and make a call to this element for it to display.
 
      d3.select(".legendQuantile").
-          attr("transform", "translate(" + 160 + ",0)")
+          attr("transform", "translate(30,50)")
          .call(legendQuantile)
 
 
-
     //Lay rectangles corresponding to each state according to the 'row' and 'column' information in the data.
+
+
+    var svg = d3.select("#tiles svg");
+
+    var groups = svg.selectAll("#votes-percentage")
+        .data(electionResult);
+
+
+    var groupsEnter = groups.enter()
+        .append("g")
+        .classed("tile",true)
+        //.call(tip);
+
+    groups = groups.merge(groupsEnter);
+
+    //rect = groupsEnter.append("rect");
+
+    console.log("test etst test;  " + electionResult[0]["Space"]);
+
+    groupsEnter.append("rect")
+        .attr("x",function(d,i){
+
+             return self.svgWidth/12 * d["Space"];
+
+        })
+        .attr("y",function(d,i){
+
+            return self.svgHeight/8 * d["Row"];
+
+        })
+        .attr("width",self.svgWidth/12)
+        .attr("height", self.svgHeight/8)
+        .classed("tile", true)
+        .style("fill", function(d){
+                return colorScale(d["RD_Difference"])}
+
+        )
+        // .attr("class",function(d,i){
+        //     if(d["R_Difference"] >0){
+        //         return "republican"
+        //     }
+        //     else if(d["R_Difference"]<0){
+        //         return "democrat"
+        //     }
+        //     else {
+        //         return "independent";
+        //     }
+        // })
+
+
+    groupsEnter.append("text")
+        .attr("x",function(d,i){
+
+            return self.svgWidth/12 * d["Space"] + self.svgWidth/24-5;
+
+        })
+        .attr("y",function(d,i){
+
+            return self.svgHeight/8 * d["Row"] + self.svgHeight/16- 10;
+
+        })
+        .text(function(d){
+            return d["Total_EV"] ;
+        })//.classed("tilestext",true)
+        .attr("fill","#000")
+        .style("stroke-width", 0)
+        .style({"font-size":"12px","z-index":"999999999"})
+
+
+    groupsEnter.append("text")
+        .attr("x",function(d,i){
+
+            return self.svgWidth/12 * d["Space"] + self.svgWidth/24 - 10;
+
+        })
+        .attr("y",function(d,i){
+
+            return self.svgHeight/8 * d["Row"] + self.svgHeight/16 + 10;
+
+        })
+        .text(function(d){
+            return  d["Abbreviation"] ;
+        })//.classed("tilestext",true)
+        .attr("fill","#000")
+        .style("stroke-width", 0)
+        .style({"font-size":"12px","z-index":"999999999"})
+
+
+
+        //.on("mouseover", tip.show)
+        //.on("mouseout", tip.hide);
+
+
+
+
+
 
     //Display the state abbreviation and number of electoral votes on each of these rectangles
 
